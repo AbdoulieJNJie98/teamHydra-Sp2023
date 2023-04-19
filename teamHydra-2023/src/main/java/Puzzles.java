@@ -1,4 +1,7 @@
-public class Puzzles {
+import java.io.Serializable;
+
+// Author @ Amar
+public class Puzzles implements Serializable {
     private int puzzleID;
 
     private int puzzleRoomID;

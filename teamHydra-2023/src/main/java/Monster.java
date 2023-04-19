@@ -1,10 +1,24 @@
+// Author @ Jason and Abdoulie
 public class Monster extends ActorForMonsterAndPlayer {
     private int monsterID;
+
+    private int healthPoints;
+
+    private int attackStat;
+
+    private int defenseStat;
+
     private String monsterName;
+
     private String monsterDescription;
 
-    public Monster (int monsterID, int healthPoints, int attackStat, int defenseStat , String monsterName, String monsterDescription){
-        super(healthPoints, attackStat, defenseStat);
+    // default constructor for Monster
+    public  Monster(){}
+
+    public Monster(int monsterID, int healthPoints, int attackStat, int defenseStat , String monsterName, String monsterDescription){
+        this.healthPoints = healthPoints;
+        this.attackStat = attackStat;
+        this.defenseStat = defenseStat;
         this.monsterID = monsterID;
         this.monsterName = monsterName;
         this.monsterDescription = monsterDescription;
@@ -18,19 +32,14 @@ public class Monster extends ActorForMonsterAndPlayer {
         this.monsterID = monsterID;
     }
 
-    public String getMonsterName() {
-        return monsterName;
-    }
-
-    public void setMonsterName(String monsterName) {
-        this.monsterName = monsterName;
-    }
-
     public String getMonsterDescription() {
         return monsterDescription;
     }
 
-    public void setMonsterDescription(String monsterDescription) {
-        this.monsterDescription = monsterDescription;
-    }
+    public void setMonsterDescription(String monsterDescription) {this.monsterDescription = monsterDescription;}
+
+
+
+
+
 }
