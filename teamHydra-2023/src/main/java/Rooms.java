@@ -1,4 +1,7 @@
 import java.io.Serializable;
+import java.util.ArrayList;
+
+//MODE
 
 /*
 Room class holds all the information needed to define a rooms object.
@@ -8,7 +11,7 @@ are set and retrieved here
  */
 public class Rooms implements Serializable {
 
-    private int  roomID = 0;
+    private int roomID = 0;
     private boolean roomVisited = false;
     private String roomName = "";
     private int northRoomID = 0;
@@ -17,24 +20,13 @@ public class Rooms implements Serializable {
 
     private int eastRoomID = 0;
     private String roomDescription = "";
+    private ArrayList<Items> roomInventory;
 
-    public int getItemID() {
-        return itemID;
-    }
+    private ArrayList<Puzzles> puzzlesInRoom;
 
-    public void setItemID(int itemID) {
-        //itemID = item.getItemRoomID();
-        this.itemID = itemID;
-    }
 
-    public int getPuzzleID() {
-        return puzzleID;
-    }
+    private Map gameMap = new Map();
 
-    public void setPuzzleID(int puzzleID) {
-        //puzzleID = puzzle.getPuzzleRoomID();
-        this.puzzleID = puzzleID;
-    }
 
     public Items getItem() {
         return item;
@@ -57,7 +49,8 @@ public class Rooms implements Serializable {
     private Items item;
     private Puzzles puzzle;
 
-    public Rooms() {}
+    public Rooms() {
+    }
 
     public Rooms(int roomID, boolean roomVisitedStatus, String roomName,
                 int northRoomID, int southRoomID, int eastRoomID, int westRoomID, String roomDescription, int itemID, int puzzleID) {
@@ -71,10 +64,10 @@ public class Rooms implements Serializable {
         this.roomDescription = roomDescription;
         this.itemID = itemID;
         this.puzzleID = puzzleID;
+        roomInventory = new ArrayList<>();
+        setDefaultItemInRoom();
+        setDefaultPuzzleInRoom();
     }
-
-
-
 
     public int getRoomID() {
         return roomID;
@@ -90,7 +83,7 @@ public class Rooms implements Serializable {
     }
 
     public void setRoomVisited(boolean roomVisitedStatus) {
-        this.roomVisited  = roomVisitedStatus;
+        this.roomVisited = roomVisitedStatus;
     }
 
     public String getRoomDescription() {
@@ -139,6 +132,141 @@ public class Rooms implements Serializable {
 
     public void setEastRoomID(int eastRoomID) {
         this.eastRoomID = eastRoomID;
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public int getPuzzleID() {
+        return puzzleID;
+    }
+
+    public void setPuzzleID(int puzzleID) {
+        this.puzzleID = puzzleID;
+    }
+
+    public ArrayList<Items> getRoomInventory() {
+        return roomInventory;
+    }
+
+    public ArrayList<Puzzles> getPuzzlesInRoom() {
+        return puzzlesInRoom;
+    }
+
+
+
+
+    // method used to initialize which item will be in each room by default based on the room's itemID number
+    public void setDefaultItemInRoom() {
+        // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
+        for (int i = 0; i < gameMap.arrayListOfItems.size(); i++) {
+            // if statement use to match the itemIDs with one another
+            if (itemID == gameMap.arrayListOfItems.get(i).getItemRoomID()) {
+                // new Items variable used to set the default item value in the room
+                Items item = gameMap.arrayListOfItems.get(i);
+                roomInventory.add(item);
+            }
+        }
+    }
+
+    public void setDefaultPuzzleInRoom() {
+        // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
+        for (int i = 0; i < gameMap.arrayListOfPuzzles.size(); i++) {
+            // if statement use to match the itemIDs with one another
+            if (itemID == gameMap.arrayListOfPuzzles.get(i).getPuzzleRoomID()) {
+                // new Puzzles variable used to set the default item value in the room
+                Puzzles puzzle = gameMap.arrayListOfPuzzles.get(i);
+                puzzlesInRoom.add(puzzle);
+            }
+        }
+    }
+
+    // method used to display the names of the rooms accessible from the current room the player is in
+    public void getCurrentRoomConnections(Rooms currentRoom) {
+        // room variables used to access the room names of rooms connected to the current room
+        Rooms northRoom = new Rooms();
+        Rooms southRoom = new Rooms();
+        Rooms eastRoom = new Rooms();
+        Rooms westRoom = new Rooms();
+        // if statements that are used to determine if there is a room in a given location based on the current room
+        if (currentRoom.northRoomID != 0) {
+                /* for loop that will search through an array list of rooms and match the desired location's
+                roomID with the matching roomID found within an array list of rooms. It then will assign the information of
+                the matching roomID numbers to a room variable with a name that matches the desired direction.
+                 */
+            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
+                if (currentRoom.northRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
+                    northRoom = gameMap.arrayListOfRooms.get(i);
+                }
+                // Will display the name of the room north of the current room
+                System.out.println("North of here: " + northRoom.getRoomName() + "\n");
+            }
+        } else {
+            System.out.println("There is nothing of interest that way  \n");
+        }
+        if (currentRoom.southRoomID != 0) {
+
+            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
+                if (currentRoom.southRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
+                    southRoom = gameMap.arrayListOfRooms.get(i);
+                }
+
+                System.out.println("South of here: " + southRoom.getRoomName() + "\n");
+            }
+        } else {
+            System.out.println("There is nothing of interest that way  \n");
+        }
+        if (currentRoom.eastRoomID != 0) {
+
+            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
+                if (currentRoom.eastRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
+                    eastRoom = gameMap.arrayListOfRooms.get(i);
+                }
+
+                System.out.println("East of here: " + eastRoom.getRoomName() + "\n");
+            }
+        } else {
+            System.out.println("There is nothing of interest that way  \n");
+        }
+        if (currentRoom.westRoomID != 0) {
+
+            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
+                if (currentRoom.westRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
+                    westRoom = gameMap.arrayListOfRooms.get(i);
+                }
+
+                System.out.println("West of here: " + westRoom.getRoomName() + "\n");
+            }
+        } else {
+            System.out.println("There is nothing of interest that way  \n");
+        }
+    }
+
+    // method used to remove item from the room's array list and send it to the player
+    public Items removeItemFromRoomInventory(String playerInput) {
+        Items item = null;
+        // for loop used to search the array of list items found within the room
+        for (int i = 0; i < roomInventory.size(); i++) {
+            // if statement used to check if the player's input matches the name of an item in
+            // the room's inventory
+            if (roomInventory.get(i).getItemName().contains(playerInput)) {
+                item = roomInventory.get(i);
+                roomInventory.remove(i);
+            }
+
+        }
+
+        return item;
+    }
+
+    // method used to display the contents of a room when a player inputs the "explore" command
+    public void exploreRoom(Rooms currentRoom){
+        System.out.println(currentRoom.getRoomDescription() + "\n" + currentRoom.getRoomInventory() );
     }
 
     @Override

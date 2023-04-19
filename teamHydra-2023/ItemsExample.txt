@@ -1,0 +1,8 @@
+itemID~itemName~itemDescription~itemRoomID~itemType
+
+1~Buster Sword EX~An onyx blade that will grow with you the stronger you get~1~Equitable
+5~"Broken Knight Helmet~Helmet of one of the legendary 4 knights of the kings guard~5~Treasure
+4~Rail Gun~This gun had the power to level an entire mountain at one point~4~Equitable
+6~Devoted Crown ~This is a broken crown of a bygone age~6~Treasure
+2~Basic Health potion~A basic health potion that will heal the user's hp by 10 points~2~Usable
+3~Monocle of the Ripper~The eye of the elusive killer his self~3~Treasure

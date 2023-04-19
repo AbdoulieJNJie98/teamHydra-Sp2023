@@ -1,17 +1,52 @@
+
+
+/*
+ Items class will use a hash map that reads in a text file of items that will be associated
+ with their respective rooms, it will also hard code what it is read from the file into the game
+ so that the player may interact with each item
+
+ @Abdoulie J NJie
+ */
+
+
 import java.io.Serializable;
 
 public class Items  implements Serializable {
-    private int itemRoomID = 0;
+    private int itemID = 0;
+
     private String itemName = "";
     private String itemDescription = "";
+
+    private int itemRoomID = 0;
+
+
+    private String itemType = "";
 
     public Items() {
     }
 
-    public Items(int itemRoomID, String itemName, String itemDescription) {
-        this.itemRoomID = itemRoomID;
+    public Items(int itemID, String itemName, String itemDescription, int itemRoomID, String itemType) {
+        this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
+        this.itemRoomID = itemRoomID;
+        this.itemType = itemType;
+    }
+
+    public int getItemID() {
+        return itemID;
+    }
+
+    public void setItemID(int itemID) {
+        this.itemID = itemID;
+    }
+
+    public String getItemType() {
+        return itemType;
+    }
+
+    public void setItemType(String itemType) {
+        this.itemType = itemType;
     }
 
 
@@ -42,3 +77,7 @@ public class Items  implements Serializable {
     }
 
 }
+
+// method used to return the
+
+
