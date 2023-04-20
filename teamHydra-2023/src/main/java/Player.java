@@ -46,6 +46,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         return currentRoom;
     }
 
+    // method used to adjust the current room the player is moving too
     public void move(String playerInput) {
         if (playerInput.equalsIgnoreCase("north") || playerInput.equalsIgnoreCase("n")) {
             if (currentRoom.getNorthRoomID() != 0) {
@@ -101,9 +102,6 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
             System.out.println("This room looks familiar");
         }
     }
-//    public void solvePuzzle(String playerInput) {
-//        puzzles.checkPlayersAnswer(playerInput);
-//    }
 
     //method used to add items to player's inventory
     public void pickUpItem(String playerInput) {
@@ -169,8 +167,23 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     }
 
     // method used to call room method that will display the current room's description, items, puzzles, and monster
-    public void exploreRoom() {
-        currentRoom.exploreRoom(currentRoom);
+    public void inspectArea() {
+        currentRoom.displayInspectedArea(currentRoom);
+    }
+
+    // method used to call room method that will display the rooms that are connected
+    // to the current room, and show their descriptions, items, puzzles, and monster found within them
+    public void sonar() {
+        currentRoom.showSonarResult(currentRoom);
+    }
+
+    // method used to return the current player's name,  health status, attack stats, and defense stats of the player
+    public void getStatus(Player player){
+        System.out.println("Status:\n" +
+                "Name: " + player.getName() + "\n" +
+                "HP: " + player.getHealthPoints() +
+                "ATK: " + player.getAttackStat() +
+                "DEF: " + player.getDefenseStat());
     }
 
 }

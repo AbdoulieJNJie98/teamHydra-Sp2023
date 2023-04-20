@@ -1,6 +1,8 @@
-1~False~Zone1_HighGrass~2~0~0~0~Welcome to High grass, the zone for beginners.~1~0
-2~False~Zone2_Skytopia~5~1~4~3~Welcome to Skytopia, the city in the sky!~2~0
-3~False~Zone3_NewLondon~0~0~2~0~Welcome to New London, be warned, this is a pvp zone...~3~0
-4~False~Zone4_DeusEx~0~0~0~2~Welcome to DeusEx, the world of technology.~4~0
-5~False~Zone5_Wasteland~6~2~0~0~Welcome to Wasteland, the forgotten zone...~5~0
-6~False~Zone6_RebirthCastle~0~5~0~0~Welcome to Rebirth Castle, the final stage!~6~0
+roomID~roomVisitedStatus~roomName~northRoomID~southRoomID~eastRoomID~westRoomID~roomDescription~itemID~puzzleID~monsterID
+
+1~False~Zone1_HighGrass~2~0~0~0~Welcome to High grass, the zone for beginners.~1~0~1
+2~False~Zone2_Skytopia~5~1~4~3~Welcome to Skytopia, the city in the sky!~2~0~2
+3~False~Zone3_NewLondon~0~0~2~0~Welcome to New London, be warned, this is a pvp zone...~3~0~3
+4~False~Zone4_DeusEx~0~0~0~2~Welcome to DeusEx, the world of technology.~4~0~4
+5~False~Zone5_Wasteland~6~2~0~0~Welcome to Wasteland, the forgotten zone...~5~0~5
+6~False~Zone6_RebirthCastle~0~5~0~0~Welcome to Rebirth Castle, the final stage!~6~0~6

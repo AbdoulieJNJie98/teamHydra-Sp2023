@@ -67,6 +67,7 @@ public class Game implements Serializable {
                 player.move(playerInput);
                 player.checkIfRoomHasBeenVisited();
             } else if (playerInputParts[0].equalsIgnoreCase("quit")) {
+                playerInput = game.makeCommand(playerInputParts);
                 quitGame(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("pickup ") && playerInputParts.length > 1) {
                 playerInput = game.makeCommand(playerInputParts);
@@ -77,21 +78,27 @@ public class Game implements Serializable {
             } else if (playerInputParts[0].equalsIgnoreCase("inspect ") && playerInputParts.length > 1) {
                 playerInput = game.makeCommand(playerInputParts);
                 player.inspectItem(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("explore")) {
-                player.exploreRoom();
+            } else if (playerInputParts[0].equalsIgnoreCase("inspect area") && playerInputParts.length > 1) {
+                playerInput = game.makeCommand(playerInputParts);
+                player.inspectArea();
             } else if (playerInputParts[0].equalsIgnoreCase("inventory")) {
                 player.getCurrentInventory(playerInput);
             }
             else if (playerInputParts[0].equalsIgnoreCase("archive ") && playerInputParts.length > 1) {
                 playerInput = game.makeCommand(playerInputParts);
                 player.archive(playerInput);
-
-            } else if ((playerInputParts[0].equalsIgnoreCase("Solve Puzzle"))) {
+            } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
+                player.sonar();
+            }
+            else if ((playerInputParts[0].equalsIgnoreCase("Solve Puzzle"))) {
                 //player.solvePuzzle(playerInput);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Fight ") && playerInputParts.length > 1)) {
                 playerInput = game.makeCommand(playerInputParts);
-                //player.solvePuzzle(playerInput);
+                //player.solvePuzzle(startCombat);
+            }
+            else if ((playerInputParts[0].equalsIgnoreCase("status"))){
+                player.getStatus(player);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Save Game"))){
                 game.saveGame(map, player, exhibit.getItemsInExhibit());
@@ -166,5 +173,3 @@ public class Game implements Serializable {
     }
 
 }
-
-
