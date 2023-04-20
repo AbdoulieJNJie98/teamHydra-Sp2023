@@ -6,9 +6,8 @@ import java.util.ArrayList;
     and allow the player to inspect the items found within the exhibit, which will display the description of the item when the
     player inputs the "inspect [item name]" command.
  */
-import java.io.Serializable;
-import java.util.ArrayList;
 
+//(Barbara)
 public class Exhibit implements Serializable {
 
 
@@ -17,6 +16,17 @@ public class Exhibit implements Serializable {
 
     // default constructor
     public Exhibit() {
+        System.out.println("Exhibit");
+        System.out.println("----------------------");
+        for (int i = 0; i < itemsInExhibit.size(); i++) {
+            System.out.println(itemsInExhibit.get(i));
+        }
+        System.out.println("Here are the treasure items that have been archived in the museum.");
+
+
+    }
+    public void Help() {
+        System.out.println("If you want to display the treasure items that have been archived in the museum, type 'Exhibit'.");
     }
 
     // method used to get array list of items in the exhibit
