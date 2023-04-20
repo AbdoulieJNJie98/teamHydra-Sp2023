@@ -24,6 +24,7 @@ public class Rooms implements Serializable {
 
     private ArrayList<Puzzles> puzzlesInRoom;
 
+    private ArrayList<Monster> monstersInRoom;
 
     private Map gameMap = new Map();
 
@@ -44,16 +45,21 @@ public class Rooms implements Serializable {
         this.puzzle = puzzle;
     }
 
+    public Monster getMonster(){return monster;}
+
+    public void setMonster(Monster monster){this.monster = monster;}
+
     private int itemID = 0;
     private int puzzleID = 0;
+    private int monsterID = 0;
     private Items item;
     private Puzzles puzzle;
-
+    private Monster monster;
     public Rooms() {
     }
 
     public Rooms(int roomID, boolean roomVisitedStatus, String roomName,
-                int northRoomID, int southRoomID, int eastRoomID, int westRoomID, String roomDescription, int itemID, int puzzleID) {
+                int northRoomID, int southRoomID, int eastRoomID, int westRoomID, String roomDescription, int itemID, int puzzleID, int monsterID) {
         this.roomID = roomID;
         this.roomVisited = roomVisitedStatus;
         this.roomName = roomName;
@@ -64,9 +70,11 @@ public class Rooms implements Serializable {
         this.roomDescription = roomDescription;
         this.itemID = itemID;
         this.puzzleID = puzzleID;
+        this.monsterID= monsterID;
         roomInventory = new ArrayList<>();
         setDefaultItemInRoom();
         setDefaultPuzzleInRoom();
+        setDefaultMonsterInRoom();
     }
 
     public int getRoomID() {
@@ -150,6 +158,9 @@ public class Rooms implements Serializable {
         this.puzzleID = puzzleID;
     }
 
+    public int getMonsterID(){return monsterID;}
+
+    public void setMonsterID(int monsterID){this.monsterID = monsterID;}
     public ArrayList<Items> getRoomInventory() {
         return roomInventory;
     }
@@ -158,7 +169,7 @@ public class Rooms implements Serializable {
         return puzzlesInRoom;
     }
 
-
+    public ArrayList<Monster> getMonstersInRoom(){return monstersInRoom;}
 
 
     // method used to initialize which item will be in each room by default based on the room's itemID number
@@ -182,6 +193,18 @@ public class Rooms implements Serializable {
                 // new Puzzles variable used to set the default item value in the room
                 Puzzles puzzle = gameMap.arrayListOfPuzzles.get(i);
                 puzzlesInRoom.add(puzzle);
+            }
+        }
+    }
+
+    public void setDefaultMonsterInRoom() {
+        // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
+        for (int i = 0; i < gameMap.arrayListOfMonsters.size(); i++) {
+            // if statement use to match the itemIDs with one another
+            if (monsterID == gameMap.arrayListOfMonsters.get(i).getMonsterID()) {
+                // new Puzzles variable used to set the default item value in the room
+                Monster monster = gameMap.arrayListOfMonsters.get(i);
+                monstersInRoom.add(monster);
             }
         }
     }
