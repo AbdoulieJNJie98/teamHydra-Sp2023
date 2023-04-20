@@ -95,10 +95,10 @@ public class Map  implements Serializable {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(puzzlesFilePath)); // buffer reader used to read the file
             while ((line = bufferedReader.readLine()) != null) { // while loop that reads until the end of the file
 
-                String[] parts = line.split("~", 7); // String array used to each element in the given file individually
-                if (parts.length >= 6) {
+                String[] parts = line.split("~", 10); // String array used to each element in the given file individually
+                if (parts.length >= 10) {
                     // temp room object used to hold information collected from current iteration of loop
-                    Puzzles p = new Puzzles(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),parts[2], parts[3], parts[4], parts[5], parts[6]);
+                    Puzzles p = new Puzzles(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),parts[2], parts[3], parts[4],parts[5], parts[6],parts[7]);
                     hashMapPuzzles.put(p.getPuzzleID(), p); // used to add the values stored in the temp puzzle to the hash map
                 }
 
