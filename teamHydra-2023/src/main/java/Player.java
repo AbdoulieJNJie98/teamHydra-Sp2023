@@ -35,9 +35,9 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
     public Player(String playerName, int healthPoints, int attackStat, int defenseStat){
         this.playerName = playerName;
-        this.healthPoints = healthPoints;
-        this.attackStat = attackStat;
-        this.defenseStat = defenseStat;
+        this.healthPoints=100;
+        this.attackStat=10;
+        this.defenseStat=10;
     }
 
 

@@ -96,6 +96,9 @@ public class Game implements Serializable {
             else if ((playerInputParts[0].equalsIgnoreCase("Save Game"))){
                 game.saveGame(map, player, exhibit.getItemsInExhibit());
             }
+            else if (player.getCurrentRoom().getMonsterID()>0){
+                game.combat();
+            }
         }
     }
 
@@ -165,6 +168,76 @@ public class Game implements Serializable {
 
     }
 
-}
+    public void combat(){
+
+            while (!player.getCurrentRoom().getMonstersInRoom().isEmpty()) {
+                Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
+                System.out.println("You have entered combat with " + currentMonster.getName());
+
+                System.out.println("What will you do? Your options are Attack, Flee, Repair, Check, and Status ");
+                String playerInput = input.nextLine();
+                if (playerInput.equalsIgnoreCase("attack")){
+                    int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                    if (damage > 0) {
+                        currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                        System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                        System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                    } else {
+                        System.out.println("Your attack did no damage to the " + currentMonster.getName());
+                    }
+                }
+                else if (playerInput.equalsIgnoreCase("torpedo")) {
+
+                }
+                else if (playerInput.equalsIgnoreCase("flee")) {
+
+                }
+                else if (playerInput.equalsIgnoreCase("repair")) {
+
+                }
+                else if (playerInput.equalsIgnoreCase("check")) {
+                    System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
+                    System.out.println(currentMonster.getName() + "'s Attack Stat: " + currentMonster.getAttackStat());
+                    System.out.println(currentMonster.getName() + "'s Defense Stat: " + currentMonster.getDefenseStat());
+                }
+                else if (playerInput.equalsIgnoreCase("status")) {
+                    System.out.println("Your HP: " + player.getHealthPoints());
+                    System.out.println("Your Attack Stat: " + player.getAttackStat());
+                    System.out.println("Your Defense Stat: " + player.getDefenseStat());
+                }
+                else {
+                    System.out.println("Invalid Command");
+                }
+
+                // Monster attacks after player's turn
+                if (currentMonster.getHealthPoints() > 0) {
+                    int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
+                    if (monsterDamage > 0) {
+                        player.setHealthPoints(player.getHealthPoints() - monsterDamage);
+                        System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
+                    } else {
+                        System.out.println(currentMonster.getName() + "'s attack did no damage to you!");
+                    }
+                }
+
+                if (currentMonster.getHealthPoints()<= 0) {
+                    currentMonster.setMonsterID(-1);
+                    player.getCurrentRoom().getMonstersInRoom().remove(0);
+                    player.getCurrentRoom().setMonsterID(-1);
+                    break;
+                }
+                if (player.getHealthPoints()<=0) {
+                    System.out.println("Your HP as reached 0 ");
+                    System.exit(0);
+
+                }
+            }
+
+        }
+    }
+
+
+
+
 
 

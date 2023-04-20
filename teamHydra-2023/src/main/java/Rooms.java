@@ -198,9 +198,9 @@ public class Rooms implements Serializable {
     }
 
     public void setDefaultMonsterInRoom() {
-        // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
+        // for loop used to match the monsterID found within the room text file, with the monsterID found within the item text file
         for (int i = 0; i < gameMap.arrayListOfMonsters.size(); i++) {
-            // if statement use to match the itemIDs with one another
+            // if statement use to match the monsterIDs with one another
             if (monsterID == gameMap.arrayListOfMonsters.get(i).getMonsterID()) {
                 // new Puzzles variable used to set the default item value in the room
                 Monster monster = gameMap.arrayListOfMonsters.get(i);
