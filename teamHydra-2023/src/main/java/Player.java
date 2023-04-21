@@ -50,6 +50,8 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         return playerInventory;
     }
 
+    public Rooms getPreviousRoom(){return previousRoom;}
+
     public void move(String playerInput) {
         if (playerInput.equalsIgnoreCase("north") || playerInput.equalsIgnoreCase("n")) {
             if (currentRoom.getNorthRoomID() != 0) {
@@ -176,5 +178,5 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     public void exploreRoom() {
         currentRoom.exploreRoom(currentRoom);
     }
-
+    public void setCurrentRoom(Rooms previousRoom){}
 }

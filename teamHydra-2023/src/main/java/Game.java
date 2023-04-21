@@ -195,7 +195,8 @@ public class Game implements Serializable {
                 }
 
                 else if (playerInput.equalsIgnoreCase("flee")) {
-
+                    System.out.println("You have successfully fled!");
+                    player.setCurrentRoom(player.getPreviousRoom());
                 }
                 else if (playerInput.equalsIgnoreCase("repair")) {
                     game.useItemInCombat(playerInput, null);
