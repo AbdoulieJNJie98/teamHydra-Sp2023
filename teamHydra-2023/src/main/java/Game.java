@@ -186,14 +186,19 @@ public class Game implements Serializable {
                         System.out.println("Your attack did no damage to the " + currentMonster.getName());
                     }
                 }
-                else if (playerInput.equalsIgnoreCase("torpedo")) {
+                else if (playerInput.equalsIgnoreCase("Torpedo")) {
+                    game.useItemInCombat(playerInput, currentMonster);
 
                 }
+                else if (playerInput.equalsIgnoreCase("Super Torpedo")){
+                    game.useItemInCombat(playerInput, currentMonster);
+                }
+
                 else if (playerInput.equalsIgnoreCase("flee")) {
 
                 }
                 else if (playerInput.equalsIgnoreCase("repair")) {
-
+                    game.useItemInCombat(playerInput, null);
                 }
                 else if (playerInput.equalsIgnoreCase("check")) {
                     System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
@@ -234,6 +239,64 @@ public class Game implements Serializable {
             }
 
         }
+    public void useItemInCombat(String playerInput, Monster currentMonster) {
+        // item variable used to hold the item the user is attempting to use
+        Items item = null;
+        // for loop used to determine if the player has the item they're attempting to use in their inventory
+        if(playerInput.equalsIgnoreCase("Torpedo")) {
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getplayerInventory().get(i);
+                }
+            }
+            if (item != null) {
+                player.getplayerInventory().remove(item);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-30);
+                System.out.println("You fire a torpedo at the enemy");
+            }
+
+            if (item == null){
+                System.out.println("You have no torpedoes!");
+            }
+        }
+        if(playerInput.equalsIgnoreCase("Super Torpedo")) {
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getplayerInventory().get(i);
+                }
+            }
+            if (item != null) {
+                player.getplayerInventory().remove(item);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-60);
+                System.out.println("You fire a super torpedo at the enemy");
+            }
+
+            if (item == null){
+                System.out.println("You have no super torpedoes!");
+            }
+        }
+        if(playerInput.equalsIgnoreCase("Repair")) {
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getplayerInventory().get(i);
+                }
+            }
+            if (item != null) {
+                player.getplayerInventory().remove(item);
+                player.setHealthPoints(player.getHealthPoints()+50);
+                System.out.println("You used a repair kit");
+            }
+
+            if (item == null){
+                System.out.println("You have no repair kits!");
+            }
+        }
+
+
+    }
     }
 
 

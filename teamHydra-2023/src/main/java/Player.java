@@ -46,6 +46,10 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         return currentRoom;
     }
 
+    public ArrayList<Items> getplayerInventory() {
+        return playerInventory;
+    }
+
     public void move(String playerInput) {
         if (playerInput.equalsIgnoreCase("north") || playerInput.equalsIgnoreCase("n")) {
             if (currentRoom.getNorthRoomID() != 0) {
