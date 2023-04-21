@@ -22,15 +22,30 @@ public class Items  implements Serializable {
 
     private String itemType = "";
 
+    public void setItemRoomID(int itemRoomID) {
+        this.itemRoomID = itemRoomID;
+    }
+
+    public boolean isItemStatus() {
+        return itemStatus;
+    }
+
+    public void setItemStatus(boolean itemStatus) {
+        this.itemStatus = itemStatus;
+    }
+
+    private boolean itemStatus = false;
+
     public Items() {
     }
 
-    public Items(int itemID, String itemName, String itemDescription, int itemRoomID, String itemType) {
+    public Items(int itemID, String itemName, String itemDescription, int itemRoomID, String itemType, boolean itemStatus) {
         this.itemID = itemID;
         this.itemName = itemName;
         this.itemDescription = itemDescription;
         this.itemRoomID = itemRoomID;
         this.itemType = itemType;
+        this.itemStatus = itemStatus;
     }
 
     public int getItemID() {
