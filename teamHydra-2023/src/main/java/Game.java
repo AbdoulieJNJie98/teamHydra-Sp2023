@@ -285,15 +285,22 @@ public class Game implements Serializable {
                     item = player.getplayerInventory().get(i);
                 }
             }
-            if (item != null) {
-                player.getplayerInventory().remove(item);
-                player.setHealthPoints(player.getHealthPoints()+50);
-                System.out.println("You used a repair kit");
-            }
-
             if (item == null){
                 System.out.println("You have no repair kits!");
             }
+            if (item != null) {
+                if (player.getHealthPoints() < player.maximumHP) {
+                    player.getplayerInventory().remove(item);
+                    player.setHealthPoints(player.getHealthPoints() + (player.maximumHP - player.getHealthPoints()));
+                    System.out.println("You used a repair kit");
+                }
+                else{
+                    System.out.println("You are already max HP!");
+                    item = null;
+                }
+            }
+
+
         }
 
 

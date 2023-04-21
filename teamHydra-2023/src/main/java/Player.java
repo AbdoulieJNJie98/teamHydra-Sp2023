@@ -40,6 +40,8 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         this.defenseStat=10;
     }
 
+    public int maximumHP = 100;
+
 
     // getter used to access room methods
     public Rooms getCurrentRoom() {
