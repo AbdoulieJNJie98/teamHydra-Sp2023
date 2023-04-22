@@ -33,7 +33,7 @@ public class Exhibit implements Serializable {
         Items item = null;
         String[] fullInput = input.split(" ");
         if (fullInput[0].equalsIgnoreCase("Description of") && fullInput.length > 1) {
-            input = g.makeCommand(fullInput);
+            input = g.getWord(fullInput);
             for(int i = 0; i < itemsInExhibit.size(); i++) {
                 if (itemsInExhibit.get(i).getItemName().contains(input)) {
                     item = itemsInExhibit.get(i);
@@ -42,7 +42,7 @@ public class Exhibit implements Serializable {
             }
         }
         else if (fullInput[0].equalsIgnoreCase("Exit Exhibit") && fullInput.length > 1) {
-            input = g.makeCommand(fullInput);
+            input = g.getWord(fullInput);
             g.mainMenu();
         }
     }
