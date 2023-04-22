@@ -89,9 +89,10 @@ public class Game implements Serializable {
             } else if ((playerInputParts[0].equalsIgnoreCase("Solve Puzzle"))) {
                 //player.solvePuzzle(playerInput);
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Fight ") && playerInputParts.length > 1)) {
+            else if ((playerInputParts[0].equalsIgnoreCase("Use Item") && playerInputParts.length > 1)) {
                 playerInput = game.makeCommand(playerInputParts);
-                //player.solvePuzzle(playerInput);
+                game.useItemOutsideOfCombat(playerInput);
+
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Save Game"))){
                 game.saveGame(map, player, exhibit.getItemsInExhibit());
@@ -299,11 +300,80 @@ public class Game implements Serializable {
                     item = null;
                 }
             }
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        !player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    System.out.println("This item cannot be used");
+                }
+                if (!player.getplayerInventory().get(i).getItemName().contains(playerInput)){
+                    System.out.println("Invalid Item");
+                }
+            }
 
 
         }
 
 
+    }
+    public void useItemOutsideOfCombat(String playerInput) {
+        // item variable used to hold the item the user is attempting to use
+        Items item = null;
+        System.out.println("What item would you like to use?");
+        playerInput = input.nextLine();
+        // for loop used to determine if the player has the item they're attempting to use in their inventory
+        if (playerInput.equalsIgnoreCase("Repair Kit")) {
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getplayerInventory().get(i);
+                }
+            }
+            if (item == null) {
+                System.out.println("You have no repair kits!");
+            }
+            if (item != null) {
+                if (player.getHealthPoints() < player.maximumHP) {
+                    player.getplayerInventory().remove(item);
+                    player.setHealthPoints(player.getHealthPoints() + (player.maximumHP - player.getHealthPoints()));
+                    System.out.println("You used a repair kit");
+                } else {
+                    System.out.println("You are already max HP!");
+                    item = null;
+                }
+            }
+
+        }
+        if (playerInput.equalsIgnoreCase("Antikythera mechanism")) {
+            Puzzles Antikythera = player.getCurrentRoom().getPuzzlesInRoom().get(0);
+            for (int i = 0; i < player.getplayerInventory().size(); i++) {
+                if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getplayerInventory().get(i);
+                }
+            }
+            if (item == null) {
+                System.out.println("You do not have the Antikythera mechanism in your inventory");
+            }
+            if (item != null) {
+                if (player.getCurrentRoom().getRoomID() != Antikythera.getPuzzleRoomID()) {
+                    Antikythera.getPuzzleDescription();
+                } else {
+                    item.setItemType("Treasure");
+                    Antikythera.setPuzzleSolvedStatus(true);
+                    item = null;
+                }
+            }
+
+        }
+        for (int i = 0; i < player.getplayerInventory().size(); i++) {
+            if (player.getplayerInventory().get(i).getItemName().contains(playerInput) &&
+                    !player.getplayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                System.out.println("This item cannot be used");
+            }
+            if (!player.getplayerInventory().get(i).getItemName().contains(playerInput)){
+                System.out.println("Invalid Item");
+            }
+        }
     }
     }
 
