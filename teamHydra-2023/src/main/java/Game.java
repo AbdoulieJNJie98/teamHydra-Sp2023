@@ -41,9 +41,10 @@ public class Game implements Serializable {
             } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                 game.loadSaveFile(map, player, exhibit.getItemsInExhibit());
                 validMenuOptionEntered = true;
-//            }else if (menuOptions.equalsIgnoreCase("Exhibit")) {
-//                game.viewExhibit();
-//                validMenuOptionEntered = true;
+            }else if (menuOptions.equalsIgnoreCase("Exhibit")) {
+                exhibit.displayExhibit();
+                exhibit.exhibitCommands(menuOptions);
+                validMenuOptionEntered = true;
             }
 
         }
