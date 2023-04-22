@@ -19,6 +19,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
     private String playerName;
 
+    public   int maximumHP = 100;
     private int healthPoints = 100;
 
     private int attackStat = 10;
@@ -48,6 +49,9 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     // getter used to access room methods
     public Rooms getCurrentRoom() {
         return currentRoom;
+    }
+    public Rooms getPreviousRoom() {
+        return previousRoom;
     }
 
 

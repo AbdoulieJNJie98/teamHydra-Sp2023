@@ -210,4 +210,213 @@ public class Game implements Serializable {
         player.setName(playerName);
     }
 
+    public void combat(){
+
+        while (!player.getCurrentRoom().getMonstersInRoom().isEmpty()) {
+            Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
+            System.out.println("You have entered combat with " + currentMonster.getName());
+
+            System.out.println("What will you do? Your options are Attack, Flee, Repair, Check, and Status ");
+            String playerInput = input.nextLine();
+            if (playerInput.equalsIgnoreCase("attack")){
+                int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                if (damage > 0) {
+                    currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                    System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                    System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                } else {
+                    System.out.println("Your attack did no damage to the " + currentMonster.getName());
+                }
+            }
+            else if (playerInput.equalsIgnoreCase("Torpedo")) {
+                game.useItemInCombat(playerInput, currentMonster);
+
+            }
+            else if (playerInput.equalsIgnoreCase("Super Torpedo")){
+                game.useItemInCombat(playerInput, currentMonster);
+            }
+
+            else if (playerInput.equalsIgnoreCase("flee")) {
+                System.out.println("You have successfully fled!");
+                player.getCurrentRoom().setRoomID(player.getPreviousRoom().getRoomID());
+              //  player.setCurrentRoom(player.getPreviousRoom());
+            }
+            else if (playerInput.equalsIgnoreCase("repair")) {
+                game.useItemInCombat(playerInput, null);
+            }
+            else if (playerInput.equalsIgnoreCase("check")) {
+                System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
+                System.out.println(currentMonster.getName() + "'s Attack Stat: " + currentMonster.getAttackStat());
+                System.out.println(currentMonster.getName() + "'s Defense Stat: " + currentMonster.getDefenseStat());
+            }
+            else if (playerInput.equalsIgnoreCase("status")) {
+                System.out.println("Your HP: " + player.getHealthPoints());
+                System.out.println("Your Attack Stat: " + player.getAttackStat());
+                System.out.println("Your Defense Stat: " + player.getDefenseStat());
+            }
+            else {
+                System.out.println("Invalid Command");
+            }
+
+            // Monster attacks after player's turn
+            if (currentMonster.getHealthPoints() > 0) {
+                int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
+                if (monsterDamage > 0) {
+                    player.setHealthPoints(player.getHealthPoints() - monsterDamage);
+                    System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
+                } else {
+                    System.out.println(currentMonster.getName() + "'s attack did no damage to you!");
+                }
+            }
+
+            if (currentMonster.getHealthPoints()<= 0) {
+                currentMonster.setMonsterID(-1);
+                player.getCurrentRoom().getMonstersInRoom().remove(0);
+          //      player.getCurrentRoom().setMonstersInRoom(-1);
+                break;
+            }
+            if (player.getHealthPoints()<=0) {
+                System.out.println("Your HP as reached 0 ");
+                System.exit(0);
+
+            }
+        }
+
+    }
+    public void useItemInCombat(String playerInput, Monster currentMonster) {
+        // item variable used to hold the item the user is attempting to use
+        Items item = null;
+        // for loop used to determine if the player has the item they're attempting to use in their inventory
+        if(playerInput.equalsIgnoreCase("Torpedo")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null) {
+                player.getPlayerInventory().remove(item);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-30);
+                System.out.println("You fire a torpedo at the enemy");
+            }
+
+            if (item == null){
+                System.out.println("You have no torpedoes!");
+            }
+        }
+        if(playerInput.equalsIgnoreCase("Super Torpedo")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null) {
+                player.getPlayerInventory().remove(item);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-60);
+                System.out.println("You fire a super torpedo at the enemy");
+            }
+
+            if (item == null){
+                System.out.println("You have no super torpedoes!");
+            }
+        }
+        if(playerInput.equalsIgnoreCase("Repair")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item == null){
+                System.out.println("You have no repair kits!");
+            }
+            if (item != null) {
+                if (player.getHealthPoints() < player.maximumHP) {
+                    player.getPlayerInventory().remove(item);
+                    player.setHealthPoints(player.getHealthPoints() + (player.maximumHP - player.getHealthPoints()));
+                    System.out.println("You used a repair kit");
+                }
+                else{
+                    System.out.println("You are already max HP!");
+                    item = null;
+                }
+            }
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    System.out.println("This item cannot be used");
+                }
+                if (!player.getPlayerInventory().get(i).getItemName().contains(playerInput)){
+                    System.out.println("Invalid Item");
+                }
+            }
+
+
+        }
+
+
+    }
+    public void useItemOutsideOfCombat(String playerInput) {
+        // item variable used to hold the item the user is attempting to use
+        Items item = null;
+        System.out.println("What item would you like to use?");
+        playerInput = input.nextLine();
+        // for loop used to determine if the player has the item they're attempting to use in their inventory
+        if (playerInput.equalsIgnoreCase("Repair Kit")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item == null) {
+                System.out.println("You have no repair kits!");
+            }
+            if (item != null) {
+                if (player.getHealthPoints() < player.maximumHP) {
+                    player.getPlayerInventory().remove(item);
+                    player.setHealthPoints(player.getHealthPoints() + (player.maximumHP - player.getHealthPoints()));
+                    System.out.println("You used a repair kit");
+                } else {
+                    System.out.println("You are already max HP!");
+                    item = null;
+                }
+            }
+
+        }
+        if (playerInput.equalsIgnoreCase("Antikythera mechanism")) {
+            Puzzles Antikythera = player.getCurrentRoom().getPuzzlesInRoom().get(0);
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item == null) {
+                System.out.println("You do not have the Antikythera mechanism in your inventory");
+            }
+            if (item != null) {
+                if (player.getCurrentRoom().getRoomID() != Antikythera.getPuzzleID()) {
+                    Antikythera.getPuzzleDescription();
+                } else {
+                    item.setItemType("Treasure");
+                    Antikythera.setPuzzleSolvedStatus(true);
+                    item = null;
+                }
+            }
+
+        }
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                    !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                System.out.println("This item cannot be used");
+            }
+            if (!player.getPlayerInventory().get(i).getItemName().contains(playerInput)){
+                System.out.println("Invalid Item");
+            }
+        }
+    }
 }
+
+
