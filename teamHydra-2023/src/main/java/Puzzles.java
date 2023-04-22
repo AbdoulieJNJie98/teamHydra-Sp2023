@@ -3,47 +3,32 @@ import java.io.Serializable;
 // Author @ Amar
 public class Puzzles implements Serializable {
     private int puzzleID;
-
-    private int puzzleRoomID;
     private String puzzleDescription;
-    private String puzzleInstructions;
-    private String puzzleSolution;
+    private String puzzleHint;
     private boolean puzzleSolvedStatus;
     private String descriptionIfPuzzleIsSolved;
     private String descriptionIfPuzzleIsNotSolved;
+    private String puzzleName;
 
-    public Puzzles(int id, int PRoomID ,String description, String instructions, String solution, String solvedDesc, String unsolvedDesc) {
+    public Puzzles(){};
+
+    public Puzzles(int id, String description, String puzzleHint, boolean puzzleSolvedStatus, String solvedDesc, String unsolvedDesc, String puzzleName) {
         this.puzzleID = id;
-        this.puzzleRoomID = PRoomID;
         this.puzzleDescription = description;
-        this.puzzleInstructions = instructions;
-        this.puzzleSolution = solution;
-        this.puzzleSolvedStatus = false;
+        this.puzzleHint = puzzleHint;
+        this.puzzleSolvedStatus = puzzleSolvedStatus;
         this.descriptionIfPuzzleIsSolved = solvedDesc;
         this.descriptionIfPuzzleIsNotSolved = unsolvedDesc;
+        this.puzzleName = puzzleName;
     }
 
     // getters and setters
-    public int getPuzzleRoomID(){
-        return puzzleRoomID;
-    }
-    public void setPuzzleRoomID(){
-        this.puzzleRoomID = puzzleRoomID;
-    }
-    public String getPuzzleInstructions() {
-        return puzzleInstructions;
-    }
-
-    public void setPuzzleInstructions(String puzzleInstructions) {
-        this.puzzleInstructions = puzzleInstructions;
-    }
-
     public String getPuzzleSolution() {
-        return puzzleSolution;
+        return puzzleHint;
     }
 
     public void setPuzzleSolution(String puzzleSolution) {
-        this.puzzleSolution = puzzleSolution;
+        this.puzzleHint = puzzleSolution;
     }
 
     public int getPuzzleID() {
@@ -83,25 +68,84 @@ public class Puzzles implements Serializable {
     public void setPuzzleDescription(String puzzleDescription){
         this.puzzleDescription = puzzleDescription;
     }
-
-    // method to check if the player's solution is correct
-    public boolean checkSolution(String input) {
-        if (input.equals(this.puzzleSolution)) {
-            this.puzzleSolvedStatus = true;
-            return true;
-        }
-        return false;
+    public String getPuzzleName() {
+        return puzzleName;
     }
 
-    // method to trigger events when the puzzle is solved
-    public void solvePuzzle() {
-        if (this.puzzleSolvedStatus) {
-            System.out.println(this.descriptionIfPuzzleIsSolved);
+    public void setPuzzleName(String puzzleName) {
+        this.puzzleName = puzzleName;
+    }
 
-        }
-        else {
-            System.out.println(this.descriptionIfPuzzleIsNotSolved);
+    public String getPuzzleHint() {
+        return puzzleHint;
+    }
+
+    public void setPuzzleHint(String puzzleHint) {
+        this.puzzleHint = puzzleHint;
+    }
+
+    // method used to remove the puzzle in the current puzzle room the player is in
+    // and allows the player to continue moving south passed the puzzle room.
+    public void resolvePuzzle(Player player){
+        // item variable used to determine if the player has a specific item in their inventory
+        Items item = null;
+        // puzzle variable used to access the puzzle methods in the current room
+        Puzzles puzzles = player.getCurrentRoom().getPuzzlesInRoom().get(0);
+        // for loop used to search through the player's current inventory
+        for(int i = 0; i<player.getPlayerInventory().size(); i++){
+
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade")){
+                item = player.getPlayerInventory().get(i);
+                // if statement that is used to see if the current room's puzzle ID is equal to the corresponding puzzle's ID number
+                // as well as if the player has the item equipped to determine if the room south of the current room will be locked or not
+                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 4 ){
+                    player.getCurrentRoom().setIsSouthRoomLocked(false);
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
+                    // statement used to help with removing the puzzle that has been solved from the game
+                    player.getCurrentRoom().setPuzzleID(-1);
+                    removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+                }
+                else {
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
+                }
+            }
+            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade")){
+                item = player.getPlayerInventory().get(i);
+                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 1 ){
+                    player.getCurrentRoom().setIsSouthRoomLocked(false);
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
+                    player.getCurrentRoom().setPuzzleID(-1);
+                    removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+                }
+                else {
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
+                }
+            }
+            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade")){
+                item = player.getPlayerInventory().get(i);
+                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 2 ){
+                    player.getCurrentRoom().setIsSouthRoomLocked(false);
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
+                    player.getCurrentRoom().setPuzzleID(-1);
+                    removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+                }
+                else {
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
+                }
+            }
+            else{
+                System.out.println("There is no puzzle in this room");
+            }
         }
     }
+
+    //  method used to remove the puzzle from the current room once the puzzle has been solved
+    public void removePuzzleFromRoom(Rooms currentRoom, Puzzles puzzle){
+        // if statement used to check if the currentRoom's puzzleID is equal to -1
+        if(currentRoom.getPuzzleID() == -1){
+            currentRoom.getPuzzlesInRoom().remove(puzzle);
+        }
+    }
+
 }
 

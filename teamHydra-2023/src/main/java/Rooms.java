@@ -26,14 +26,9 @@ public class Rooms implements Serializable {
     private ArrayList<Puzzles> puzzlesInRoom;
 
     private  ArrayList <Monster> monstersInRoom;
+    private  Boolean isSouthRoomLocked;
 
     private Map gameMap = new Map();
-
-
-    public Items getItem() {
-        return item;
-    }
-
 
     private int itemID = 0;
     private int puzzleID = 0;
@@ -45,7 +40,8 @@ public class Rooms implements Serializable {
     }
 
     public Rooms(int roomID, boolean roomVisitedStatus, String roomName,
-                 int northRoomID, int southRoomID, int eastRoomID, int westRoomID, String roomDescription, int itemID, int puzzleID, int monsterID) {
+                 int northRoomID, int southRoomID, int eastRoomID, int westRoomID, String roomDescription, int itemID,
+                 int puzzleID, int monsterID, Boolean isSouthRoomLocked) {
         this.roomID = roomID;
         this.roomVisited = roomVisitedStatus;
         this.roomName = roomName;
@@ -57,6 +53,7 @@ public class Rooms implements Serializable {
         this.itemID = itemID;
         this.puzzleID = puzzleID;
         this.monsterID = monsterID;
+        this.isSouthRoomLocked = isSouthRoomLocked;
         roomInventory = new ArrayList<>();
         puzzlesInRoom = new ArrayList<>();
         monstersInRoom = new ArrayList<>();
@@ -168,6 +165,15 @@ public class Rooms implements Serializable {
     }
 
 
+    public Boolean getIsSouthRoomLocked() {
+        return isSouthRoomLocked;
+    }
+
+    public void setIsSouthRoomLocked(Boolean southRoomLocked) {
+        isSouthRoomLocked = southRoomLocked;
+    }
+
+
 
 
     // method used to initialize which item will be in each room by default based on the room's itemID
@@ -188,7 +194,7 @@ public class Rooms implements Serializable {
         // for loop used to match the puzzleID found within the room text file, with the puzzleID found within the puzzle text file
         for (int i = 0; i < gameMap.arrayListOfPuzzles.size(); i++) {
             // if statement use to match the itemIDs with one another
-            if (puzzleID == gameMap.arrayListOfPuzzles.get(i).getPuzzleRoomID()) {
+            if (puzzleID == gameMap.arrayListOfPuzzles.get(i).getPuzzleID()) {
                 // new Puzzles variable used to set the default item value in the room
                 Puzzles puzzle = gameMap.arrayListOfPuzzles.get(i);
                 puzzlesInRoom.add(puzzle);
@@ -405,9 +411,9 @@ public class Rooms implements Serializable {
         for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
             System.out.println("Items: " + currentRoom.getRoomInventory().get(i).getItemName() + " " );
         }
-//        for(int i = 0; i < currentRoom.getPuzzlesInRoom().size(); i++ ){
-//            System.out.println("\nPuzzles: " + currentRoom.getPuzzlesInRoom().get(i).getPuzzleName() + " " );
-//        }
+        for(int i = 0; i < currentRoom.getPuzzlesInRoom().size(); i++ ){
+            System.out.println("\nPuzzles: " + currentRoom.getPuzzlesInRoom().get(i).getPuzzleName() + " " );
+        }
         for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
             System.out.println("\nMonsters: " + currentRoom.getMonstersInRoom().get(i).getName() + " " );
         }
@@ -421,4 +427,7 @@ public class Rooms implements Serializable {
     public String toString() {
         return  roomName;
     }
+
+
 }
+
