@@ -1,0 +1,17 @@
+public Object[] loadSaveFile(){
+    Object[] result = new Object[3];
+    System.out.println("Please enter save file name");
+    String saveFileName = input.nextLine();
+    try (ObjectInputStream in = new ObjectInputStream(new FileInputStream(saveFileName))) {
+        Player player = (Player) in.readObject();
+        Map gameMap = (Map) in.readObject();
+        ArrayList<Items> itemsInExhibit = (ArrayList<Items>) in.readObject();
+        System.out.println("Game has been successfully loaded from " + saveFileName);
+        result[0] = gameMap;
+        result[1] = player;
+        result[2] = itemsInExhibit;
+    } catch (IOException | ClassNotFoundException e){
+        System.out.println("An error occured when trying to load save "+ e.getMessage());
+    }
+    return result;
+}
