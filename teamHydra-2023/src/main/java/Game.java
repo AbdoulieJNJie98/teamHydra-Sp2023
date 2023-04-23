@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -39,7 +39,10 @@ public class Game implements Serializable {
                 game.createNewGame();
                 validMenuOptionEntered = true;
             } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                game.loadSaveFile(map, player, exhibit.getItemsInExhibit());
+                Object[] loadedObjects = game.loadSaveFile();
+                map = (Map) loadedObjects[0];
+                player = (Player) loadedObjects[1];
+                exhibit.setItemsInExhibit((ArrayList<Items>) loadedObjects[2]);
                 validMenuOptionEntered = true;
             }else if (menuOptions.equalsIgnoreCase("Exhibit")) {
                 exhibit.displayExhibit();
@@ -165,10 +168,42 @@ public class Game implements Serializable {
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit){
         System.out.println("Please enter the name of your save");
         String saveGameFile = input.nextLine();
+        try {
+            FileOutputStream fileOut = new FileOutputStream(saveGameFile);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gameMap);
+            out.writeObject(player);
+            out.writeObject(itemsInExhibit);
+            out.close();
+            fileOut.close();
+            System.out.println("Game saved to " + saveGameFile);
+        } catch (IOException e){
+            System.out.println("An error occured when trying to save" + e.getMessage());
+        }
     }
 
-    public void loadSaveFile(Map gameMap, Player player, ArrayList <Items>itemsInExhibit){
-
+    public Object[] loadSaveFile(){
+        Object[] result = new Object[3];
+        System.out.println("Please enter save file name");
+        String saveFileName = input.nextLine();
+        try{
+            FileInputStream fileIn = new FileInputStream(saveFileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            Player player = (Player) in.readObject();
+            Map gameMap = (Map) in.readObject();
+            ArrayList<Items> itemsInExhibit = (ArrayList<Items>) in.readObject();
+            in.close();
+            fileIn.close();
+            System.out.println("Game has been successfully loaded from " + saveFileName);
+            result[0] = gameMap;
+            result[1] = player;
+            result[2] = itemsInExhibit;
+        }catch(IOException e){
+            System.out.println("An error occured when trying to load save "+ e.getMessage());
+        }catch(ClassNotFoundException e){
+            System.out.println("An error occured: " + e.getMessage());
+        }
+        return result;
     }
 
     public void gameOver(){

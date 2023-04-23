@@ -55,4 +55,8 @@ public class Exhibit implements Serializable {
     public ArrayList<Items> getItemsInExhibit() {
         return itemsInExhibit;
     }
+
+    public void setItemsInExhibit(ArrayList<Items> itemsInExhibit) {
+        this.itemsInExhibit = itemsInExhibit;
+    }
 }
