@@ -16,11 +16,10 @@ import java.util.HashMap;
 
 
 public class Map  implements Serializable {
-    // String used to represent file name
+     //String used to represent file name
     public String roomsFilePath = "rooms.txt";
     public String itemsFilePath = "Items.txt";
     public String puzzlesFilePath = "Puzzle.txt";
-
     public String monsterFilePath = "monster.txt";
 
     // hash map used to store and retrieve the elements read from file
@@ -38,7 +37,11 @@ public class Map  implements Serializable {
     public  ArrayList<Monster>arrayListOfMonsters = new ArrayList<>();
     public Map() {
         readFiles();
-    } // method used to read the room files
+    }
+    // specialized constructor for when reading in rooms that allows a new map instance to be created that does not read in the room text file
+    // but will be able to access the data associated with the map instance that stores the data pulled from the room text file
+    public Map(ArrayList linkArrayList){
+    }
 
 
     // method used to read file
@@ -50,8 +53,8 @@ public class Map  implements Serializable {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(roomsFilePath)); // buffer reader used to read the file
             while ((line = bufferedReader.readLine()) != null) { // while loop that reads until the end of the file
 
-                String[] parts = line.split("~", 13); // String array used to each element in the given file individually
-                if (parts.length >= 13) {
+                String[] parts = line.split("~", 12); // String array used to each element in the given file individually
+                if (parts.length >= 12) {
                     // temp room object used to hold information collected from current iteration of loop
                     Rooms r = new Rooms(Integer.parseInt(parts[0]), Boolean.parseBoolean(parts[1]), parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]),
                             Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7], Integer.parseInt(parts[8]), Integer.parseInt(parts[9]),
@@ -75,8 +78,6 @@ public class Map  implements Serializable {
 
                 String[] parts = line.split("~", 7); // String array used to each element in the given file individually
                 if (parts.length >= 7) {
-                    // call to a function that will randomize the itemRoomID if its equal to 0
-                    parts[5] = randomIntegerGenerator(parts[5]);
                     // temp item object used to hold information collected from current iteration of loop
                     Items i = new Items(Integer.parseInt(parts[0]), parts[1], parts[2], parts[4], Integer.parseInt(parts[5]), Boolean.parseBoolean(parts[6]));
                     hashMapItems.put(i.getItemID(), i); // used to add the values stored in the temp items to the hash map
@@ -146,7 +147,7 @@ public class Map  implements Serializable {
         int max = 20;
 
         // if statement used to determine what happens if convertItemRoomID = 0
-        if(convertItemRoomID == 0){
+        if(convertItemRoomID == 14 || convertItemRoomID == 15 || convertItemRoomID == 16){
             // the following statement sets the convertItemRoomID to a randomized int value between 1 and 20
             convertItemRoomID = (int) (Math.random() * (max - min)) + min;
             // set the itemRoomID equal to the string value of the convertItemRoomID

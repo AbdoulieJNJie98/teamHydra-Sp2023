@@ -20,6 +20,16 @@ public class Game implements Serializable {
 
     private Player player = null;
 
+    // booleans used to signify which game state the player is currently in
+    private boolean exploreState;
+    private boolean combatState;
+    private boolean exhibitState;
+    private boolean mainMenuState;
+
+
+
+    // default constructor
+    public Game(){}
 
 
     public static void main(String[] args) {
@@ -43,21 +53,15 @@ public class Game implements Serializable {
                 validMenuOptionEntered = true;
             }else if (menuOptions.equalsIgnoreCase("Exhibit")) {
                 exhibit.displayExhibit();
-                exhibit.exhibitCommands(menuOptions);
+               // exhibit.exhibitCommands(menuOptions);
                 validMenuOptionEntered = true;
             }
-
         }
 
     }
     private void startGame() {
         String playerInput = input.nextLine();
         String[] playerInputParts = playerInput.split(" ");
-
-        // boolean used to determine if the player is currently fighting a monster
-        // this variable will be used to differentiate between when the player uses the
-        // use command in and outside of combat
-        Boolean combatState = false;
 
 
         Boolean playing = true; // boolean used to dictate when the game will continue or end.
@@ -157,6 +161,7 @@ public class Game implements Serializable {
 
     public void createNewGame(){
         Map gameMap = map;
+        map.readFiles();
         Player player = new Player();
         setPlayerName(player);
         Exhibit exhibit = new Exhibit();
