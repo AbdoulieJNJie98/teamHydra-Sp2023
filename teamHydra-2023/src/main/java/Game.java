@@ -7,6 +7,7 @@ The Game class is a class that starts the game itself, and accepts the player's 
 switch statement that is inside a while loop that verifies the player's input so that they may navigate through the map of the game
 author @Abdoulie
  */
+//Benjamin Caron (Serializable suggestion)
 public class Game implements Serializable {
     private Map map = new Map();
     private Scanner input = new Scanner(System.in);
@@ -212,6 +213,7 @@ public class Game implements Serializable {
         }
     }
 
+    //Benjamin Caron
     public void createNewGame(){
         Map gameMap = map;
         map.readFiles();
@@ -231,6 +233,7 @@ public class Game implements Serializable {
         saveGame(gameMap, player, exhibit.getItemsInExhibit());
     }
 
+    //Benjamin Caron
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit){
         System.out.println("Please enter the name of your save");
         String saveGameFile = input.nextLine();
@@ -462,6 +465,8 @@ public class Game implements Serializable {
 
 
     }
+
+    //Benjamin Caron
     public void useItemOutsideOfCombat(String playerInput) {
         // item variable used to hold the item the user is attempting to use
         Items item = null;
