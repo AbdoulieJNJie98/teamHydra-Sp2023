@@ -26,6 +26,7 @@ public class Game implements Serializable {
     private boolean puzzleState;
     private boolean exhibitState;
     private boolean mainMenuBeforeInputState;
+    private boolean quitGameState;
     private boolean mainMenuAfterInputState;
 
 
