@@ -1,4 +1,4 @@
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -20,49 +20,103 @@ public class Game implements Serializable {
 
     private Player player = null;
 
+    // booleans used to signify which game state the player is currently in
+    private boolean exploreState;
+    private boolean combatState;
+    private boolean puzzleState;
+    private boolean exhibitState;
+    private boolean mainMenuBeforeInputState;
+    private boolean quitGameState;
+    private boolean mainMenuAfterInputState;
+
+
+
+    // default constructor
+    public Game(){
+
+    }
 
 
     public static void main(String[] args) {
-        game.mainMenu(); // call to the start game method that will initialize a run of the game
+        game.firstMainMenu(); // call to the start game method that will initialize a run of the game
     }
 
-    public void mainMenu(){
-        display.mainMenu();
+    public void firstMainMenu(){
+        display.mainMenuBeforeInput();
+        // statement used to activate current game state
+        mainMenuBeforeInputState = true;
         String menuOptions = input.nextLine();
-        String [] menuOptionsPart = menuOptions.split("");
-        // boolean used to dictate if the user will create new game, load a save game file, or enter the exhibit
-        boolean validMenuOptionEntered = false;
-
-        // while loop that contains a decision statements used to determine if the user will create a new game that
-        while (!validMenuOptionEntered){
-            if(menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")){
+        String [] menuOptionsPart = menuOptions.split(" ");
+        // if statement used to catch invalid inputs
+        // while loop that contains decision statements used to determine if the user will create a new game, or load a game
+        while((mainMenuBeforeInputState)) {
+            if (menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                 game.createNewGame();
-                validMenuOptionEntered = true;
-            } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                game.loadSaveFile(map, player, exhibit.getItemsInExhibit());
-                validMenuOptionEntered = true;
-            }else if (menuOptions.equalsIgnoreCase("Exhibit")) {
-                exhibit.displayExhibit();
-                exhibit.exhibitCommands(menuOptions);
-                validMenuOptionEntered = true;
+                mainMenuBeforeInputState = false;
+                mainMenuAfterInputState = true;
+            } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Save")) {
+                game.loadSaveFile();
+                mainMenuBeforeInputState = false;
+                mainMenuAfterInputState = true;
+            }
+            else if (menuOptionsPart[0].equalsIgnoreCase("Quit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+              display.exitGamePromptForNoPart2();
+              System.exit(0);
+            }
+            else {
+                display.invalidInputForMenu();
+                menuOptions = input.nextLine();
+                menuOptionsPart = menuOptions.split(" ");
+
             }
 
         }
 
+
+    }
+
+    public  void  secondMainMenu(){
+        // boolean used to dictate if the user enters a valid input
+        display.mainMenuAfterInput();
+        String menuOptions = input.nextLine();
+        String [] menuOptionsPart = menuOptions.split(" ");
+        // while loop that contains decision statements used to determine if the user will create a new game, or load a game
+        while((mainMenuAfterInputState)) {
+            if (menuOptionsPart[0].equalsIgnoreCase("Start") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                mainMenuAfterInputState = false;
+                exploreState = true;
+                game.startGame();
+
+            } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")){
+                mainMenuAfterInputState = false;
+                exhibitState = true;
+                game.startExhibit();
+            }
+            else if (menuOptionsPart[0].equalsIgnoreCase("Quit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                display.exitGamePromptForNoPart2();
+                System.exit(0);
+            }
+
+            else {
+                display.invalidInputForMenu();
+                menuOptions = input.nextLine();
+                menuOptionsPart = menuOptions.split(" ");
+            }
+        }
+
     }
     private void startGame() {
+
+        player = new Player();
+
+        System.out.println("Welcome to the depths of the sea!\n"+
+                "To start explore, please enter the direction you would like to go!");
+        System.out.println("Your currently location: "+ player.getCurrentRoom().getRoomName());
+
         String playerInput = input.nextLine();
         String[] playerInputParts = playerInput.split(" ");
 
-        // boolean used to determine if the player is currently fighting a monster
-        // this variable will be used to differentiate between when the player uses the
-        // use command in and outside of combat
-        Boolean combatState = false;
-
-
-        Boolean playing = true; // boolean used to dictate when the game will continue or end.
-
-        while (playing) { // while loop that continues the game as long the boolean variable "playing" is true
+        while (exploreState) { // while loop that continues the game as long the boolean variable "playing" is true
 
             if (playerInputParts[0].equalsIgnoreCase("help")) {
                 display.displayCommands();
@@ -70,14 +124,13 @@ public class Game implements Serializable {
                     || playerInputParts[0].equalsIgnoreCase("south") || playerInputParts[0].equalsIgnoreCase("s")
                     || playerInputParts[0].equalsIgnoreCase("east") || playerInputParts[0].equalsIgnoreCase("e")
                     || playerInputParts[0].equalsIgnoreCase("west") || playerInputParts[0].equalsIgnoreCase("w")) {
-                playerInput = game.getWord(playerInputParts);
                 player.move(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("quit")) {
                 quitGame(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("pickup ") && playerInputParts.length > 1) {
+            } else if (playerInputParts[0].equalsIgnoreCase("pickup") && playerInputParts.length > 1) {
                 playerInput = game.getWord(playerInputParts);
                 player.pickUpItem(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("drop ") && playerInputParts.length > 1) {
+            } else if (playerInputParts[0].equalsIgnoreCase("drop") && playerInputParts.length > 1) {
                 playerInput = game.getWord(playerInputParts);
                 player.dropItem(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("inspect ") && playerInputParts.length > 1) {
@@ -88,22 +141,26 @@ public class Game implements Serializable {
             } else if (playerInputParts[0].equalsIgnoreCase("inventory")) {
                 player.getCurrentInventory();
             }
-            else if (playerInputParts[0].equalsIgnoreCase("archive ") && playerInputParts.length > 1) {
+            else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
                 playerInput = game.getWord(playerInputParts);
                 player.archive(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                 player.sonar();
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Start"))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
-                game.startPuzzle(player, playerInput, playerInputParts);
+            else if ((playerInputParts[0].equalsIgnoreCase("Start "))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
+                exploreState = false;
+                puzzleState = true;
+                game.startPuzzle(player);
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Equip "))&& playerInputParts.length > 1) {
+            else if ((playerInputParts[0].equalsIgnoreCase("Equip"))&& playerInputParts.length > 1) {
                 playerInput = game.getWord(playerInputParts);
                 player.equippedItem(playerInput);
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Fight ") && playerInputParts.length > 1)) {
+            else if ((playerInputParts[0].equalsIgnoreCase("Fight") && playerInputParts.length > 1)) {
                 playerInput = game.getWord(playerInputParts);
-                //game.startCombat(playerInput);
+                exploreState = false;
+                combatState = true;
+                //game.startCombat();
             }
             else if ((playerInputParts[0].equalsIgnoreCase("status"))){
                 player.getStatusForPlayer(player);
@@ -157,25 +214,72 @@ public class Game implements Serializable {
 
     public void createNewGame(){
         Map gameMap = map;
+        map.readFiles();
+        Exhibit exhibit = new Exhibit();
         Player player = new Player();
         setPlayerName(player);
-        Exhibit exhibit = new Exhibit();
+        display.welcomeTextPart1();
+        // if statement to make sure player name is not null
+        if(player.getName() != null){
+            display.welcomeTextPart2(player);
+        }
+        else {
+            System.out.println("Sorry I didn't catch that, could you tell me your name again?");
+
+        }
+
         saveGame(gameMap, player, exhibit.getItemsInExhibit());
     }
+
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit){
         System.out.println("Please enter the name of your save");
         String saveGameFile = input.nextLine();
+        try {
+            FileOutputStream fileOut = new FileOutputStream(saveGameFile);
+            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            out.writeObject(gameMap);
+            out.writeObject(player);
+            out.writeObject(itemsInExhibit);
+            out.close();
+            fileOut.close();
+            System.out.println("Game saved to " + saveGameFile);
+        } catch (IOException e){
+            System.out.println("An error occured when trying to save" + e.getMessage());
+        }
     }
 
-    public void loadSaveFile(Map gameMap, Player player, ArrayList <Items>itemsInExhibit){
-
+    public Object[] loadSaveFile(){
+        Object[] result = new Object[3];
+        System.out.println("Please enter save file name");
+        String saveFileName = input.nextLine();
+        try{
+            FileInputStream fileIn = new FileInputStream(saveFileName);
+            ObjectInputStream in = new ObjectInputStream(fileIn);
+            Player player = (Player) in.readObject();
+            Map gameMap = (Map) in.readObject();
+            ArrayList<Items> itemsInExhibit = (ArrayList<Items>) in.readObject();
+            in.close();
+            fileIn.close();
+            System.out.println("Game has been successfully loaded from " + saveFileName);
+            result[0] = gameMap;
+            result[1] = player;
+            result[2] = itemsInExhibit;
+        }catch(IOException e){
+            System.out.println("An error occured when trying to load save "+ e.getMessage());
+        }catch(ClassNotFoundException e){
+            System.out.println("An error occured: " + e.getMessage());
+        }
+        return result;
     }
+
 
     public void gameOver(){
 
     }
     // method used to activate puzzle state and will allow the player to access the current room's puzzle aspect
-    public void startPuzzle(Player player, String playerInput,String [] playerInputParts){
+    public void startPuzzle(Player player){
+        String playerInput = input.nextLine();
+        String[] playerInputParts = playerInput.split(" ");
         // Puzzles variable used to make sure the puzzle name the player entered is valid
         Puzzles puzzle = new Puzzles();
         // for loop used to determine if the puzzleName is in the current room, and if it is,
@@ -418,6 +522,36 @@ public class Game implements Serializable {
             }
         }
     }
+        public void startExhibit() {
+        exhibit.displayExhibitHelp();
+        exhibit.displayExhibit();
+        Items item = null;
+        String exhibitMenuInput = input.nextLine();
+        String[] fullInput = exhibitMenuInput.split(" ");
+        // while loop that keeps players in the exhibit unless
+        while (exhibitState)
+        if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
+            exhibitMenuInput = getWord(fullInput);
+            for(int i = 0; i < exhibit.getItemsInExhibit().size(); i++) {
+                if (exhibit.getItemsInExhibit().get(i).getItemName().contains(exhibitMenuInput)) {
+                    item = exhibit.getItemsInExhibit().get(i);
+                    System.out.println(item.getItemDescription() + '\n');
+                }
+            }
+        }
+        else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("Exhibit")) {
+            System.out.println("Returning to main menu...");
+            exhibitState = false;
+            mainMenuAfterInputState = true;
+            secondMainMenu();
+        }
+        else {
+            display.invalidInputForMenu();
+            exhibitMenuInput = input.nextLine();
+            fullInput = exhibitMenuInput.split(" ");
+        }
+    }
+
 }
 
 

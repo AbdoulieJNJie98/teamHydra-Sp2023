@@ -14,28 +14,33 @@ public class Displayer implements Serializable {
     }
 
     // method main menu used to display when the player starts the game
-    public void mainMenu() {
-        System.out.println("Treasures of the Deep");
-        System.out.println("----------------------");
+    public void mainMenuBeforeInput() {
+        System.out.println("Treasures of the Deep!");
         System.out.println("Main menu");
         System.out.println("----------");
         System.out.println("(Please enter one of the following commands)");
-        System.out.println("new game");
-        System.out.println("load save");
-        System.out.println("exhibit");
+        System.out.println("New Game");
+        System.out.println("Load Save");
+        System.out.println("Quit Game");
+    }
 
-        // if statement that is used to determine what to show based on the user's input
-        if (menuInput.equalsIgnoreCase("New Game")) {
+    public void mainMenuAfterInput() {
+        System.out.println("Treasures of the Deep!");
+        System.out.println("Main menu");
+        System.out.println("----------");
+        System.out.println("(Please enter one of the following commands)");
+        System.out.println("Start Game");
+        System.out.println("Exhibit");
+        System.out.println("Quit Game");
+    }
 
+    public void welcomeTextPart1(){
             System.out.println("You are an avid adventurer and accomplished treasure hunter and historian.\n " +
                     "You know how to pilot a submarine and you even own one equipped with a claw for grabbing" +
                     " treasure and deterring wildlife and, though it seems like overkill, torpedo tubes should you want that extra firepower.\n " +
                     "You now fund an expedition into the depths of the ocean to uncover many items of monetary and historical significance.\n" +
                     " You are the one and only Captain…actually, who are you?\n");
         }
-        else if (menuInput.equals("load save")) {
-        }
-    }
 
     public void displayCommands() {
         System.out.println("List of commands:\n" +
@@ -94,12 +99,11 @@ public class Displayer implements Serializable {
                 "{Remember, you can type help to get a list of the commands!}");
     }
 
-    public void invalidInputForMainMenu(){
-        System.out.println("The command you entered is invalid, please try again\n" +
-                "{Remember, you can type help to get a list of the commands!}");
+    public void invalidInputForMenu(){
+        System.out.println("I'm sorry, the command you entered was invalid, please try again");
     }
 
-    public void newGamePart2(Player player){
+    public void welcomeTextPart2(Player player){
 
         System.out.println("Right, Captain " + player.getName() + "\n" +
                 " Anyway, you seek many treasures of both ancient and modern significance and will encounter dangers" +
