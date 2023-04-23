@@ -399,9 +399,6 @@ public class Rooms implements Serializable {
         for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
             System.out.println("\nMonsters: " + currentRoom.getMonstersInRoom().get(i).getName() + " " );
         }
-        for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
-            System.out.println("Items: " + currentRoom.getRoomInventory().get(i).getItemName() + " " );
-        }
     }
 
 
