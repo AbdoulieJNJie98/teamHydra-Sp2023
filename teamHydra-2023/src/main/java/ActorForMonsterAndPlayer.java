@@ -46,5 +46,24 @@ public class ActorForMonsterAndPlayer {
     public String getName() {return name;}
 
     public void setName(String name) {this.name = name;}
+
+    // method used to display the name, attack power, and defense level of either the player
+    public void getStatusForPlayer(Player player){
+        System.out.println("Status:\n" +
+                "Name: " + player.getName() + "\n" +
+                "HP: " + player.getHealthPoints() +
+                "ATK: " + player.getAttackStat() +
+                "DEF: " + player.getDefenseStat());
+    }
+
+    // method used to display the name, attack power, and defense level of either the player
+    public void getStatusForMonster(Monster monster){
+        System.out.println("Status:\n" +
+                "Name: " + monster.getName() + "\n" +
+                "HP: " + monster.getHealthPoints() +
+                "ATK: " + monster.getAttackStat() +
+                "DEF: " + monster.getDefenseStat());
+    }
 }
+
 

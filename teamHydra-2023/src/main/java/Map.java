@@ -19,7 +19,7 @@ public class Map  implements Serializable {
     // String used to represent file name
     public String roomsFilePath = "rooms.txt";
     public String itemsFilePath = "Items.txt";
-    public String puzzlesFilePath = "Puzzles.txt";
+    public String puzzlesFilePath = "Puzzle.txt";
 
     public String monsterFilePath = "monster.txt";
 
@@ -50,11 +50,12 @@ public class Map  implements Serializable {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(roomsFilePath)); // buffer reader used to read the file
             while ((line = bufferedReader.readLine()) != null) { // while loop that reads until the end of the file
 
-                String[] parts = line.split("~", 11); // String array used to each element in the given file individually
-                if (parts.length >= 11) {
+                String[] parts = line.split("~", 13); // String array used to each element in the given file individually
+                if (parts.length >= 13) {
                     // temp room object used to hold information collected from current iteration of loop
                     Rooms r = new Rooms(Integer.parseInt(parts[0]), Boolean.parseBoolean(parts[1]), parts[2], Integer.parseInt(parts[3]), Integer.parseInt(parts[4]),
-                            Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7], Integer.parseInt(parts[8]), Integer.parseInt(parts[9]), Integer.parseInt(parts[10]));
+                            Integer.parseInt(parts[5]), Integer.parseInt(parts[6]), parts[7], Integer.parseInt(parts[8]), Integer.parseInt(parts[9]),
+                            Integer.parseInt(parts[10]), Boolean.parseBoolean(parts[11]));
                     hashMapRooms.put(r.getRoomID(), r); // used to add the values stored in the temp room to the hash map
                     arrayListOfRooms.add(r);
                 }
@@ -72,11 +73,13 @@ public class Map  implements Serializable {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(itemsFilePath)); // buffer reader used to read the file
             while ((line = bufferedReader.readLine()) != null) { // while loop that reads until the end of the file
 
-                String[] parts = line.split("~", 5); // String array used to each element in the given file individually
-                if (parts.length >= 5) {
+                String[] parts = line.split("~", 7); // String array used to each element in the given file individually
+                if (parts.length >= 7) {
+                    // call to a function that will randomize the itemRoomID if its equal to 0
+                    parts[5] = randomIntegerGenerator(parts[5]);
                     // temp item object used to hold information collected from current iteration of loop
-                    Items i = new Items(Integer.parseInt(parts[0]), parts[1], parts[2], Integer.parseInt(parts[3]), parts[4]);
-                    hashMapItems.put(i.getItemRoomID(), i); // used to add the values stored in the temp items to the hash map
+                    Items i = new Items(Integer.parseInt(parts[0]), parts[1], parts[2], parts[4], Integer.parseInt(parts[5]), Boolean.parseBoolean(parts[6]));
+                    hashMapItems.put(i.getItemID(), i); // used to add the values stored in the temp items to the hash map
                     arrayListOfItems.add(i);
 
                 }
@@ -96,9 +99,9 @@ public class Map  implements Serializable {
             while ((line = bufferedReader.readLine()) != null) { // while loop that reads until the end of the file
 
                 String[] parts = line.split("~", 7); // String array used to each element in the given file individually
-                if (parts.length >= 6) {
+                if (parts.length >= 7) {
                     // temp room object used to hold information collected from current iteration of loop
-                    Puzzles p = new Puzzles(Integer.parseInt(parts[0]),Integer.parseInt(parts[1]),parts[2], parts[3], parts[4], parts[5], parts[6]);
+                    Puzzles p = new Puzzles(Integer.parseInt(parts[0]),parts[1], parts[2], Boolean.parseBoolean(parts[3]), parts[4], parts[5], parts[6]);
                     hashMapPuzzles.put(p.getPuzzleID(), p); // used to add the values stored in the temp puzzle to the hash map
                 }
 
@@ -132,5 +135,25 @@ public class Map  implements Serializable {
         }
 
     }
+
+    // method used to generate a randomized integer, convert it to a string, and set the passed string equal to the newly created string
+    public String randomIntegerGenerator(String itemRoomID){
+        // int used to convert the itemRoomID into a string
+        int convertItemRoomID = Integer.parseInt(itemRoomID);
+
+        // ints used to create the min and max range of the randomized int
+        int min = 1;
+        int max = 20;
+
+        // if statement used to determine what happens if convertItemRoomID = 0
+        if(convertItemRoomID == 0){
+            // the following statement sets the convertItemRoomID to a randomized int value between 1 and 20
+            convertItemRoomID = (int) (Math.random() * (max - min)) + min;
+            // set the itemRoomID equal to the string value of the convertItemRoomID
+            itemRoomID = Integer.toString(convertItemRoomID);
+        }
+        return itemRoomID;
+    }
+
 
 }

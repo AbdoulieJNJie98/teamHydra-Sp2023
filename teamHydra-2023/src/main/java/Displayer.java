@@ -6,8 +6,9 @@
 import java.io.Serializable;
 
 public class Displayer implements Serializable {
-    //    private Player player = new Player();
+    //private Player player = new Player();
     String menuInput = "";
+    Player player;
 
     public Displayer() {
     }
@@ -26,13 +27,11 @@ public class Displayer implements Serializable {
         // if statement that is used to determine what to show based on the user's input
         if (menuInput.equalsIgnoreCase("New Game")) {
 
-            System.out.println("Please enter any of the following keys to traverse the world:\n" +
-                    " |north or n|\n |south or s| \n |west or w|\n |east or e| \n" +
-                    "{Type in the command help to get a list of the commands used for the game!}\n" +
-                    "{Type in the command  'exit' or press the x key to exit the game}");
-
-            System.out.println("Welcome to the Sea!");
-
+            System.out.println("You are an avid adventurer and accomplished treasure hunter and historian.\n " +
+                    "You know how to pilot a submarine and you even own one equipped with a claw for grabbing" +
+                    " treasure and deterring wildlife and, though it seems like overkill, torpedo tubes should you want that extra firepower.\n " +
+                    "You now fund an expedition into the depths of the ocean to uncover many items of monetary and historical significance.\n" +
+                    " You are the one and only Captain…actually, who are you?\n");
         }
         else if (menuInput.equals("load save")) {
         }
@@ -41,19 +40,32 @@ public class Displayer implements Serializable {
     public void displayCommands() {
         System.out.println("List of commands:\n" +
                 "|north or n| |south or s| |west or w| |east or e| \n" +
-                "|The commands above are what are needed to move to different rooms in the game|\n" +
+                "|The commands above are what are needed to move to different zones in the game|\n" +
                 "|-----------------------------------------------------|\n" +
-                "|add| |drop| |inventory| |explore| |inspect|\n" +
-                "|-----------------------------------------------------|\n" +
-                "|The add command allows you to add items to your inventory|\n" +
-                "|The drop command allows you to drop items from your inventory|\n" +
-                "|The inventory command will display all the items in your current inventory\n|" +
-                "|The explore command will display the room description and any items in the room\n|" +
-                "|The inspect command will display the designated item's description, as long as it is in your inventory|" +
-                "|-----------------------------------------------------|\n" +
-                "|exit or x|\n" +
-                "|The command above is used to exit the game|" +
-                "|-----------------------------------------------------|");
+                "|pickup| |drop| |equip| |use| |inventory| |inspect area| |sonar| |quit| |archive|\n" +
+                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |quit| \n"+
+                "|-------------------------------------------------------------------------------------|\n" +
+                "|The pickup command allows you to add items to your inventory by entering the command\n" +
+                "followed by the name of the item you wish to add in your inventory. The item must be present in the\n" +
+                "room you are currently in to be added successfully to your inventory|\n" +
+                "|The drop command allows you to remove items from your inventory by entering the command\n" +
+                "followed by the item you wish to remove from your inventory.|\n" +
+                "|The use command allows you to use an item as long as it is in your inventory; once used, the item will be removed\n" +
+                "from your inventory|\n"+
+                "|The inventory command will display all the items currently in your inventory\n|" +
+                "|The inspect area command will display the current room's description, any items, monsters and puzzles in the room|\n" +
+                "|The sonar command will display the room names and monsters of the rooms that are connected to the current room|\n" +
+                "|The inspect command will display the designated item's description, as long as it is in your inventory|\n" +
+                "|The archive command will send the designated item to the exhibit, removing it from your inventory|\n" +
+                "|The start puzzle command will allow you to interact with the designated puzzle in the current room|\n" +
+                "|The get puzzle hint will display the hint associated with the current puzzle you are interacting with|\n" +
+                "|The fight command followed by the name of the monster you wish to fight \n" +
+                " will initiate a combat loop between you and the monster|\n" +
+                "|The status command will display your name, current HP, current attack power, and current defense level|\n"+
+                "|The inspect monster command will display the monster's name, current HP, current attack power, and current defense level|\n"+
+                "|The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with\n"+
+                "|The quit command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\nv" +
+                "|--------------------------------------------------------------------------------------------------------------------|\n" );
     }
 
     public void exitGameFirstPrompt(){
@@ -87,15 +99,18 @@ public class Displayer implements Serializable {
                 "{Remember, you can type help to get a list of the commands!}");
     }
 
-    public void ifRoomHasBeenVisited(){
-        System.out.println("This room seems familiar");
+    public void newGamePart2(Player player){
+
+        System.out.println("Right, Captain " + player.getName() + "\n" +
+                " Anyway, you seek many treasures of both ancient and modern significance and will encounter dangers" +
+                " and conundrums along the way.\n " +
+                "Are you, Captain " + player.getName() +  ", up for this daunting challenge?");
     }
-    public void ifPlayerInventoryIsEmpty(){
-        System.out.println("There is nothing currently in your inventory");
+
+    public void puzzleMenuOptions(){
+        System.out.println("While in the puzzle state, you may do the following: \n" +
+                "Enter the 'get puzzle hint' command to display the current puzzle's hint.\n" +
+                "Enter the 'solve puzzle' command to attempt to resolve the puzzle");
     }
-
-
-
-
 }
 
