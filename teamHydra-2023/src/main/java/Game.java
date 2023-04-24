@@ -18,7 +18,7 @@ public class Game implements Serializable {
 
     private Monster  monster = new Monster();
 
-    private Player player = null;
+    private Player player = new Player();
 
     // booleans used to signify which game state the player is currently in
     private boolean exploreState;
@@ -27,6 +27,7 @@ public class Game implements Serializable {
     private boolean exhibitState;
     private boolean mainMenuBeforeInputState;
     private boolean quitGameState;
+    private boolean gameOverState;
     private boolean mainMenuAfterInputState;
 
 
@@ -51,13 +52,13 @@ public class Game implements Serializable {
         // while loop that contains decision statements used to determine if the user will create a new game, or load a game
         while((mainMenuBeforeInputState)) {
             if (menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                mainMenuBeforeInputState = false;
+                mainMenuAfterInputState = true;
                 game.createNewGame();
-                mainMenuBeforeInputState = false;
-                mainMenuAfterInputState = true;
             } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Save")) {
-                game.loadSaveFile();
                 mainMenuBeforeInputState = false;
                 mainMenuAfterInputState = true;
+                game.loadSaveFile();
             }
             else if (menuOptionsPart[0].equalsIgnoreCase("Quit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
               display.exitGamePromptForNoPart2();
@@ -85,7 +86,7 @@ public class Game implements Serializable {
             if (menuOptionsPart[0].equalsIgnoreCase("Start") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                 mainMenuAfterInputState = false;
                 exploreState = true;
-                game.startGame();
+                game.startGame(player,map, exhibit.getItemsInExhibit());
 
             } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")){
                 mainMenuAfterInputState = false;
@@ -105,18 +106,16 @@ public class Game implements Serializable {
         }
 
     }
-    private void startGame() {
+    private void startGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit) {
 
-        player = new Player();
-
-        System.out.println("Welcome to the depths of the sea!\n"+
+        System.out.println("\nWelcome to the depths of the sea!\n"+
                 "To start explore, please enter the direction you would like to go!");
         System.out.println("Your currently location: "+ player.getCurrentRoom().getRoomName());
 
-        String playerInput = input.nextLine();
-        String[] playerInputParts = playerInput.split(" ");
 
         while (exploreState) { // while loop that continues the game as long the boolean variable "playing" is true
+            String playerInput = input.nextLine();
+            String[] playerInputParts = playerInput.split(" ");
 
             if (playerInputParts[0].equalsIgnoreCase("help")) {
                 display.displayCommands();
@@ -125,8 +124,10 @@ public class Game implements Serializable {
                     || playerInputParts[0].equalsIgnoreCase("east") || playerInputParts[0].equalsIgnoreCase("e")
                     || playerInputParts[0].equalsIgnoreCase("west") || playerInputParts[0].equalsIgnoreCase("w")) {
                 player.move(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("quit")) {
-                quitGame(playerInput);
+            } else if (playerInputParts[0].equalsIgnoreCase("Exit") && playerInputParts[1].equalsIgnoreCase("Game")) {
+                exploreState = false;
+                quitGameState = true;
+                quitGame(playerInput, map, player, exhibit.getItemsInExhibit());
             } else if (playerInputParts[0].equalsIgnoreCase("pickup") && playerInputParts.length > 1) {
                 playerInput = game.getWord(playerInputParts);
                 player.pickUpItem(playerInput);
@@ -147,6 +148,10 @@ public class Game implements Serializable {
             } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                 player.sonar();
             }
+            else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
+                playerInput = game.getWord(playerInputParts);
+                game.useItemOutsideOfCombat(playerInput);
+            }
             else if ((playerInputParts[0].equalsIgnoreCase("Start "))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
                 exploreState = false;
                 puzzleState = true;
@@ -160,13 +165,16 @@ public class Game implements Serializable {
                 playerInput = game.getWord(playerInputParts);
                 exploreState = false;
                 combatState = true;
-                //game.startCombat();
+                combat(playerInput);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("status"))){
                 player.getStatusForPlayer(player);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Save"))&& playerInputParts[1].equalsIgnoreCase("Game")){
                 game.saveGame(map, player, exhibit.getItemsInExhibit());
+            }
+            else {
+                display.invalidInputDuringGame();
             }
         }
     }
@@ -183,56 +191,56 @@ public class Game implements Serializable {
         return word;
     }
 
-    public void quitGame(String playerInput) {
-        display.exitGameFirstPrompt();
-        playerInput = input.nextLine();
-        if (playerInput.equalsIgnoreCase("yes")) {
-            String saveFileName = "";
-            display.exitGamePromptForYes();
-            saveFileName = input.nextLine();
-            display.exitGamePromptForYesPartTwo(saveFileName);
-            System.out.println("Thanks for playing!");
-            System.exit(0);
-        } else if (playerInput.equalsIgnoreCase("no")) {
-            display.exitGamePromptForNoPart1();
+    public void quitGame(String playerInput, Map gameMap, Player player, ArrayList <Items> exhibit) {
+        while(quitGameState) {
+            display.exitGameFirstPrompt();
             playerInput = input.nextLine();
-            // if statement used to send the user back to save game process if they enter no
-            if(playerInput.equalsIgnoreCase("no")){
-                String saveFileName = "";
+            if (playerInput.equalsIgnoreCase("yes")) {
                 display.exitGamePromptForYes();
-                saveFileName = input.nextLine();
-                display.exitGamePromptForYesPartTwo(saveFileName);
+                saveGame(gameMap, player, exhibit);
                 System.out.println("Thanks for playing!");
+                quitGameState = false;
                 System.exit(0);
-            }
-            else if(playerInput.equalsIgnoreCase("yes")) {
-                display.exitGamePromptForNoPart2();
-                System.exit(0);
+            } else if (playerInput.equalsIgnoreCase("no")) {
+                display.exitGamePromptForNoPart1();
+                playerInput = input.nextLine();
+                // if statement used to send the user back to save game process if they enter no
+                if (playerInput.equalsIgnoreCase("no")) {
+                    display.exitGamePromptForYes();
+                    saveGame(gameMap, player, exhibit);
+                    System.out.println("Thanks for playing!");
+                    quitGameState = false;
+                    System.exit(0);
+                } else if (playerInput.equalsIgnoreCase("yes")) {
+                    display.exitGamePromptForNoPart2();
+                    quitGameState = false;
+                    System.exit(0);
+                }
+            } else {
+                display.invalidInputForMenu();
+                playerInput = input.nextLine();
+
+
             }
         }
     }
 
+    // abdoulie
     public void createNewGame(){
         Map gameMap = map;
         map.readFiles();
         Exhibit exhibit = new Exhibit();
         Player player = new Player();
-        setPlayerName(player);
         display.welcomeTextPart1();
-        // if statement to make sure player name is not null
-        if(player.getName() != null){
-            display.welcomeTextPart2(player);
-        }
-        else {
-            System.out.println("Sorry I didn't catch that, could you tell me your name again?");
+        setPlayerName(player);
+        display.welcomeTextPart2(player);
+        exploreState = true;
+        startGame(player, gameMap, exhibit.getItemsInExhibit());
 
-        }
-
-        saveGame(gameMap, player, exhibit.getItemsInExhibit());
     }
 
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit){
-        System.out.println("Please enter the name of your save");
+        System.out.println("Please enter the name of your save file");
         String saveGameFile = input.nextLine();
         try {
             FileOutputStream fileOut = new FileOutputStream(saveGameFile);
@@ -255,8 +263,8 @@ public class Game implements Serializable {
         try{
             FileInputStream fileIn = new FileInputStream(saveFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            Player player = (Player) in.readObject();
             Map gameMap = (Map) in.readObject();
+            Player player = (Player) in.readObject();
             ArrayList<Items> itemsInExhibit = (ArrayList<Items>) in.readObject();
             in.close();
             fileIn.close();
@@ -265,128 +273,153 @@ public class Game implements Serializable {
             result[1] = player;
             result[2] = itemsInExhibit;
         }catch(IOException e){
-            System.out.println("An error occured when trying to load save "+ e.getMessage());
+            System.out.println("An error occurred when trying to load save "+ e.getMessage());
+            firstMainMenu();
         }catch(ClassNotFoundException e){
-            System.out.println("An error occured: " + e.getMessage());
+            System.out.println("An error occurred: " + e.getMessage());
+            firstMainMenu();
         }
+        secondMainMenu();
         return result;
+
+
     }
 
-
+    // method used to handles what happens when the player loses all their HP
     public void gameOver(){
+        display.gameOverMessage();
+        System.exit(0);
 
     }
     // method used to activate puzzle state and will allow the player to access the current room's puzzle aspect
-    public void startPuzzle(Player player){
+    public void startPuzzle(Player player) {
         String playerInput = input.nextLine();
         String[] playerInputParts = playerInput.split(" ");
         // Puzzles variable used to make sure the puzzle name the player entered is valid
         Puzzles puzzle = new Puzzles();
+
         // for loop used to determine if the puzzleName is in the current room, and if it is,
         // it will set puzzle equal to the puzzle in the room
-        for(int i = 0; i < player.getCurrentRoom().getPuzzlesInRoom().size(); i++){
-            if(player.getCurrentRoom().getPuzzlesInRoom().get(i).getPuzzleName().equalsIgnoreCase(playerInput)){
+        for (int i = 0; i < player.getCurrentRoom().getPuzzlesInRoom().size(); i++) {
+            if (player.getCurrentRoom().getPuzzlesInRoom().get(i).getPuzzleName().equalsIgnoreCase(playerInput)) {
                 puzzle = player.getCurrentRoom().getPuzzlesInRoom().get(i);
 
-            }
-            else{
+            } else {
                 System.out.println("The puzzle you attempted to start was not found in this room");
+                puzzleState = false;
+                exploreState = true;
+                startGame(player, map, exhibit.getItemsInExhibit());
             }
         }
-        // the following statement will display the options available when a player successfully starts a puzzle\
-        display.puzzleMenuOptions();
-        System.out.println(puzzle.getPuzzleDescription());
-        playerInput = input.nextLine();
+        // while loop used to keep player in the puzzle state
+        while (puzzleState) {
+            // the following statement will display the options available when a player successfully starts a puzzle\
+            display.puzzleMenuOptions();
+            System.out.println(puzzle.getPuzzleDescription());
+            playerInput = input.nextLine();
 
-        // if else statement used to handel the puzzle menu options
-        if(playerInputParts[0].equalsIgnoreCase("get") && playerInputParts[1].equalsIgnoreCase("puzzle")
-                && playerInputParts[2].equalsIgnoreCase("hint")){
-            System.out.println(puzzle.getPuzzleHint());
-        }
-        else if(playerInputParts[0].equalsIgnoreCase("solve") && playerInputParts[1].equalsIgnoreCase("puzzle")){
-            puzzle.resolvePuzzle(player);
+            // if else statement used to handel the puzzle menu options
+            if (playerInputParts[0].equalsIgnoreCase("Get") && playerInputParts[1].equalsIgnoreCase("Puzzle")
+                    && playerInputParts[2].equalsIgnoreCase("Hint")) {
+                System.out.println(puzzle.getPuzzleHint());
+            } else if (playerInputParts[0].equalsIgnoreCase("Solve") && playerInputParts[1].equalsIgnoreCase("Puzzle")) {
+                puzzle.resolvePuzzle(player);
+                puzzleState = false;
+                exploreState = true;
+                startGame(player, map, exhibit.getItemsInExhibit());
+            }
+            else {
+                display.invalidInputForMenu();
+                playerInput = input.nextLine();
+                playerInputParts = playerInput.split(" ");
+            }
         }
     }
 
     // method used to set the player name when a new game is created
     public void  setPlayerName(Player player ){
-        System.out.println("Please enter your name captain: ");
+        System.out.println("(Please enter your name captain)");
         String playerName = input.nextLine();
         player.setName(playerName);
     }
 
-    public void combat(){
+    public void combat(String monsterName){
+        if(player.getCurrentRoom().getMonstersInRoom().get(0).getName().equalsIgnoreCase(monsterName)) {
 
-        while (!player.getCurrentRoom().getMonstersInRoom().isEmpty()) {
-            Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
-            System.out.println("You have entered combat with " + currentMonster.getName());
+            while (combatState) {
+                Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
+                System.out.println("You have entered combat with " + currentMonster.getName());
 
-            System.out.println("What will you do? Your options are Attack, Flee, Repair, Check, and Status ");
-            String playerInput = input.nextLine();
-            if (playerInput.equalsIgnoreCase("attack")){
-                int damage = player.getAttackStat() - currentMonster.getDefenseStat();
-                if (damage > 0) {
-                    currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
-                    System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
-                    System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                System.out.println("What will you do? Your options are Attack, Flee, Repair, Check, and Status ");
+                String playerInput = input.nextLine();
+                if (playerInput.equalsIgnoreCase("attack")) {
+                    int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                    if (damage > 0) {
+                        currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                        System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                        System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                    } else {
+                        System.out.println("Your attack did no damage to the " + currentMonster.getName());
+                    }
+                } else if (playerInput.equalsIgnoreCase("Torpedo")) {
+                    game.useItemInCombat(playerInput, currentMonster);
+
+                } else if (playerInput.equalsIgnoreCase("Super Torpedo")) {
+                    game.useItemInCombat(playerInput, currentMonster);
+                } else if (playerInput.equalsIgnoreCase("flee")) {
+                    System.out.println("You have successfully fled!");
+                    player.getCurrentRoom().setRoomID(player.getPreviousRoom().getRoomID());
+                    combatState = false;
+                    exploreState = true;
+                    startGame(player, map, exhibit.getItemsInExhibit());
+
+                } else if (playerInput.equalsIgnoreCase("repair")) {
+                    game.useItemInCombat(playerInput, null);
+                } else if (playerInput.equalsIgnoreCase("check")) {
+                    System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
+                    System.out.println(currentMonster.getName() + "'s Attack Stat: " + currentMonster.getAttackStat());
+                    System.out.println(currentMonster.getName() + "'s Defense Stat: " + currentMonster.getDefenseStat());
+                } else if (playerInput.equalsIgnoreCase("status")) {
+                    System.out.println("Your HP: " + player.getHealthPoints());
+                    System.out.println("Your Attack Stat: " + player.getAttackStat());
+                    System.out.println("Your Defense Stat: " + player.getDefenseStat());
                 } else {
-                    System.out.println("Your attack did no damage to the " + currentMonster.getName());
+                    System.out.println("Invalid Command");
                 }
-            }
-            else if (playerInput.equalsIgnoreCase("Torpedo")) {
-                game.useItemInCombat(playerInput, currentMonster);
 
-            }
-            else if (playerInput.equalsIgnoreCase("Super Torpedo")){
-                game.useItemInCombat(playerInput, currentMonster);
-            }
-
-            else if (playerInput.equalsIgnoreCase("flee")) {
-                System.out.println("You have successfully fled!");
-                player.getCurrentRoom().setRoomID(player.getPreviousRoom().getRoomID());
-              //  player.setCurrentRoom(player.getPreviousRoom());
-            }
-            else if (playerInput.equalsIgnoreCase("repair")) {
-                game.useItemInCombat(playerInput, null);
-            }
-            else if (playerInput.equalsIgnoreCase("check")) {
-                System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
-                System.out.println(currentMonster.getName() + "'s Attack Stat: " + currentMonster.getAttackStat());
-                System.out.println(currentMonster.getName() + "'s Defense Stat: " + currentMonster.getDefenseStat());
-            }
-            else if (playerInput.equalsIgnoreCase("status")) {
-                System.out.println("Your HP: " + player.getHealthPoints());
-                System.out.println("Your Attack Stat: " + player.getAttackStat());
-                System.out.println("Your Defense Stat: " + player.getDefenseStat());
-            }
-            else {
-                System.out.println("Invalid Command");
-            }
-
-            // Monster attacks after player's turn
-            if (currentMonster.getHealthPoints() > 0) {
-                int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
-                if (monsterDamage > 0) {
-                    player.setHealthPoints(player.getHealthPoints() - monsterDamage);
-                    System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
-                } else {
-                    System.out.println(currentMonster.getName() + "'s attack did no damage to you!");
+                // Monster attacks after player's turn
+                if (currentMonster.getHealthPoints() > 0) {
+                    int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
+                    if (monsterDamage > 0) {
+                        player.setHealthPoints(player.getHealthPoints() - monsterDamage);
+                        System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
+                    } else {
+                        System.out.println(currentMonster.getName() + "'s attack did no damage to you!");
+                    }
                 }
-            }
 
-            if (currentMonster.getHealthPoints()<= 0) {
-                currentMonster.setMonsterID(-1);
-                player.getCurrentRoom().getMonstersInRoom().remove(0);
-          //      player.getCurrentRoom().setMonstersInRoom(-1);
-                break;
-            }
-            if (player.getHealthPoints()<=0) {
-                System.out.println("Your HP as reached 0 ");
-                System.exit(0);
+                if (currentMonster.getHealthPoints() <= 0) {
+                    currentMonster.setMonsterID(-1);
+                    player.getCurrentRoom().getMonstersInRoom().remove(0);
+                    combatState = false;
+                    exploreState = true;
+                    startGame(player, map, exhibit.getItemsInExhibit());
+                }
+                if (player.getHealthPoints() <= 0) {
+                    System.out.println("Your HP as reached 0 ");
+                    gameOverState = true;
+                    combatState = false;
+                    gameOver();
 
+                }
             }
         }
-
+        else {
+            System.out.println("The monster you attempted to fight is not in this room");
+            combatState = false;
+            exploreState = true;
+            startGame(player,map, exhibit.getItemsInExhibit());
+        }
     }
     public void useItemInCombat(String playerInput, Monster currentMonster) {
         // item variable used to hold the item the user is attempting to use
@@ -459,8 +492,6 @@ public class Game implements Serializable {
 
 
         }
-
-
     }
     public void useItemOutsideOfCombat(String playerInput) {
         // item variable used to hold the item the user is attempting to use

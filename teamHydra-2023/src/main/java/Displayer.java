@@ -33,7 +33,7 @@ public class Displayer implements Serializable {
         System.out.println("Exhibit");
         System.out.println("Quit Game");
     }
-
+    // made by Jason and Amar
     public void welcomeTextPart1(){
             System.out.println("You are an avid adventurer and accomplished treasure hunter and historian.\n " +
                     "You know how to pilot a submarine and you even own one equipped with a claw for grabbing" +
@@ -41,6 +41,14 @@ public class Displayer implements Serializable {
                     "You now fund an expedition into the depths of the ocean to uncover many items of monetary and historical significance.\n" +
                     " You are the one and only Captain…actually, who are you?\n");
         }
+    // made by Jason and Amar
+    public void welcomeTextPart2(Player player){
+
+        System.out.println("Right, Captain " + player.getName() + "\n" +
+                " Anyway, you seek many treasures of both ancient and modern significance and will encounter dangers" +
+                " and conundrums along the way.\n " +
+                "Are you, Captain " + player.getName() +  ", up for this daunting challenge?");
+    }
 
     public void displayCommands() {
         System.out.println("List of commands:\n" +
@@ -48,7 +56,7 @@ public class Displayer implements Serializable {
                 "|The commands above are what are needed to move to different zones in the game|\n" +
                 "|-----------------------------------------------------|\n" +
                 "|pickup| |drop| |equip| |use| |inventory| |inspect area| |sonar| |quit| |archive|\n" +
-                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |quit| \n"+
+                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |exit game| \n"+
                 "|-------------------------------------------------------------------------------------|\n" +
                 "|The pickup command allows you to add items to your inventory by entering the command\n" +
                 "followed by the name of the item you wish to add in your inventory. The item must be present in the\n" +
@@ -69,7 +77,7 @@ public class Displayer implements Serializable {
                 "|The status command will display your name, current HP, current attack power, and current defense level|\n"+
                 "|The inspect monster command will display the monster's name, current HP, current attack power, and current defense level|\n"+
                 "|The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with\n"+
-                "|The quit command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\nv" +
+                "|The quit command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\n" +
                 "|--------------------------------------------------------------------------------------------------------------------|\n" );
     }
 
@@ -103,18 +111,15 @@ public class Displayer implements Serializable {
         System.out.println("I'm sorry, the command you entered was invalid, please try again");
     }
 
-    public void welcomeTextPart2(Player player){
-
-        System.out.println("Right, Captain " + player.getName() + "\n" +
-                " Anyway, you seek many treasures of both ancient and modern significance and will encounter dangers" +
-                " and conundrums along the way.\n " +
-                "Are you, Captain " + player.getName() +  ", up for this daunting challenge?");
-    }
 
     public void puzzleMenuOptions(){
         System.out.println("While in the puzzle state, you may do the following: \n" +
                 "Enter the 'get puzzle hint' command to display the current puzzle's hint.\n" +
-                "Enter the 'solve puzzle' command to attempt to resolve the puzzle");
+                "Enter the 'solve puzzle' command to attempt to resolve the puzzle\n");
+    }
+
+    public void gameOverMessage(){
+        System.out.println("You were lost to the depths of the sea, so long captain...");
     }
 }
 

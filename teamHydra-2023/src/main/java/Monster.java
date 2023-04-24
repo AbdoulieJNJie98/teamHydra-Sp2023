@@ -1,5 +1,7 @@
+import java.io.Serializable;
+
 // Author @ Jason and Abdoulie
-public class Monster extends ActorForMonsterAndPlayer {
+public class Monster extends ActorForMonsterAndPlayer implements Serializable {
     private int monsterID;
 
     private int healthPoints;

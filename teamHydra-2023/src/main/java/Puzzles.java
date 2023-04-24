@@ -104,6 +104,7 @@ public class Puzzles implements Serializable {
                     // statement used to help with removing the puzzle that has been solved from the game
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+
                 }
                 else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
@@ -116,6 +117,7 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+
                 }
                 else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
@@ -128,6 +130,7 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+                   ;
                 }
                 else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());

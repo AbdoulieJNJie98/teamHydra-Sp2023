@@ -34,6 +34,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
     public Player() {
         map = new Map();
+        map.readFiles();
         player = new Player(getName(), getHealthPoints(), getAttackStat(), getDefenseStat());
         currentRoom = map.hashMapRooms.get(1);
     }

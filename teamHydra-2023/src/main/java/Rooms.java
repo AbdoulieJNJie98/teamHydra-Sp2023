@@ -25,7 +25,7 @@ public class Rooms implements Serializable {
     private  int monsterID = 0;
 
     // This variable's purpose is to be used as link to access the data that was pulled from the readFiles method in the map clas
-    private Map gameMap = new Map(linkArrayList);
+    private Map gameMap = new Map();
 
     public Rooms() {
     }
@@ -161,11 +161,11 @@ public class Rooms implements Serializable {
     // method used to initialize which item will be in each room by default based on the room's itemID
     public void setDefaultItemInRoom() {
         // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
-        for (int i = 0; i < gameMap.arrayListOfItems.size(); i++) {
+        for (int i = 0; i < gameMap.getArrayListOfItems().size(); i++) {
             // if statement use to match the itemIDs with one another
-            if (itemID == gameMap.arrayListOfItems.get(i).getItemRoomID()) {
+            if (itemID == gameMap.getArrayListOfItems().get(i).getItemRoomID()) {
                 // new Items variable used to set the default item value in the room
-                Items item = gameMap.arrayListOfItems.get(i);
+                Items item = gameMap.getArrayListOfItems().get(i);
                 roomInventory.add(item);
             }
         }
@@ -174,9 +174,9 @@ public class Rooms implements Serializable {
     // method used to initialize which puzzle will be in each room by default based on the room's puzzleID
     public void setDefaultPuzzleInRoom() {
         // for loop used to match the puzzleID found within the room text file, with the puzzleID found within the puzzle text file
-        for (int i = 0; i < gameMap.arrayListOfPuzzles.size(); i++) {
+        for (int i = 0; i < gameMap.getArrayListOfPuzzles().size(); i++) {
             // if statement use to match the itemIDs with one another
-            if (puzzleID == gameMap.arrayListOfRooms.get(i).getPuzzleID()) {
+            if (puzzleID == gameMap.getArrayListOfPuzzles().get(i).getPuzzleID()) {
                 // new Puzzles variable used to set the default item value in the room
                 Puzzles puzzle = gameMap.arrayListOfPuzzles.get(i);
                 puzzlesInRoom.add(puzzle);
@@ -187,11 +187,11 @@ public class Rooms implements Serializable {
     // method used to initialize which monsters will be in each room by default based on the room's monsterID
     public void setMonstersInRoom() {
         // for loop used to match the monsterID found within the monster  text file, with the monsterID found within the monster text file
-        for (int i = 0; i < gameMap.arrayListOfMonsters.size(); i++) {
+        for (int i = 0; i < gameMap.getArrayListOfMonsters().size(); i++) {
             // if statement use to match the itemIDs with one another
-            if (monsterID == gameMap.arrayListOfMonsters.get(i).getMonsterID()) {
+            if (monsterID == gameMap.getArrayListOfMonsters().get(i).getMonsterID()) {
                 // new Puzzles variable used to set the default item value in the room
-                Monster monster = gameMap.arrayListOfMonsters.get(i);
+                Monster monster = gameMap.getArrayListOfMonsters().get(i);
                 monstersInRoom.add(monster);
             }
         }
@@ -210,48 +210,48 @@ public class Rooms implements Serializable {
                 roomID with the matching roomID found within an array list of rooms. It then will assign the information of
                 the matching roomID numbers to a room variable with a name that matches the desired direction.
                  */
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.northRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    northRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.northRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    northRoom = gameMap.getArrayListOfRooms().get(i);
                     // Will display the name of the room north of the current room
                     System.out.println("North of here: " + northRoom.getRoomName() + "\n");
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("North of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.southRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.southRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    southRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.southRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    southRoom = gameMap.getArrayListOfRooms().get(i);
                     System.out.println("South of here: " + southRoom.getRoomName() + "\n");
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("South of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.eastRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.eastRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    eastRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.eastRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    eastRoom = gameMap.getArrayListOfRooms().get(i);
                     System.out.println("East of here: " + eastRoom.getRoomName() + "\n");
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("East of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.westRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.westRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    westRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.westRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    westRoom = gameMap.getArrayListOfRooms().get(i);
                     System.out.println("West of here: " + westRoom.getRoomName() + "\n");
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("West of here: There is nothing of interest that way  \n");
         }
     }
 
@@ -268,9 +268,9 @@ public class Rooms implements Serializable {
                 roomID with the matching roomID found within an array list of rooms. It then will assign the information of
                 the matching roomID numbers to a room variable with a name that matches the desired direction.
                  */
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.northRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    northRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.northRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    northRoom = gameMap.getArrayListOfRooms().get(i);
 
                     // Will display the name of the room north of the current room
                     System.out.println("North of here: " + northRoom.getRoomName() + "\n");
@@ -294,13 +294,13 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("North of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.southRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.southRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    southRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.southRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    southRoom = gameMap.getArrayListOfRooms().get(i);
 
                     System.out.println("South of here: " + southRoom.getRoomName() + "\n");
 
@@ -319,13 +319,13 @@ public class Rooms implements Serializable {
 
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("South of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.eastRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.eastRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    eastRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.eastRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    eastRoom = gameMap.getArrayListOfRooms().get(i);
 
                     System.out.println("East of here: " + eastRoom.getRoomName() + "\n");
                     System.out.println("Items found in this area: ");
@@ -342,13 +342,13 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("East of here: There is nothing of interest that way  \n");
         }
         if (currentRoom.westRoomID != 0) {
 
-            for (int i = 0; i < gameMap.arrayListOfRooms.size(); i++) {
-                if (currentRoom.westRoomID == gameMap.arrayListOfRooms.get(i).getRoomID()) {
-                    westRoom = gameMap.arrayListOfRooms.get(i);
+            for (int i = 0; i < gameMap.getArrayListOfRooms().size(); i++) {
+                if (currentRoom.westRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
+                    westRoom = gameMap.getArrayListOfRooms().get(i);
 
                     System.out.println("West of here: " + westRoom.getRoomName() + "\n");
                     System.out.println("Items found in this area: ");
@@ -365,7 +365,7 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("There is nothing of interest that way  \n");
+            System.out.println("West of here: There is nothing of interest that way  \n");
         }
     }
 

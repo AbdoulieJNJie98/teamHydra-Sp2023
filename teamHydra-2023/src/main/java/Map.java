@@ -26,21 +26,34 @@ public class Map  implements Serializable {
     public HashMap<Integer, Rooms> hashMapRooms = new HashMap<Integer, Rooms>();
     public HashMap<Integer, Items> hashMapItems = new HashMap<Integer, Items>();
     public HashMap<Integer, Puzzles> hashMapPuzzles = new HashMap<Integer, Puzzles>();
+    public HashMap <Integer, Monster> hashMapMonsters = new HashMap<Integer, Monster>();
 
-    public HashMap <Integer, Monster> hashMapMonsters = new HashMap<>();
+
+    public void setArrayListOfRooms(ArrayList<Rooms> arrayListOfRooms) {
+        this.arrayListOfRooms = arrayListOfRooms;
+    }
+
+    public ArrayList<Monster> getArrayListOfMonsters() {
+        return arrayListOfMonsters;
+    }
+
+    public void setArrayListOfMonsters(ArrayList<Monster> arrayListOfMonsters) {
+        this.arrayListOfMonsters = arrayListOfMonsters;
+    }
 
     // array list of items, rooms, and puzzles used throughout the game
     public ArrayList<Items> arrayListOfItems = new ArrayList<>();
     public ArrayList<Puzzles> arrayListOfPuzzles = new ArrayList<>();
     public ArrayList<Rooms> arrayListOfRooms = new ArrayList<>();
-
     public  ArrayList<Monster>arrayListOfMonsters = new ArrayList<>();
     public Map() {
-        readFiles();
     }
-    // specialized constructor for when reading in rooms that allows a new map instance to be created that does not read in the room text file
-    // but will be able to access the data associated with the map instance that stores the data pulled from the room text file
-    public Map(ArrayList linkArrayList){
+    public Map(ArrayList<Rooms> arrayListOfRooms, ArrayList<Items> arrayListOfItems, ArrayList <Puzzles> arrayListOfPuzzles,
+               ArrayList <Monster> arrayListOfMonsters){
+        this.arrayListOfRooms = arrayListOfRooms;
+        this.arrayListOfItems = arrayListOfItems;
+        this.arrayListOfPuzzles = arrayListOfPuzzles;
+        this.arrayListOfMonsters = arrayListOfMonsters;
     }
 
 
@@ -64,6 +77,7 @@ public class Map  implements Serializable {
                 }
 
             }
+            setArrayListOfRooms(arrayListOfRooms);
             bufferedReader.close();
 
         } catch (IOException ex) {
@@ -86,6 +100,7 @@ public class Map  implements Serializable {
                 }
 
             }
+            setArrayListOfItems(arrayListOfItems);
             bufferedReader.close();
 
         } catch (IOException ex) {
@@ -107,6 +122,7 @@ public class Map  implements Serializable {
                 }
 
             }
+            setArrayListOfPuzzles(arrayListOfPuzzles);
             bufferedReader.close();
 
         } catch (IOException ex) {
@@ -129,12 +145,32 @@ public class Map  implements Serializable {
                 }
 
             }
+            setArrayListOfMonsters(arrayListOfMonsters);
             bufferedReader.close();
 
         } catch (IOException ex) {
             ex.printStackTrace();
         }
 
+    }
+    public ArrayList<Items> getArrayListOfItems() {
+        return arrayListOfItems;
+    }
+
+    public void setArrayListOfItems(ArrayList<Items> arrayListOfItems) {
+        this.arrayListOfItems = arrayListOfItems;
+    }
+
+    public ArrayList<Puzzles> getArrayListOfPuzzles() {
+        return arrayListOfPuzzles;
+    }
+
+    public void setArrayListOfPuzzles(ArrayList<Puzzles> arrayListOfPuzzles) {
+        this.arrayListOfPuzzles = arrayListOfPuzzles;
+    }
+
+    public ArrayList<Rooms> getArrayListOfRooms() {
+        return arrayListOfRooms;
     }
 
     // method used to generate a randomized integer, convert it to a string, and set the passed string equal to the newly created string
@@ -155,6 +191,5 @@ public class Map  implements Serializable {
         }
         return itemRoomID;
     }
-
 
 }
