@@ -140,7 +140,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
     }
     // method used to equipped items
-    //Benjamin Caron
+    //Abdoulie
     public void equippedItem(String itemName){
         // Items variable used to search for an item that is in the player's inventory, and has an equitable item type
         Items item = null;
@@ -194,7 +194,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
 
     // method used to view player's inventory
-    //Benjamin Caron
+    // Abdoulie
     public void getCurrentInventory() {
         if  (playerInventory.isEmpty()) {
             System.out.println("You currently don't have anything in your inventory");
