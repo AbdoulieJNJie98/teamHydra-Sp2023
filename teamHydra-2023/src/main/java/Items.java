@@ -99,10 +99,10 @@ public class Items  implements Serializable {
             if(player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)){
                 item = player.getPlayerInventory().get(i);
                 // for loop used to search the array list of rooms and set the location variable equal to the desired room description
-                for(int j = 0; j < map.arrayListOfRooms.size(); j++ ){
+                for(int j = 0; j < map.getArrayListOfRooms().size(); j++ ){
                     // if statement used to determine the which room name will be displayed
-                    if(item.itemRoomID == map.arrayListOfRooms.get(j).getItemID()){
-                        location = map.arrayListOfRooms.get(j).getRoomDescription();
+                    if(item.itemRoomID == map.getArrayListOfRooms().get(j).getItemID()){
+                        location = map.getArrayListOfRooms().get(j).getRoomDescription();
                     }
 
                 }
@@ -113,6 +113,26 @@ public class Items  implements Serializable {
             }
         }
         return location;
+    }
+
+    // method used to change the player's states based on the item they're attempting to equipped
+    public static void equipItem(Items item, Player player){
+        // if statement used to check if the item name is a certain item
+        if(item.getItemName().equalsIgnoreCase("Claw Upgrade")){
+           player.setAttackStat(player.getAttackStat() + 10);
+        }
+        else if(item.getItemName().equalsIgnoreCase("Drill Upgrade")){
+            player.setAttackStat(player.getAttackStat() + 10);
+        }
+        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 1")){
+            player.setDefenseStat(player.getDefenseStat() + 10);
+        }
+        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 2")){
+            player.setDefenseStat(player.getDefenseStat() + 10);
+
+        }
+        else System.out.println("This item cannot be equipped");
+
     }
 
 }

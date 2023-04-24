@@ -34,7 +34,10 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
 
     public Player() {
         map = new Map();
-        map.readFiles();
+        map.readRoomFile();
+        map.readItemFile();
+        map.readPuzzleFile();
+        map.readMonsterFile();
         player = new Player(getName(), getHealthPoints(), getAttackStat(), getDefenseStat());
         currentRoom = map.hashMapRooms.get(1);
     }
@@ -148,7 +151,9 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         for (Items value : playerInventory) {
             if (value.getItemName().equalsIgnoreCase(itemName) && value.getItemType().equalsIgnoreCase("Equitable")) {
                 item = value;
+                Items.equipItem(item, player);
                 item.setItemStatus(true);
+
             }
             else{
                 System.out.println("The item you attempted to equipped is not the correct type");

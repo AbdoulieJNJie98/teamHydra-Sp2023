@@ -228,7 +228,10 @@ public class Game implements Serializable {
     // abdoulie
     public void createNewGame(){
         Map gameMap = map;
-        map.readFiles();
+        map.readRoomFile();
+        map.readItemFile();
+        map.readPuzzleFile();
+        map.readMonsterFile();
         Exhibit exhibit = new Exhibit();
         Player player = new Player();
         display.welcomeTextPart1();
