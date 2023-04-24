@@ -555,6 +555,7 @@ public class Game implements Serializable {
             }
         }
     }
+    // (Barbara)
         public void startExhibit() {
         exhibit.displayExhibitHelp();
         exhibit.displayExhibit();
