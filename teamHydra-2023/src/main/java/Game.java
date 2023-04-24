@@ -243,16 +243,15 @@ public class Game implements Serializable {
         System.out.println("Please enter the name of your save file");
         String saveGameFile = input.nextLine();
         try {
-            FileOutputStream fileOut = new FileOutputStream(saveGameFile);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveGameFile + ".dat"));
             out.writeObject(gameMap);
             out.writeObject(player);
             out.writeObject(itemsInExhibit);
             out.close();
-            fileOut.close();
+            out.close();
             System.out.println("Game saved to " + saveGameFile);
         } catch (IOException e){
-            System.out.println("An error occured when trying to save" + e.getMessage());
+            System.out.println("An error occured when trying to save " + e.getMessage());
         }
     }
 

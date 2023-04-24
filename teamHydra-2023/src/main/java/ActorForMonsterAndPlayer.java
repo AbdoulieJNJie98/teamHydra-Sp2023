@@ -9,7 +9,6 @@ public class ActorForMonsterAndPlayer {
     private int defenseStat;
 
     public ActorForMonsterAndPlayer(){
-
     }
 
     public ActorForMonsterAndPlayer(String name, int healthPoints, int attackStat, int defenseStat){
