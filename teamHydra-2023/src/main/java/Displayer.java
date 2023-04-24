@@ -5,6 +5,8 @@
  */
 import java.io.Serializable;
 
+// Authors: @Abdoulie, Jason, Amara
+
 public class Displayer implements Serializable {
     //private Player player = new Player();
     String menuInput = "";

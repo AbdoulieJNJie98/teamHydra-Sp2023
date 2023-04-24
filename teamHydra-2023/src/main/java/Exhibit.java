@@ -8,7 +8,7 @@ import java.util.Scanner;
     player inputs the "inspect [item name]" command.
  */
 
-//(Barbara)
+//  Authors: @Abdoulie,  Barbra
 public class Exhibit implements Serializable {
 
     // array list of exhibit items that will be displayed when the user is in the exhibit area

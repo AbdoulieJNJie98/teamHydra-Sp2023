@@ -1,7 +1,6 @@
 /*
-The player class is used to allow the player to traverse the map,
-pickup, drop, equipped and inspect items, as well as explore rooms
-@Abdoulie J NJie
+
+@Abdoulie J NJie, Benjamin, Jason
  */
 
 import java.io.Serializable;

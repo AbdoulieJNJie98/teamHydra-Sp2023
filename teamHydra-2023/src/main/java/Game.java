@@ -3,9 +3,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 /*
-The Game class is a class that starts the game itself, and accepts the player's input with the use of a
-switch statement that is inside a while loop that verifies the player's input so that they may navigate through the map of the game
-author @Abdoulie
+ Authors: @Abdoulie, Jason, Barbra
  */
 public class Game implements Serializable {
     private Map map = new Map();

@@ -1,6 +1,6 @@
 import java.io.Serializable;
 
-// Author @ Amar
+// Author @ Abdoulie and Amara
 public class Puzzles implements Serializable {
     private int puzzleID;
     private String puzzleDescription;

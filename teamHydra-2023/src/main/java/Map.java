@@ -1,8 +1,4 @@
 /*
-The Map class reads in the designated text file and generates a map based on the data stored in that said file.
-The data is then stored into a hashmap that is made up of room objects, and uses each respective room's ID number as the key
-to access the data that is associated with each key.
-
 @Author Abdoulie and Jason
  */
 
