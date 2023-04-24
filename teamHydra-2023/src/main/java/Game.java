@@ -232,22 +232,20 @@ public class Game implements Serializable {
     }
 
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit){
-        System.out.println("Please enter the name of your save");
+        System.out.println("Please enter the name of your save file");
         String saveGameFile = input.nextLine();
         try {
-            FileOutputStream fileOut = new FileOutputStream(saveGameFile);
-            ObjectOutputStream out = new ObjectOutputStream(fileOut);
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveGameFile + ".dat"));
             out.writeObject(gameMap);
             out.writeObject(player);
             out.writeObject(itemsInExhibit);
             out.close();
-            fileOut.close();
+            out.close();
             System.out.println("Game saved to " + saveGameFile);
         } catch (IOException e){
-            System.out.println("An error occured when trying to save" + e.getMessage());
+            System.out.println("An error occured when trying to save " + e.getMessage());
         }
     }
-
     public Object[] loadSaveFile(){
         Object[] result = new Object[3];
         System.out.println("Please enter save file name");
@@ -255,8 +253,8 @@ public class Game implements Serializable {
         try{
             FileInputStream fileIn = new FileInputStream(saveFileName);
             ObjectInputStream in = new ObjectInputStream(fileIn);
-            Player player = (Player) in.readObject();
             Map gameMap = (Map) in.readObject();
+            Player player = (Player) in.readObject();
             ArrayList<Items> itemsInExhibit = (ArrayList<Items>) in.readObject();
             in.close();
             fileIn.close();
@@ -265,12 +263,18 @@ public class Game implements Serializable {
             result[1] = player;
             result[2] = itemsInExhibit;
         }catch(IOException e){
-            System.out.println("An error occured when trying to load save "+ e.getMessage());
+            System.out.println("An error occurred when trying to load save "+ e.getMessage());
+            firstMainMenu();
         }catch(ClassNotFoundException e){
-            System.out.println("An error occured: " + e.getMessage());
+            System.out.println("An error occurred: " + e.getMessage());
+            firstMainMenu();
         }
+        secondMainMenu();
         return result;
+
+
     }
+
 
 
     public void gameOver(){
