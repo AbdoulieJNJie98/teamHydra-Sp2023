@@ -16,9 +16,10 @@ public class Rooms implements Serializable {
     private String roomDescription = "";
     private ArrayList<Items> roomInventory;
     private ArrayList<Puzzles> puzzlesInRoom;
+
+
     private  ArrayList <Monster> monstersInRoom;
 
-    private ArrayList  linkArrayList = new ArrayList<>();
     private  Boolean isSouthRoomLocked;
     private int itemID = 0;
     private int puzzleID = 0;
@@ -38,8 +39,8 @@ public class Rooms implements Serializable {
         this.roomName = roomName;
         this.northRoomID = northRoomID;
         this.southRoomID = southRoomID;
-        this.westRoomID = westRoomID;
         this.eastRoomID = eastRoomID;
+        this.westRoomID = westRoomID;
         this.roomDescription = roomDescription;
         this.itemID = itemID;
         this.puzzleID = puzzleID;
@@ -48,9 +49,7 @@ public class Rooms implements Serializable {
         roomInventory = new ArrayList<>();
         puzzlesInRoom = new ArrayList<>();
         monstersInRoom = new ArrayList<>();
-        setDefaultItemInRoom();
-        setDefaultPuzzleInRoom();
-        setMonstersInRoom();
+
     }
 
     public int getRoomID() {
@@ -135,15 +134,16 @@ public class Rooms implements Serializable {
     }
 
     public ArrayList<Items> getRoomInventory() {
-        return roomInventory;
+
+        return setRoomInventory(roomInventory);
     }
 
     public ArrayList<Puzzles> getPuzzlesInRoom() {
-        return puzzlesInRoom;
+        return setPuzzlesInRoom(puzzlesInRoom);
     }
 
     public ArrayList<Monster> getMonstersInRoom() {
-        return monstersInRoom;
+        return setMonstersInRoom(monstersInRoom);
     }
 
 
@@ -155,47 +155,55 @@ public class Rooms implements Serializable {
         isSouthRoomLocked = southRoomLocked;
     }
 
-
-
-
-    // method used to initialize which item will be in each room by default based on the room's itemID
-    public void setDefaultItemInRoom() {
-        // for loop used to match the itemID found within the room text file, with the itemID found within the item text file
-        for (int i = 0; i < gameMap.getArrayListOfItems().size(); i++) {
-            // if statement use to match the itemIDs with one another
-            if (itemID == gameMap.getArrayListOfItems().get(i).getItemRoomID()) {
-                // new Items variable used to set the default item value in the room
-                Items item = gameMap.getArrayListOfItems().get(i);
-                roomInventory.add(item);
+    public ArrayList<Items> setRoomInventory(ArrayList<Items> roomInventory) {
+        // if statement to determine if the current room has any items, if it doesn't
+        // the for loop will run, if the current room does have any item, it will just return the room's inventory
+        if(roomInventory.isEmpty()) {
+            // for loop used to check the game maps array list of item's ID and match it with the room's ID
+            for (int i = 0; i < gameMap.getArrayListOfItems().size(); i++) {
+                if (gameMap.getArrayListOfItems().get(i).getItemRoomID() == roomID) {
+                    roomInventory.add(gameMap.getArrayListOfItems().get(i));
+                }
             }
         }
+        return this.roomInventory = roomInventory;
     }
 
-    // method used to initialize which puzzle will be in each room by default based on the room's puzzleID
-    public void setDefaultPuzzleInRoom() {
-        // for loop used to match the puzzleID found within the room text file, with the puzzleID found within the puzzle text file
-        for (int i = 0; i < gameMap.getArrayListOfPuzzles().size(); i++) {
-            // if statement use to match the itemIDs with one another
-            if (puzzleID == gameMap.getArrayListOfPuzzles().get(i).getPuzzleID()) {
-                // new Puzzles variable used to set the default item value in the room
-                Puzzles puzzle = gameMap.arrayListOfPuzzles.get(i);
-                puzzlesInRoom.add(puzzle);
+    public ArrayList<Puzzles>  setPuzzlesInRoom(ArrayList<Puzzles> puzzlesInRoom) {
+        // if statement to determine if the current room has any puzzles, if it doesn't
+        // the for loop will run, if the current room does have any puzzles,
+        // it will just return the puzzles found in the current room
+        if (puzzlesInRoom.isEmpty()) {
+            // for loop used to check the game maps array list of puzzle IDs and match it with the room's ID
+            for (int i = 0; i < gameMap.getArrayListOfPuzzles().size(); i++) {
+                if (gameMap.getArrayListOfPuzzles().get(i).getPuzzleID() == puzzleID) {
+                    puzzlesInRoom.add(gameMap.getArrayListOfPuzzles().get(i));
+                }
             }
         }
+          return this.puzzlesInRoom = puzzlesInRoom;
     }
 
-    // method used to initialize which monsters will be in each room by default based on the room's monsterID
-    public void setMonstersInRoom() {
-        // for loop used to match the monsterID found within the monster  text file, with the monsterID found within the monster text file
-        for (int i = 0; i < gameMap.getArrayListOfMonsters().size(); i++) {
-            // if statement use to match the itemIDs with one another
-            if (monsterID == gameMap.getArrayListOfMonsters().get(i).getMonsterID()) {
-                // new Puzzles variable used to set the default item value in the room
-                Monster monster = gameMap.getArrayListOfMonsters().get(i);
-                monstersInRoom.add(monster);
+    public ArrayList<Monster> setMonstersInRoom(ArrayList<Monster> monstersInRoom) {
+
+        // if statement to determine if the current room has any monsters, if it doesn't
+        // the for loop will run, if the current room does have any monsters,
+        // it will just return the monsters in the current room
+        if (monstersInRoom.isEmpty()) {
+            // for loop used to check the game maps array list of monster IDs and match it with the room's ID
+            for (int i = 0; i < gameMap.getArrayListOfMonsters().size(); i++) {
+                if (gameMap.getArrayListOfMonsters().get(i).getMonsterID() == monsterID) {
+                    monstersInRoom.add(gameMap.getArrayListOfMonsters().get(i));
+                }
             }
         }
+        return this.monstersInRoom = monstersInRoom;
     }
+
+    public void setMonsterID(int monsterID) {
+        this.monsterID = monsterID;
+    }
+
 
     // method used to display the names of the rooms accessible from the current room the player is in
     public void getCurrentRoomConnections(Rooms currentRoom) {
@@ -284,7 +292,7 @@ public class Rooms implements Serializable {
                         System.out.println(northRoom.getRoomInventory().get(j).getItemName() + " ");
                     }
                     // display the message to mark the start of monsters found within the north room
-                    System.out.println("\nMonsters found in this area: ");
+                    System.out.println("\nMonsters found in this area: \n");
 
                     // for loop that will be used search the north room's monster array list to display the names of monsters found
                     // within the room
@@ -310,7 +318,7 @@ public class Rooms implements Serializable {
                         System.out.println(southRoom.getRoomInventory().get(j).getItemName() + " ");
                     }
 
-                    System.out.println("\nMonsters found in this area: ");
+                    System.out.println("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < southRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(southRoom.getMonstersInRoom().get(k).getName() + " ");
@@ -334,7 +342,7 @@ public class Rooms implements Serializable {
                         System.out.println(eastRoom.getRoomInventory().get(j).getItemName() + " ");
                     }
 
-                    System.out.println("\nMonsters found in this area: ");
+                    System.out.println("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < eastRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(eastRoom.getMonstersInRoom().get(k).getName() + " ");
@@ -357,7 +365,7 @@ public class Rooms implements Serializable {
                         System.out.println(westRoom.getRoomInventory().get(j).getItemName() + " ");
                     }
 
-                    System.out.println("\nMonsters found in this area: ");
+                    System.out.println("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < westRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(westRoom.getMonstersInRoom().get(k).getName() + " ");
@@ -371,13 +379,13 @@ public class Rooms implements Serializable {
 
 
     // method used to remove item from the room's array list and send it to the player
-    public Items removeItemFromRoomInventory(String playerInput) {
+    public Items removeItemFromRoomInventory(String itemName) {
         Items item = null;
         // for loop used to search the array of list items found within the room
         for (int i = 0; i < roomInventory.size(); i++) {
             // if statement used to check if the player's input matches the name of an item in
             // the room's inventory
-            if (roomInventory.get(i).getItemName().contains(playerInput)) {
+            if (roomInventory.get(i).getItemName().equalsIgnoreCase(itemName)) {
                 item = roomInventory.get(i);
                 roomInventory.remove(i);
             }
@@ -389,15 +397,51 @@ public class Rooms implements Serializable {
 
     // method used to display the contents of a room when a player inputs the "inspect area" command
     public void displayInspectedArea(Rooms currentRoom){
+        // items variable used to hold the name of the current i value in the loop
+        Items item = null;
+        // puzzle variable used to hold the name of the current i value in the loop
+        Puzzles puzzle = null;
+        // monster variable used to hold the name of the current i value in the loop
+        Monster monster = null;
         // for loops that will be used to display the names of items, puzzles, and monsters found within the room
-        for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
-            System.out.println("Items: " + currentRoom.getRoomInventory().get(i).getItemName() + " " );
+        // if statement used to determine what to display
+        if(currentRoom.getRoomInventory().isEmpty()) {
+            System.out.print("There are no items in this room");
         }
-        for(int i = 0; i < currentRoom.getPuzzlesInRoom().size(); i++ ){
-            System.out.println("\nPuzzles: " + currentRoom.getPuzzlesInRoom().get(i).getPuzzleName() + " " );
+
+        else if (!currentRoom.getRoomInventory().isEmpty()) {
+            System.out.print("Items: ");
+            for (int i = 0; i < currentRoom.getRoomInventory().size(); i++) {
+                item = currentRoom.getRoomInventory().get(i);
+                System.out.print(item.getItemName() + " ");
+            }
+
         }
-        for(int i = 0; i < currentRoom.getRoomInventory().size(); i++ ){
-            System.out.println("\nMonsters: " + currentRoom.getMonstersInRoom().get(i).getName() + " " );
+        if(currentRoom.getPuzzlesInRoom().isEmpty()){
+            System.out.println("\nThere are no puzzles in this room");
+        }
+        else {
+            for (int i = 0; i < currentRoom.getPuzzlesInRoom().size(); i++) {
+                puzzle = currentRoom.getPuzzlesInRoom().get(i);
+                // if statement to break from the loop
+                if(currentRoom.getPuzzlesInRoom().contains(puzzle)){
+                    break;
+                }
+            }
+            System.out.println("\nPuzzles: " + puzzle.getPuzzleName() + " ");
+        }
+        if(currentRoom.getMonstersInRoom().isEmpty()){
+            System.out.println("There are no monsters in this room");
+        }
+        else {
+            for (int i = 0; i < currentRoom.getMonstersInRoom().size(); i++) {
+                monster = currentRoom.getMonstersInRoom().get(i);
+                // if statement to break from the loop
+                if(currentRoom.getMonstersInRoom().contains(monster)){
+                    break;
+                }
+            }
+            System.out.println("Monsters: " + monster.getName() + " ");
         }
     }
 

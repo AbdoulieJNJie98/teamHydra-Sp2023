@@ -54,7 +54,6 @@ public class Items  implements Serializable {
 
 
     public String getItemName() {
-        setItemName(itemName.toLowerCase());
         return itemName;
     }
 
@@ -116,18 +115,19 @@ public class Items  implements Serializable {
     }
 
     // method used to change the player's states based on the item they're attempting to equipped
-    public static void equipItem(Items item, Player player){
+    public void equipItem(Items item, Player player){
+
         // if statement used to check if the item name is a certain item
-        if(item.getItemName().equalsIgnoreCase("Claw Upgrade")){
+        if(item.getItemName().equalsIgnoreCase("Claw Upgrade ")){
            player.setAttackStat(player.getAttackStat() + 10);
         }
-        else if(item.getItemName().equalsIgnoreCase("Drill Upgrade")){
+        else if(item.getItemName().equalsIgnoreCase("Drill Upgrade ")){
             player.setAttackStat(player.getAttackStat() + 10);
         }
-        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 1")){
+        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 1 ")){
             player.setDefenseStat(player.getDefenseStat() + 10);
         }
-        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 2")){
+        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 2 ")){
             player.setDefenseStat(player.getDefenseStat() + 10);
 
         }
@@ -135,6 +135,10 @@ public class Items  implements Serializable {
 
     }
 
+    @Override
+    public String toString() {
+        return itemName + ",";
+    }
 }
 
 

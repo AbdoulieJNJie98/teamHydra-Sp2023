@@ -57,8 +57,8 @@ public class Displayer implements Serializable {
                 "|north or n| |south or s| |west or w| |east or e| \n" +
                 "|The commands above are what are needed to move to different zones in the game|\n" +
                 "|-----------------------------------------------------|\n" +
-                "|pickup| |drop| |equip| |use| |inventory| |inspect area| |sonar| |quit| |archive|\n" +
-                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |exit game| \n"+
+                "|pickup| |drop| |equip| |use| |inventory| |explore area| |sonar| |quit| |archive|\n" +
+                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |exit game| |map| \n"+
                 "|-------------------------------------------------------------------------------------|\n" +
                 "|The pickup command allows you to add items to your inventory by entering the command\n" +
                 "followed by the name of the item you wish to add in your inventory. The item must be present in the\n" +
@@ -68,7 +68,7 @@ public class Displayer implements Serializable {
                 "|The use command allows you to use an item as long as it is in your inventory; once used, the item will be removed\n" +
                 "from your inventory|\n"+
                 "|The inventory command will display all the items currently in your inventory\n|" +
-                "|The inspect area command will display the current room's description, any items, monsters and puzzles in the room|\n" +
+                "|The explore area command will display the current room's description, any items, monsters and puzzles in the room|\n" +
                 "|The sonar command will display the room names and monsters of the rooms that are connected to the current room|\n" +
                 "|The inspect command will display the designated item's description, as long as it is in your inventory|\n" +
                 "|The archive command will send the designated item to the exhibit, removing it from your inventory|\n" +
@@ -79,7 +79,8 @@ public class Displayer implements Serializable {
                 "|The status command will display your name, current HP, current attack power, and current defense level|\n"+
                 "|The inspect monster command will display the monster's name, current HP, current attack power, and current defense level|\n"+
                 "|The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with\n"+
-                "|The quit command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\n" +
+                "|The exit game command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\n" +
+                "|The map command will display the zone numbers and zone names found throughout the game|\n" +
                 "|--------------------------------------------------------------------------------------------------------------------|\n" );
     }
 

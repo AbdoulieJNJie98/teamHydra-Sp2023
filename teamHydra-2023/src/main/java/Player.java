@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 
 
-public class Player extends ActorForMonsterAndPlayer implements Serializable {
+public class Player implements Serializable {
     private Rooms currentRoom;
     private Rooms previousRoom;
     private Map map;
@@ -55,6 +55,43 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     }
     public Rooms getPreviousRoom() {
         return previousRoom;
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+
+    public int getAttackStat() {
+        return attackStat;
+    }
+
+    public void setAttackStat(int attackStat) {
+        this.attackStat = attackStat;
+    }
+
+    public int getDefenseStat() {
+        return defenseStat;
+    }
+
+    public void setDefenseStat(int defenseStat) {
+        this.defenseStat = defenseStat;
+    }
+
+    public String getName() {return playerName;}
+
+    public void setName(String name) {this.playerName = name;}
+
+    // method used to display the name, attack power, and defense level of either the player
+    public void getStatusForPlayer(Player player){
+        System.out.println("Status:\n" +
+                "Name: " + player.getName() + "\n" +
+                "HP: " + player.getHealthPoints() + " "+
+                "ATK: " + player.getAttackStat() + " " +
+                "DEF: " + player.getDefenseStat());
     }
 
 
@@ -123,7 +160,13 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     public void pickUpItem(String itemName) {
         // Items variable used to put an item in the player's inventory
         Items item = currentRoom.removeItemFromRoomInventory(itemName);
-        playerInventory.add(item);
+        if(item!=null) {
+            playerInventory.add(item);
+            System.out.println(item.getItemName() + "has been added to your inventory");
+        }
+        else {
+            System.out.println("That item is currently not in this room");
+        }
     }
 
     // method used to drop item from player's inventory, and leave them in the room the player is currently in
@@ -132,15 +175,21 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         Items item = null;
         // for loop used to find and assign the dropped item to the items variable, so that it may be added to the current room's inventory
         for (Items value : playerInventory) {
-            if (value.getItemName().equalsIgnoreCase(itemName) && !(value.getItemType().equalsIgnoreCase("Equitable"))){
+            if (value.getItemName().equalsIgnoreCase(itemName) && !(value.getItemType().equalsIgnoreCase("Equitable"))) {
                 item = value;
+                playerInventory.remove(item);
                 currentRoom.getRoomInventory().add(item);
-            } else {
-                System.out.println("Looks like that item isn't in your inventory currently or cannot be dropped");
+
+            }
+        }
+            if(item != null){
+                System.out.println(item.getItemName() + "has been removed from your inventory");
+            }
+            else{
+                System.out.println("The item you attempted to drop is either not in your inventory, or cannot be dropped");
             }
         }
 
-    }
     // method used to equipped items
     //Abdoulie
     public void equippedItem(String itemName){
@@ -148,16 +197,18 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         Items item = null;
         // for loop used to search through the player's inventory
         for (Items value : playerInventory) {
-            if (value.getItemName().equalsIgnoreCase(itemName) && value.getItemType().equalsIgnoreCase("Equitable")) {
+            if (value.getItemName().equalsIgnoreCase(itemName) &&
+                    value.getItemType().equalsIgnoreCase("Equitable")) {
                 item = value;
-                Items.equipItem(item, player);
+                item.equipItem(item, player);
                 item.setItemStatus(true);
-
             }
-            else{
-                System.out.println("The item you attempted to equipped is not the correct type");
-            }
-
+        }
+        if(item != null){
+            System.out.println(item.getItemName() + "has been equipped");
+        }
+        else{
+            System.out.println("The item you attempted to equipped is not the correct type");
         }
 
     }
@@ -170,12 +221,23 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
         for (Items value : playerInventory) {
             if (value.getItemName().equalsIgnoreCase(itemName)) {
                 item = value;
-                System.out.println(item.getItemName() + ": "+ item.getItemDescription());
             }
-            else if(itemName.equalsIgnoreCase("Treasure map 1")){
-                item = value;
+        }
+        if(item != null){
+            System.out.println(item.getItemName() + ": "+ item.getItemDescription());
+            if(itemName.equalsIgnoreCase("Treasure map 1")){
                 System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
             }
+            else if(itemName.equalsIgnoreCase("Treasure map 2")){
+                System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
+            }
+           else if(itemName.equalsIgnoreCase("Treasure map 3")){
+                System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
+            }
+
+        }
+        else {
+            System.out.println("There is no item to inspect, please try again");
         }
     }
 
@@ -190,9 +252,13 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
                 item = value;
                 exhibit.getItemsInExhibit().add(item);
             }
-            else {
-                System.out.println("The item you attempted to archive is not the right type");
-            }
+        }
+        if(item != null){
+            System.out.println(item.getItemName() + " has been sent to the exhibit");
+
+        }
+        else {
+            System.out.println("This item cannot be archived");
         }
     }
 
@@ -207,7 +273,7 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     }
 
     // method used to call room method that will display the current room's description, items, puzzles, and monster
-    public void inspectArea() {
+    public void exploreArea() {
         currentRoom.displayInspectedArea(currentRoom);
     }
 
@@ -216,6 +282,13 @@ public class Player extends ActorForMonsterAndPlayer implements Serializable {
     public void sonar() {
         currentRoom.showSonarResult(currentRoom);
     }
+
+    // method used to print the map of the game
+    public void getMap(){
+        System.out.println(map.hashMapRooms);
+    }
+
+    // method used to chang
 
 
 }

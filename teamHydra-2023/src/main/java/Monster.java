@@ -1,7 +1,7 @@
 import java.io.Serializable;
 
 // Author @ Jason and Abdoulie
-public class Monster extends ActorForMonsterAndPlayer implements Serializable {
+public class Monster implements Serializable {
     private int monsterID;
 
     private int healthPoints;
@@ -28,6 +28,43 @@ public class Monster extends ActorForMonsterAndPlayer implements Serializable {
 
     public int getMonsterID() {
         return monsterID;
+    }
+
+    public int getHealthPoints() {
+        return healthPoints;
+    }
+
+    public void setHealthPoints(int healthPoints) {
+        this.healthPoints = healthPoints;
+    }
+
+    public int getAttackStat() {
+        return attackStat;
+    }
+
+    public void setAttackStat(int attackStat) {
+        this.attackStat = attackStat;
+    }
+
+    public int getDefenseStat() {
+        return defenseStat;
+    }
+
+    public void setDefenseStat(int defenseStat) {
+        this.defenseStat = defenseStat;
+    }
+
+    public String getName() {return monsterName;}
+
+    public void setName(String name) {this.monsterName = name;}
+
+    // method used to display the name, attack power, and defense level of either the player
+    public void getStatusForMonster(Monster monster){
+        System.out.println("Status:\n" +
+                "Name: " + monster.getName() + "\n" +
+                "HP: " + monster.getHealthPoints() +
+                "ATK: " + monster.getAttackStat() +
+                "DEF: " + monster.getDefenseStat());
     }
 
     public void setMonsterID(int monsterID) {

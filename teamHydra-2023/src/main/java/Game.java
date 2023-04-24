@@ -46,7 +46,7 @@ public class Game implements Serializable {
         mainMenuBeforeInputState = true;
         String menuOptions = input.nextLine();
         String [] menuOptionsPart = menuOptions.split(" ");
-        // if statement used to catch invalid inputs
+        // if statement used    to catch invalid inputs
         // while loop that contains decision statements used to determine if the user will create a new game, or load a game
         while((mainMenuBeforeInputState)) {
             if (menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
@@ -111,6 +111,9 @@ public class Game implements Serializable {
         System.out.println("Your currently location: "+ player.getCurrentRoom().getRoomName());
 
 
+
+
+
         while (exploreState) { // while loop that continues the game as long the boolean variable "playing" is true
             String playerInput = input.nextLine();
             String[] playerInputParts = playerInput.split(" ");
@@ -127,40 +130,40 @@ public class Game implements Serializable {
                 quitGameState = true;
                 quitGame(playerInput, map, player, exhibit.getItemsInExhibit());
             } else if (playerInputParts[0].equalsIgnoreCase("pickup") && playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 player.pickUpItem(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("drop") && playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 player.dropItem(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("inspect ") && playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+            } else if (playerInputParts[0].equalsIgnoreCase("inspect") && playerInputParts.length > 1){
+                playerInput = getItemName(playerInputParts);
                 player.inspectItem(playerInput);
-            } else if (playerInputParts[0].equalsIgnoreCase("inspect") && playerInputParts[1].equalsIgnoreCase("area")) {
-                player.inspectArea();
+            } else if (playerInputParts[0].equalsIgnoreCase("explore") && playerInputParts[1].equalsIgnoreCase("area")) {
+                player.exploreArea();
             } else if (playerInputParts[0].equalsIgnoreCase("inventory")) {
                 player.getCurrentInventory();
             }
             else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 player.archive(playerInput);
             } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                 player.sonar();
             }
             else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 game.useItemOutsideOfCombat(playerInput);
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Start "))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
+            else if ((playerInputParts[0].equalsIgnoreCase("Start"))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
                 exploreState = false;
                 puzzleState = true;
                 game.startPuzzle(player);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Equip"))&& playerInputParts.length > 1) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 player.equippedItem(playerInput);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Fight") && playerInputParts.length > 1)) {
-                playerInput = game.getWord(playerInputParts);
+                playerInput = getItemName(playerInputParts);
                 exploreState = false;
                 combatState = true;
                 combat(playerInput);
@@ -171,6 +174,10 @@ public class Game implements Serializable {
             else if ((playerInputParts[0].equalsIgnoreCase("Save"))&& playerInputParts[1].equalsIgnoreCase("Game")){
                 game.saveGame(map, player, exhibit.getItemsInExhibit());
             }
+            else if ((playerInputParts[0].equalsIgnoreCase("map"))){
+                player.getMap();
+            }
+
             else {
                 display.invalidInputDuringGame();
             }
@@ -178,15 +185,15 @@ public class Game implements Serializable {
     }
 
     // method used to being array list of string back together to form one command
-    public String getWord(String [] playerInputParts){
+    public String getItemName(String [] playerInputParts){
         // string used to send the full word back to the method the player activates
         // based on their input
-        String word = " ";
+        String itemName="";
         // for loop used to add each part of the string array list and forms a word
-        for(int i = 0; i < playerInputParts.length; i++){
-            word+= playerInputParts[i] + " ";
+        for(int i = 1; i < playerInputParts.length; i++){
+            itemName+= playerInputParts[i] + " ";
         }
-        return word;
+        return itemName;
     }
 
     public void quitGame(String playerInput, Map gameMap, Player player, ArrayList <Items> exhibit) {
@@ -376,13 +383,9 @@ public class Game implements Serializable {
                 } else if (playerInput.equalsIgnoreCase("repair")) {
                     game.useItemInCombat(playerInput, null);
                 } else if (playerInput.equalsIgnoreCase("check")) {
-                    System.out.println(currentMonster.getName() + "'s HP: " + currentMonster.getHealthPoints());
-                    System.out.println(currentMonster.getName() + "'s Attack Stat: " + currentMonster.getAttackStat());
-                    System.out.println(currentMonster.getName() + "'s Defense Stat: " + currentMonster.getDefenseStat());
+                    monster.getStatusForMonster(monster);
                 } else if (playerInput.equalsIgnoreCase("status")) {
-                    System.out.println("Your HP: " + player.getHealthPoints());
-                    System.out.println("Your Attack Stat: " + player.getAttackStat());
-                    System.out.println("Your Defense Stat: " + player.getDefenseStat());
+                    player.getStatusForPlayer(player);
                 } else {
                     System.out.println("Invalid Command");
                 }
@@ -563,7 +566,7 @@ public class Game implements Serializable {
         // while loop that keeps players in the exhibit unless
         while (exhibitState)
         if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
-            exhibitMenuInput = getWord(fullInput);
+            exhibitMenuInput = getItemName(fullInput);
             for(int i = 0; i < exhibit.getItemsInExhibit().size(); i++) {
                 if (exhibit.getItemsInExhibit().get(i).getItemName().contains(exhibitMenuInput)) {
                     item = exhibit.getItemsInExhibit().get(i);
