@@ -110,10 +110,6 @@ public class Game implements Serializable {
                 "To start explore, please enter the direction you would like to go!");
         System.out.println("Your currently location: "+ player.getCurrentRoom().getRoomName());
 
-
-
-
-
         while (exploreState) { // while loop that continues the game as long the boolean variable "playing" is true
             String playerInput = input.nextLine();
             String[] playerInputParts = playerInput.split(" ");
@@ -131,10 +127,10 @@ public class Game implements Serializable {
                 quitGame(playerInput, map, player, exhibit.getItemsInExhibit());
             } else if (playerInputParts[0].equalsIgnoreCase("pickup") && playerInputParts.length > 1) {
                 playerInput = getItemName(playerInputParts);
-                player.pickUpItem(playerInput);
+                player.pickUpItem(playerInput, player.getCurrentRoom());
             } else if (playerInputParts[0].equalsIgnoreCase("drop") && playerInputParts.length > 1) {
                 playerInput = getItemName(playerInputParts);
-                player.dropItem(playerInput);
+                player.dropItem(playerInput, player, player.getCurrentRoom());
             } else if (playerInputParts[0].equalsIgnoreCase("inspect") && playerInputParts.length > 1){
                 playerInput = getItemName(playerInputParts);
                 player.inspectItem(playerInput);
@@ -145,28 +141,29 @@ public class Game implements Serializable {
             }
             else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
                 playerInput = getItemName(playerInputParts);
-                player.archive(playerInput);
+                player.archive(playerInput, exhibit.getItemsInExhibit());
             } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                 player.sonar();
             }
             else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
                 playerInput = getItemName(playerInputParts);
-                game.useItemOutsideOfCombat(playerInput);
+                game.useItemOutsideOfCombat(playerInput, player);
             }
-            else if ((playerInputParts[0].equalsIgnoreCase("Start"))&& playerInputParts[1].equalsIgnoreCase("Puzzle")) {
+            else if ((playerInputParts[0].equalsIgnoreCase("Start"))&& playerInputParts[1].equalsIgnoreCase("Puzzle")  && playerInputParts.length > 2) {
+                playerInput = getPuzzleName(playerInputParts);
                 exploreState = false;
                 puzzleState = true;
-                game.startPuzzle(player);
+                game.startPuzzle(player, playerInput);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Equip"))&& playerInputParts.length > 1) {
                 playerInput = getItemName(playerInputParts);
-                player.equippedItem(playerInput);
+                player.equippedItem(playerInput, player);
             }
             else if ((playerInputParts[0].equalsIgnoreCase("Fight") && playerInputParts.length > 1)) {
                 playerInput = getItemName(playerInputParts);
                 exploreState = false;
                 combatState = true;
-                combat(playerInput);
+                combat(playerInput, player, map, exhibit.getItemsInExhibit());
             }
             else if ((playerInputParts[0].equalsIgnoreCase("status"))){
                 player.getStatusForPlayer(player);
@@ -194,6 +191,16 @@ public class Game implements Serializable {
             itemName+= playerInputParts[i] + " ";
         }
         return itemName;
+    }
+    public String getPuzzleName(String [] playerInputParts){
+        // string used to send the full word back to the method the player activates
+        // based on their input
+        String puzzleName="";
+        // for loop used to add each part of the string array list and forms a word
+        for(int i = 2; i < playerInputParts.length; i++){
+            puzzleName+= playerInputParts[i] + " ";
+        }
+        return puzzleName;
     }
 
     public void quitGame(String playerInput, Map gameMap, Player player, ArrayList <Items> exhibit) {
@@ -299,16 +306,14 @@ public class Game implements Serializable {
 
     }
     // method used to activate puzzle state and will allow the player to access the current room's puzzle aspect
-    public void startPuzzle(Player player) {
-        String playerInput = input.nextLine();
-        String[] playerInputParts = playerInput.split(" ");
+    public void startPuzzle(Player player, String puzzleName) {
         // Puzzles variable used to make sure the puzzle name the player entered is valid
         Puzzles puzzle = new Puzzles();
 
         // for loop used to determine if the puzzleName is in the current room, and if it is,
         // it will set puzzle equal to the puzzle in the room
         for (int i = 0; i < player.getCurrentRoom().getPuzzlesInRoom().size(); i++) {
-            if (player.getCurrentRoom().getPuzzlesInRoom().get(i).getPuzzleName().equalsIgnoreCase(playerInput)) {
+            if (player.getCurrentRoom().getPuzzlesInRoom().get(i).getPuzzleName().equalsIgnoreCase(puzzleName)) {
                 puzzle = player.getCurrentRoom().getPuzzlesInRoom().get(i);
 
             } else {
@@ -323,7 +328,9 @@ public class Game implements Serializable {
             // the following statement will display the options available when a player successfully starts a puzzle\
             display.puzzleMenuOptions();
             System.out.println(puzzle.getPuzzleDescription());
-            playerInput = input.nextLine();
+            String playerInput = input.nextLine();
+            String[] playerInputParts = playerInput.split(" ");
+
 
             // if else statement used to handel the puzzle menu options
             if (playerInputParts[0].equalsIgnoreCase("Get") && playerInputParts[1].equalsIgnoreCase("Puzzle")
@@ -336,6 +343,7 @@ public class Game implements Serializable {
                 startGame(player, map, exhibit.getItemsInExhibit());
             }
             else {
+
                 display.invalidInputForMenu();
                 playerInput = input.nextLine();
                 playerInputParts = playerInput.split(" ");
@@ -350,14 +358,14 @@ public class Game implements Serializable {
         player.setName(playerName);
     }
 
-    public void combat(String monsterName){
+    public void combat(String monsterName, Player player, Map map, ArrayList<Items> exhibit ){
         if(player.getCurrentRoom().getMonstersInRoom().get(0).getName().equalsIgnoreCase(monsterName)) {
 
             while (combatState) {
                 Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
                 System.out.println("You have entered combat with " + currentMonster.getName());
 
-                System.out.println("What will you do? Your options are Attack, Flee, Repair, Check, and Status ");
+                System.out.println("What will you do? Your options are Attack, Use, Flee, Repair, Check, Status ");
                 String playerInput = input.nextLine();
                 if (playerInput.equalsIgnoreCase("attack")) {
                     int damage = player.getAttackStat() - currentMonster.getDefenseStat();
@@ -368,20 +376,20 @@ public class Game implements Serializable {
                     } else {
                         System.out.println("Your attack did no damage to the " + currentMonster.getName());
                     }
-                } else if (playerInput.equalsIgnoreCase("Torpedo")) {
-                    game.useItemInCombat(playerInput, currentMonster);
+                } else if (playerInput.equalsIgnoreCase("Use Torpedo")) {
+                    game.useItemInCombat(playerInput, currentMonster, player);
 
-                } else if (playerInput.equalsIgnoreCase("Super Torpedo")) {
-                    game.useItemInCombat(playerInput, currentMonster);
+                } else if (playerInput.equalsIgnoreCase("Use Super Torpedo")) {
+                    game.useItemInCombat(playerInput, currentMonster, player);
                 } else if (playerInput.equalsIgnoreCase("flee")) {
                     System.out.println("You have successfully fled!");
                     player.getCurrentRoom().setRoomID(player.getPreviousRoom().getRoomID());
                     combatState = false;
                     exploreState = true;
-                    startGame(player, map, exhibit.getItemsInExhibit());
+                    startGame(player, map, exhibit);
 
-                } else if (playerInput.equalsIgnoreCase("repair")) {
-                    game.useItemInCombat(playerInput, null);
+                } else if (playerInput.equalsIgnoreCase("Use repair kit")) {
+                    game.useItemInCombat(playerInput, null, player) ;
                 } else if (playerInput.equalsIgnoreCase("check")) {
                     monster.getStatusForMonster(monster);
                 } else if (playerInput.equalsIgnoreCase("status")) {
@@ -406,7 +414,7 @@ public class Game implements Serializable {
                     player.getCurrentRoom().getMonstersInRoom().remove(0);
                     combatState = false;
                     exploreState = true;
-                    startGame(player, map, exhibit.getItemsInExhibit());
+                    startGame(player, map, exhibit);
                 }
                 if (player.getHealthPoints() <= 0) {
                     System.out.println("Your HP as reached 0 ");
@@ -421,16 +429,16 @@ public class Game implements Serializable {
             System.out.println("The monster you attempted to fight is not in this room");
             combatState = false;
             exploreState = true;
-            startGame(player,map, exhibit.getItemsInExhibit());
+            startGame(player,map, exhibit);
         }
     }
-    public void useItemInCombat(String playerInput, Monster currentMonster) {
+    public void useItemInCombat(String itemName, Monster currentMonster, Player player) {
         // item variable used to hold the item the user is attempting to use
         Items item = null;
         // for loop used to determine if the player has the item they're attempting to use in their inventory
-        if(playerInput.equalsIgnoreCase("Torpedo")) {
+        if(itemName.equalsIgnoreCase("Torpedo")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
@@ -445,9 +453,9 @@ public class Game implements Serializable {
                 System.out.println("You have no torpedoes!");
             }
         }
-        if(playerInput.equalsIgnoreCase("Super Torpedo")) {
+        if(itemName.equalsIgnoreCase("Super Torpedo")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
@@ -462,9 +470,9 @@ public class Game implements Serializable {
                 System.out.println("You have no super torpedoes!");
             }
         }
-        if(playerInput.equalsIgnoreCase("Repair")) {
+        if(itemName.equalsIgnoreCase("Repair Kit")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
@@ -484,11 +492,11 @@ public class Game implements Serializable {
                 }
             }
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     System.out.println("This item cannot be used");
                 }
-                if (!player.getPlayerInventory().get(i).getItemName().contains(playerInput)){
+                if (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)){
                     System.out.println("Invalid Item");
                 }
             }
@@ -496,15 +504,23 @@ public class Game implements Serializable {
 
         }
     }
-    public void useItemOutsideOfCombat(String playerInput) {
+    public void useItemOutsideOfCombat(String itemName, Player player) {
         // item variable used to hold the item the user is attempting to use
-        Items item = null;
-        System.out.println("What item would you like to use?");
-        playerInput = input.nextLine();
+           Items item = null;
+//        Items usableItem = null;
+//        System.out.println("What item would you like to use?");
+//        // for loop that will display all the usable items the player current has
+//        for(int i = 0; i < player.getPlayerInventory().size(); i ++){
+//            if(player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")){
+//                usableItem = player.getPlayerInventory().get(i);
+//                System.out.println(usableItem.getItemName());
+//            }
+//        }
+//        playerInput = input.nextLine();
         // for loop used to determine if the player has the item they're attempting to use in their inventory
-        if (playerInput.equalsIgnoreCase("Repair Kit")) {
+        if (itemName.equalsIgnoreCase("Repair Kit")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().contains(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
@@ -524,10 +540,10 @@ public class Game implements Serializable {
             }
 
         }
-        if (playerInput.equalsIgnoreCase("Antikythera mechanism")) {
+        if (itemName.equalsIgnoreCase("Antikythera mechanism")) {
             Puzzles Antikythera = player.getCurrentRoom().getPuzzlesInRoom().get(0);
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+                if (player.getPlayerInventory().get(i).getItemName().contains(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
@@ -547,11 +563,11 @@ public class Game implements Serializable {
 
         }
         for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-            if (player.getPlayerInventory().get(i).getItemName().contains(playerInput) &&
+            if (player.getPlayerInventory().get(i).getItemName().contains(itemName) &&
                     !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                 System.out.println("This item cannot be used");
             }
-            if (!player.getPlayerInventory().get(i).getItemName().contains(playerInput)){
+            if (!player.getPlayerInventory().get(i).getItemName().contains(itemName)){
                 System.out.println("Invalid Item");
             }
         }

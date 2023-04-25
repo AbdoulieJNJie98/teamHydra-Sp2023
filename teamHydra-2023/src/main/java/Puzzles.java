@@ -12,7 +12,7 @@ public class Puzzles implements Serializable {
 
     public Puzzles(){};
 
-    public Puzzles(int id, String description, String puzzleHint, boolean puzzleSolvedStatus, String solvedDesc, String unsolvedDesc, String puzzleName) {
+    public Puzzles(int id, String description, String puzzleHint, boolean puzzleSolvedStatus, String solvedDesc, String puzzleName, String unsolvedDesc) {
         this.puzzleID = id;
         this.puzzleDescription = description;
         this.puzzleHint = puzzleHint;
@@ -94,7 +94,7 @@ public class Puzzles implements Serializable {
         // for loop used to search through the player's current inventory
         for(int i = 0; i<player.getPlayerInventory().size(); i++){
 
-            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade")){
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade ")){
                 item = player.getPlayerInventory().get(i);
                 // if statement that is used to see if the current room's puzzle ID is equal to the corresponding puzzle's ID number
                 // as well as if the player has the item equipped to determine if the room south of the current room will be locked or not
@@ -110,7 +110,7 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             }
-            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade")){
+            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade ")){
                 item = player.getPlayerInventory().get(i);
                 if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 1 ){
                     player.getCurrentRoom().setIsSouthRoomLocked(false);
@@ -123,7 +123,7 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             }
-            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade")){
+            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade ")){
                 item = player.getPlayerInventory().get(i);
                 if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 2 ){
                     player.getCurrentRoom().setIsSouthRoomLocked(false);

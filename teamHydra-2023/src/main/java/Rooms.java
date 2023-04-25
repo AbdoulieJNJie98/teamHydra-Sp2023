@@ -17,13 +17,17 @@ public class Rooms implements Serializable {
     private ArrayList<Items> roomInventory;
     private ArrayList<Puzzles> puzzlesInRoom;
 
-
     private  ArrayList <Monster> monstersInRoom;
 
     private  Boolean isSouthRoomLocked;
     private int itemID = 0;
     private int puzzleID = 0;
     private  int monsterID = 0;
+
+    // boolean used to signify the default item, puzzles, and monsters have been loaded in the game
+    boolean itemsLoaded = false;
+    boolean puzzlesLoaded = false;
+    boolean monstersLoaded = false;
 
     // This variable's purpose is to be used as link to access the data that was pulled from the readFiles method in the map clas
     private Map gameMap = new Map();
@@ -158,11 +162,12 @@ public class Rooms implements Serializable {
     public ArrayList<Items> setRoomInventory(ArrayList<Items> roomInventory) {
         // if statement to determine if the current room has any items, if it doesn't
         // the for loop will run, if the current room does have any item, it will just return the room's inventory
-        if(roomInventory.isEmpty()) {
+        if((!itemsLoaded)) {
             // for loop used to check the game maps array list of item's ID and match it with the room's ID
             for (int i = 0; i < gameMap.getArrayListOfItems().size(); i++) {
                 if (gameMap.getArrayListOfItems().get(i).getItemRoomID() == roomID) {
                     roomInventory.add(gameMap.getArrayListOfItems().get(i));
+                    itemsLoaded = true;
                 }
             }
         }
@@ -173,11 +178,12 @@ public class Rooms implements Serializable {
         // if statement to determine if the current room has any puzzles, if it doesn't
         // the for loop will run, if the current room does have any puzzles,
         // it will just return the puzzles found in the current room
-        if (puzzlesInRoom.isEmpty()) {
+        if (puzzlesInRoom.isEmpty() && (!puzzlesLoaded)) {
             // for loop used to check the game maps array list of puzzle IDs and match it with the room's ID
             for (int i = 0; i < gameMap.getArrayListOfPuzzles().size(); i++) {
                 if (gameMap.getArrayListOfPuzzles().get(i).getPuzzleID() == puzzleID) {
                     puzzlesInRoom.add(gameMap.getArrayListOfPuzzles().get(i));
+                    puzzlesLoaded = true;
                 }
             }
         }
@@ -189,11 +195,12 @@ public class Rooms implements Serializable {
         // if statement to determine if the current room has any monsters, if it doesn't
         // the for loop will run, if the current room does have any monsters,
         // it will just return the monsters in the current room
-        if (monstersInRoom.isEmpty()) {
+        if (monstersInRoom.isEmpty() && (!monstersLoaded)) {
             // for loop used to check the game maps array list of monster IDs and match it with the room's ID
             for (int i = 0; i < gameMap.getArrayListOfMonsters().size(); i++) {
                 if (gameMap.getArrayListOfMonsters().get(i).getMonsterID() == monsterID) {
                     monstersInRoom.add(gameMap.getArrayListOfMonsters().get(i));
+                    monstersLoaded = true;
                 }
             }
         }
@@ -281,28 +288,28 @@ public class Rooms implements Serializable {
                     northRoom = gameMap.getArrayListOfRooms().get(i);
 
                     // Will display the name of the room north of the current room
-                    System.out.println("North of here: " + northRoom.getRoomName() + "\n");
+                    System.out.println("North of here: " + northRoom.getRoomName());
 
                     // display the message to mark the start of items found within the north room
-                    System.out.println("Items found in this area: ");
+                    System.out.print("\nItems found in this area: ");
 
                     // for loop that will be used search the north room's item array list to display the names of the items found
                     // within the room
                     for(int j = 0; j < northRoom.getRoomInventory().size(); j++ ){
-                        System.out.println(northRoom.getRoomInventory().get(j).getItemName() + " ");
+                        System.out.println(northRoom.getRoomInventory().get(j).getItemName());
                     }
                     // display the message to mark the start of monsters found within the north room
-                    System.out.println("\nMonsters found in this area: \n");
+                    System.out.print("\nMonsters found in this area:");
 
                     // for loop that will be used search the north room's monster array list to display the names of monsters found
                     // within the room
                     for(int k = 0; k < northRoom.getMonstersInRoom().size(); k++ ){
-                        System.out.println(northRoom.getMonstersInRoom().get(k).getName() + " ");
+                        System.out.println(northRoom.getMonstersInRoom().get(k).getName());
                     }
                 }
             }
         } else {
-            System.out.println("North of here: There is nothing of interest that way  \n");
+            System.out.println("North of here: There is nothing of interest that way");
         }
         if (currentRoom.southRoomID != 0) {
 
@@ -310,24 +317,24 @@ public class Rooms implements Serializable {
                 if (currentRoom.southRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
                     southRoom = gameMap.getArrayListOfRooms().get(i);
 
-                    System.out.println("South of here: " + southRoom.getRoomName() + "\n");
+                    System.out.println("\nSouth of here: " + southRoom.getRoomName());
 
-                    System.out.println("Items found in this area: ");
+                    System.out.print("\nItems found in this area: ");
 
                     for(int j = 0; j < southRoom.getRoomInventory().size(); j++ ){
-                        System.out.println(southRoom.getRoomInventory().get(j).getItemName() + " ");
+                        System.out.println(southRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.println("\nMonsters found in this area: \n");
+                    System.out.print("\nMonsters found in this area: ");
 
                     for(int k = 0; k < southRoom.getMonstersInRoom().size(); k++ ){
-                        System.out.println(southRoom.getMonstersInRoom().get(k).getName() + " ");
+                        System.out.println(southRoom.getMonstersInRoom().get(k).getName());
                     }
                 }
 
             }
         } else {
-            System.out.println("South of here: There is nothing of interest that way  \n");
+            System.out.println("\nSouth of here: There is nothing of interest that way");
         }
         if (currentRoom.eastRoomID != 0) {
 
@@ -335,22 +342,22 @@ public class Rooms implements Serializable {
                 if (currentRoom.eastRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
                     eastRoom = gameMap.getArrayListOfRooms().get(i);
 
-                    System.out.println("East of here: " + eastRoom.getRoomName() + "\n");
-                    System.out.println("Items found in this area: ");
+                    System.out.println("\nEast of here: " + eastRoom.getRoomName());
+                    System.out.print("\nItems found in this area: ");
 
                     for(int j = 0; j < eastRoom.getRoomInventory().size(); j++ ){
-                        System.out.println(eastRoom.getRoomInventory().get(j).getItemName() + " ");
+                        System.out.println(eastRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.println("\nMonsters found in this area: \n");
+                    System.out.print("\nMonsters found in this area: ");
 
                     for(int k = 0; k < eastRoom.getMonstersInRoom().size(); k++ ){
-                        System.out.println(eastRoom.getMonstersInRoom().get(k).getName() + " ");
+                        System.out.println(eastRoom.getMonstersInRoom().get(k).getName());
                     }
                 }
             }
         } else {
-            System.out.println("East of here: There is nothing of interest that way  \n");
+            System.out.println("\nEast of here: There is nothing of interest that way");
         }
         if (currentRoom.westRoomID != 0) {
 
@@ -358,36 +365,36 @@ public class Rooms implements Serializable {
                 if (currentRoom.westRoomID == gameMap.getArrayListOfRooms().get(i).getRoomID()) {
                     westRoom = gameMap.getArrayListOfRooms().get(i);
 
-                    System.out.println("West of here: " + westRoom.getRoomName() + "\n");
-                    System.out.println("Items found in this area: ");
+                    System.out.println("\nWest of here: " + westRoom.getRoomName());
+                    System.out.print("\nItems found in this area: ");
 
                     for(int j = 0; j < westRoom.getRoomInventory().size(); j++ ){
-                        System.out.println(westRoom.getRoomInventory().get(j).getItemName() + " ");
+                        System.out.println(westRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.println("\nMonsters found in this area: \n");
+                    System.out.print("\nMonsters found in this area: ");
 
                     for(int k = 0; k < westRoom.getMonstersInRoom().size(); k++ ){
-                        System.out.println(westRoom.getMonstersInRoom().get(k).getName() + " ");
+                        System.out.println(westRoom.getMonstersInRoom().get(k).getName());
                     }
                 }
             }
         } else {
-            System.out.println("West of here: There is nothing of interest that way  \n");
+            System.out.println("\nWest of here: There is nothing of interest that way");
         }
     }
 
 
     // method used to remove item from the room's array list and send it to the player
-    public Items removeItemFromRoomInventory(String itemName) {
+    public Items removeItemFromRoomInventory(String itemName, Rooms currentRoom) {
         Items item = null;
         // for loop used to search the array of list items found within the room
-        for (int i = 0; i < roomInventory.size(); i++) {
+        for (int i = 0; i < currentRoom.getRoomInventory().size(); i++) {
             // if statement used to check if the player's input matches the name of an item in
             // the room's inventory
-            if (roomInventory.get(i).getItemName().equalsIgnoreCase(itemName)) {
-                item = roomInventory.get(i);
-                roomInventory.remove(i);
+            if (currentRoom.getRoomInventory().get(i).getItemName().equalsIgnoreCase(itemName)) {
+                item = currentRoom.getRoomInventory().get(i);
+                currentRoom.getRoomInventory().remove(i);
             }
 
         }
@@ -395,6 +402,10 @@ public class Rooms implements Serializable {
         return item;
     }
 
+    // method used to add items to current room inventory
+    public void addItemToCurrentRoom(Items item) {
+        roomInventory.add(item);
+    }
     // method used to display the contents of a room when a player inputs the "inspect area" command
     public void displayInspectedArea(Rooms currentRoom){
         // items variable used to hold the name of the current i value in the loop
@@ -403,6 +414,9 @@ public class Rooms implements Serializable {
         Puzzles puzzle = null;
         // monster variable used to hold the name of the current i value in the loop
         Monster monster = null;
+
+        System.out.println(currentRoom.getRoomDescription());
+
         // for loops that will be used to display the names of items, puzzles, and monsters found within the room
         // if statement used to determine what to display
         if(currentRoom.getRoomInventory().isEmpty()) {

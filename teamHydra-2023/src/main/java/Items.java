@@ -115,29 +115,58 @@ public class Items  implements Serializable {
     }
 
     // method used to change the player's states based on the item they're attempting to equipped
-    public void equipItem(Items item, Player player){
-
-        // if statement used to check if the item name is a certain item
-        if(item.getItemName().equalsIgnoreCase("Claw Upgrade ")){
-           player.setAttackStat(player.getAttackStat() + 10);
+    // @Jason
+    public void equipItem(String playerInput, Player player){
+        Items item= null;
+        if(playerInput.equalsIgnoreCase("Hull Upgrade 1 ")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (!player.getPlayerInventory().get(i).isItemStatus()) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null){
+                player.setDefenseStat(player.getDefenseStat()+ 10);
+                item.setItemStatus(true);
+            }
         }
-        else if(item.getItemName().equalsIgnoreCase("Drill Upgrade ")){
-            player.setAttackStat(player.getAttackStat() + 10);
+        if(playerInput.equalsIgnoreCase("Hull Upgrade 2 ")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (!player.getPlayerInventory().get(i).isItemStatus()) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null){
+                player.setDefenseStat(player.getDefenseStat()+ 10);
+                item.setItemStatus(true);
+            }
         }
-        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 1 ")){
-            player.setDefenseStat(player.getDefenseStat() + 10);
+        if(playerInput.equalsIgnoreCase("Drill Upgrade ")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (!player.getPlayerInventory().get(i).isItemStatus()) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null){
+                player.setDefenseStat(player.getAttackStat()+ 10);
+                item.setItemStatus(true);
+            }
         }
-        else if(item.getItemName().equalsIgnoreCase("Hull Upgrade 2 ")){
-            player.setDefenseStat(player.getDefenseStat() + 10);
-
+        if(playerInput.equalsIgnoreCase("Claw Upgrade ")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (!player.getPlayerInventory().get(i).isItemStatus()) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null){
+                player.setDefenseStat(player.getAttackStat()+ 10);
+                item.setItemStatus(true);
+            }
         }
-        else System.out.println("This item cannot be equipped");
-
     }
 
     @Override
     public String toString() {
-        return itemName + ",";
+        return itemName;
     }
 }
 

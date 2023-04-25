@@ -24,8 +24,6 @@ public class Player implements Serializable {
     private int attackStat = 10;
 
     private int defenseStat = 10;
-
-
     private ArrayList<Items> playerInventory = new ArrayList<>();
 
 
@@ -157,9 +155,9 @@ public class Player implements Serializable {
     }
 
     //method used to add items to player's inventory
-    public void pickUpItem(String itemName) {
+    public void pickUpItem(String itemName, Rooms currentRoom) {
         // Items variable used to put an item in the player's inventory
-        Items item = currentRoom.removeItemFromRoomInventory(itemName);
+        Items item = currentRoom.removeItemFromRoomInventory(itemName, currentRoom);
         if(item!=null) {
             playerInventory.add(item);
             System.out.println(item.getItemName() + "has been added to your inventory");
@@ -170,19 +168,18 @@ public class Player implements Serializable {
     }
 
     // method used to drop item from player's inventory, and leave them in the room the player is currently in
-    public void dropItem(String itemName) {
+    public void dropItem(String itemName, Player player, Rooms currentRoom) {
         // Items variable used to put an item that is in the player's inventory, into the room's inventory
         Items item = null;
         // for loop used to find and assign the dropped item to the items variable, so that it may be added to the current room's inventory
-        for (Items value : playerInventory) {
+        for (Items value : player.getPlayerInventory()) {
             if (value.getItemName().equalsIgnoreCase(itemName) && !(value.getItemType().equalsIgnoreCase("Equitable"))) {
                 item = value;
-                playerInventory.remove(item);
-                currentRoom.getRoomInventory().add(item);
-
+                currentRoom.addItemToCurrentRoom(item);
             }
         }
             if(item != null){
+                player.getPlayerInventory().remove(item);
                 System.out.println(item.getItemName() + "has been removed from your inventory");
             }
             else{
@@ -192,23 +189,23 @@ public class Player implements Serializable {
 
     // method used to equipped items
     //Abdoulie
-    public void equippedItem(String itemName){
+    public void equippedItem(String itemName, Player player){
         // Items variable used to search for an item that is in the player's inventory, and has an equitable item type
         Items item = null;
         // for loop used to search through the player's inventory
-        for (Items value : playerInventory) {
+        for (Items value : player.getPlayerInventory()) {
             if (value.getItemName().equalsIgnoreCase(itemName) &&
                     value.getItemType().equalsIgnoreCase("Equitable")) {
                 item = value;
-                item.equipItem(item, player);
-                item.setItemStatus(true);
+                item.equipItem(itemName, player);
+
             }
         }
-        if(item != null){
+        if(item != null && item.isItemStatus()){
             System.out.println(item.getItemName() + "has been equipped");
         }
         else{
-            System.out.println("The item you attempted to equipped is not the correct type");
+            System.out.println("This item is either not in your inventory, not the correct type, or has already been equipped!");
         }
 
     }
@@ -242,7 +239,7 @@ public class Player implements Serializable {
     }
 
     // method used to archive items
-    public void archive(String itemName){
+    public void archive(String itemName, ArrayList<Items> itemForExhibit){
         // Items variable used to put an item that is in the player's inventory, into the exhibit
         Items item = null;
         // for loop used to find and assign the item the player is trying to archive,to the items variable
@@ -250,7 +247,7 @@ public class Player implements Serializable {
         for (Items value : playerInventory) {
             if (value.getItemName().equalsIgnoreCase(itemName) && value.getItemType().equalsIgnoreCase("Treasure")) {
                 item = value;
-                exhibit.getItemsInExhibit().add(item);
+                itemForExhibit.add(item);
             }
         }
         if(item != null){

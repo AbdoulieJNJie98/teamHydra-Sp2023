@@ -24,6 +24,7 @@ public class Displayer implements Serializable {
         System.out.println("New Game");
         System.out.println("Load Save");
         System.out.println("Quit Game");
+
     }
 
     public void mainMenuAfterInput() {
