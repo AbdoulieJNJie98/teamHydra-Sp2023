@@ -147,7 +147,7 @@ public class Items  implements Serializable {
                 }
             }
             if (item != null){
-                player.setDefenseStat(player.getAttackStat()+ 10);
+                player.setAttackStat(player.getAttackStat()+ 10);
                 item.setItemStatus(true);
             }
         }
@@ -158,7 +158,17 @@ public class Items  implements Serializable {
                 }
             }
             if (item != null){
-                player.setDefenseStat(player.getAttackStat()+ 10);
+                player.setAttackStat(player.getAttackStat()+ 10);
+                item.setItemStatus(true);
+            }
+        }
+        if(playerInput.equalsIgnoreCase("Super Torpedo Upgrade ")) {
+            for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                if (!player.getPlayerInventory().get(i).isItemStatus()) {
+                    item = player.getPlayerInventory().get(i);
+                }
+            }
+            if (item != null){
                 item.setItemStatus(true);
             }
         }
