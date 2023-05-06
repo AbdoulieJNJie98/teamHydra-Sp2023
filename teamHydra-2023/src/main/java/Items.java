@@ -86,34 +86,6 @@ public class Items  implements Serializable {
         this.itemStatus = itemStatus;
     }
 
-    // method used to return the name of the room where the treasure is, based on the treasure map the player is inspecting
-    public String getWhereTheTreasureIs(String itemName, Map map, Player player){
-        // item variable used to reference the itemRoomID and match it with the room's itemID
-        Items item = null;
-        // String used to hold the room name of where the treasure can be found
-        String location = "";
-        // for loop used to search the player's inventory and set the item variable
-        for(int i = 0; i<player.getPlayerInventory().size(); i++){
-            // if statements used to determine which value the item will have
-            if(player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)){
-                item = player.getPlayerInventory().get(i);
-                // for loop used to search the array list of rooms and set the location variable equal to the desired room description
-                for(int j = 0; j < map.getArrayListOfRooms().size(); j++ ){
-                    // if statement used to determine the which room name will be displayed
-                    if(item.itemRoomID == map.getArrayListOfRooms().get(j).getItemID()){
-                        location = map.getArrayListOfRooms().get(j).getRoomDescription();
-                    }
-
-                }
-
-            }
-            else{
-                location = "Error occurred";
-            }
-        }
-        return location;
-    }
-
     // method used to change the player's states based on the item they're attempting to equipped
     // @Jason
     public void equipItem(String playerInput, Player player){
@@ -171,6 +143,89 @@ public class Items  implements Serializable {
             if (item != null){
                 item.setItemStatus(true);
             }
+        }
+    }
+
+    // method used when the player is attempting to pick up a treasure type item
+    public void pickupTreasure(Player player, Items item){
+    if (item != null && item.getItemName().equalsIgnoreCase("Belitung Shipwreck ")) {
+        // item instance used to help with the search of the player's inventory
+        Items treasureMap = null;
+        // for loop used to search player's inventory for a specific treasure map
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Treasure Map 1 ")) {
+                treasureMap = player.getPlayerInventory().get(i);
+            }
+        }
+        if (player.getPlayerInventory().contains(treasureMap)) {
+            player.getPlayerInventory().add(item);
+            System.out.println("You were able to obtain to the treasure with the help of the treasure map");
+        } else {
+            System.out.println("Your sonar is picking up some treasure, but you can't seem to find it");
+        }
+
+    } else if (item != null && item.getItemName().equalsIgnoreCase("The Titanic ")) {
+        // item instance used to help with the search of the player's inventory
+        Items treasureMap = null;
+        // for loop used to search player's inventory for a specific treasure map
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Treasure Map 2 ")) {
+                treasureMap = player.getPlayerInventory().get(i);
+            }
+        }
+        if (player.getPlayerInventory().contains(treasureMap)) {
+            player.getPlayerInventory().add(item);
+            System.out.println("You were able to obtain to the treasure with the help of the treasure map");
+        } else {
+            System.out.println("Your sonar is picking up some treasure, but you can't seem to find it");
+        }
+    } else if (item != null && item.getItemName().equalsIgnoreCase("Ancient Caesarean coins ")) {
+        // item instance used to help with the search of the player's inventory
+        Items treasureMap = null;
+        // for loop used to search player's inventory for a specific treasure map
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Treasure Map 3 ")) {
+                treasureMap = player.getPlayerInventory().get(i);
+            }
+        }
+        if (player.getPlayerInventory().contains(treasureMap)) {
+            player.getPlayerInventory().add(item);
+            System.out.println("You were able to obtain to the treasure with the help of the treasure map");
+        } else {
+            System.out.println("Your sonar is picking up some treasure, but you can't seem to find it");
+        }
+    }
+        else if (item != null && item.getItemName().equalsIgnoreCase("Wreck of the Nuestra Señora de Atocha ")) {
+        // item instance used to help with the search of the player's inventory
+        Items treasureMap = null;
+        // for loop used to search player's inventory for a specific treasure map
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Treasure Map 4 ")) {
+                treasureMap = player.getPlayerInventory().get(i);
+            }
+        }
+        if (player.getPlayerInventory().contains(treasureMap)) {
+            player.getPlayerInventory().add(item);
+            System.out.println("You were able to obtain to the treasure with the help of the treasure map");
+        } else {
+            System.out.println("Your sonar is picking up some treasure, but you can't seem to find it");
+        }
+    }
+        else if (item != null && item.getItemName().equalsIgnoreCase("Heracleion ")) {
+        // item instance used to help with the search of the player's inventory
+        Items treasureMap = null;
+        // for loop used to search player's inventory for a specific treasure map
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Treasure Map 5 ")) {
+                treasureMap = player.getPlayerInventory().get(i);
+            }
+        }
+        if (player.getPlayerInventory().contains(treasureMap)) {
+            player.getPlayerInventory().add(item);
+            System.out.println("You were able to obtain to the treasure with the help of the treasure map");
+        } else {
+            System.out.println("Your sonar is picking up some treasure, but you can't seem to find it");
+        }
         }
     }
 

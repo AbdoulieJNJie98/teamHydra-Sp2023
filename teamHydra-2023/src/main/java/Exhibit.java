@@ -18,7 +18,7 @@ public class Exhibit implements Serializable {
     public Exhibit() {
         itemsInExhibit = new ArrayList<>();
     }
-    public void displayExhibit() {
+    public void displayExhibit(ArrayList <Items> itemsInExhibit) {
         System.out.println("Exhibit");
         System.out.println("----------------------");
         System.out.println("Here are the treasures that you've found during your adventure.");
@@ -30,6 +30,10 @@ public class Exhibit implements Serializable {
     public void displayExhibitHelp() {
         System.out.println("To see the description of a treasure, type 'Inspect' followed by the name of the treasure.");
         System.out.println("To go back to the Main Menu, type 'Exit Exhibit'.");
+    }
+
+    public void setItemsInExhibit(ArrayList <Items> itemsInExhibit) {
+        this.itemsInExhibit = itemsInExhibit;
     }
 
 

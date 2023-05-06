@@ -155,19 +155,22 @@ public class Player implements Serializable {
     }
 
     //method used to add items to player's inventory
-    public void pickUpItem(String itemName, Rooms currentRoom) {
+    public void pickUpItem(String itemName, Rooms currentRoom, Player player) {
         // Items variable used to put an item in the player's inventory
         Items item = currentRoom.removeItemFromRoomInventory(itemName, currentRoom);
-        if(item!=null) {
+        if (item != null && (!item.getItemType().equalsIgnoreCase("Treasure"))) {
             playerInventory.add(item);
             System.out.println(item.getItemName() + "has been added to your inventory");
-        }
-        else {
+        } else if (item != null && item.getItemType().equalsIgnoreCase("Treasure")) {
+            item.pickupTreasure(player, item);
+        } else {
             System.out.println("That item is currently not in this room");
         }
     }
 
-    // method used to drop item from player's inventory, and leave them in the room the player is currently in
+
+
+        // method used to drop item from player's inventory, and leave them in the room the player is currently in
     public void dropItem(String itemName, Player player, Rooms currentRoom) {
         // Items variable used to put an item that is in the player's inventory, into the room's inventory
         Items item = null;
@@ -211,27 +214,17 @@ public class Player implements Serializable {
     }
 
     //method used to inspect item and will return the item's description
-    public void inspectItem(String itemName) {
+    public void inspectItem(String itemName, Player player) {
         // Items variable used to search for an item that is in the player's inventory, and display its description
         Items item = null;
         // for loop used to find and assign the dropped item to the items variable, so that it may be added to the current room's inventory
-        for (Items value : playerInventory) {
+        for (Items value : player.getPlayerInventory()) {
             if (value.getItemName().equalsIgnoreCase(itemName)) {
                 item = value;
             }
         }
         if(item != null){
             System.out.println(item.getItemName() + ": "+ item.getItemDescription());
-            if(itemName.equalsIgnoreCase("Treasure map 1")){
-                System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
-            }
-            else if(itemName.equalsIgnoreCase("Treasure map 2")){
-                System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
-            }
-           else if(itemName.equalsIgnoreCase("Treasure map 3")){
-                System.out.println(item.getItemDescription() + " " + item.getWhereTheTreasureIs(itemName, map, player) );
-            }
-
         }
         else {
             System.out.println("There is no item to inspect, please try again");
@@ -239,19 +232,20 @@ public class Player implements Serializable {
     }
 
     // method used to archive items
-    public void archive(String itemName, ArrayList<Items> itemForExhibit){
+    public void archive(String itemName, ArrayList<Items> itemForExhibit, Player player){
         // Items variable used to put an item that is in the player's inventory, into the exhibit
         Items item = null;
         // for loop used to find and assign the item the player is trying to archive,to the items variable
         // so that it can be added to the exhibit's array list of items
-        for (Items value : playerInventory) {
+        for (Items value : player.getPlayerInventory()) {
             if (value.getItemName().equalsIgnoreCase(itemName) && value.getItemType().equalsIgnoreCase("Treasure")) {
                 item = value;
-                itemForExhibit.add(item);
             }
         }
         if(item != null){
-            System.out.println(item.getItemName() + " has been sent to the exhibit");
+            itemForExhibit.add(item);
+            player.getPlayerInventory().remove(item);
+            System.out.println(item.getItemName() + "has been sent to the exhibit");
 
         }
         else {
@@ -280,10 +274,6 @@ public class Player implements Serializable {
         currentRoom.showSonarResult(currentRoom);
     }
 
-    // method used to print the map of the game
-    public void getMap(){
-        System.out.println(map.hashMapRooms);
-    }
 
     // method used to chang
 

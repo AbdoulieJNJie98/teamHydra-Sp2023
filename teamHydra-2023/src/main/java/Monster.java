@@ -27,11 +27,11 @@ public class Monster implements Serializable {
     }
 
     public int getMonsterID() {
-        return monsterID;
+        return this.monsterID;
     }
 
     public int getHealthPoints() {
-        return healthPoints;
+        return this.healthPoints;
     }
 
     public void setHealthPoints(int healthPoints) {
@@ -39,7 +39,7 @@ public class Monster implements Serializable {
     }
 
     public int getAttackStat() {
-        return attackStat;
+        return this.attackStat;
     }
 
     public void setAttackStat(int attackStat) {
@@ -47,14 +47,14 @@ public class Monster implements Serializable {
     }
 
     public int getDefenseStat() {
-        return defenseStat;
+        return this.defenseStat;
     }
 
     public void setDefenseStat(int defenseStat) {
         this.defenseStat = defenseStat;
     }
 
-    public String getName() {return monsterName;}
+    public String getName() {return this.monsterName;}
 
     public void setName(String name) {this.monsterName = name;}
 
@@ -62,8 +62,8 @@ public class Monster implements Serializable {
     public void getStatusForMonster(Monster monster){
         System.out.println("Status:\n" +
                 "Name: " + monster.getName() + "\n" +
-                "HP: " + monster.getHealthPoints() +
-                "ATK: " + monster.getAttackStat() +
+                "HP: " + monster.getHealthPoints() + " " +
+                "ATK: " + monster.getAttackStat() + " " +
                 "DEF: " + monster.getDefenseStat());
     }
 

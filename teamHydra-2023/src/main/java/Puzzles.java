@@ -86,58 +86,60 @@ public class Puzzles implements Serializable {
 
     // method used to remove the puzzle in the current puzzle room the player is in
     // and allows the player to continue moving south passed the puzzle room.
-    public void resolvePuzzle(Player player){
+    public void resolvePuzzle(Player player) {
         // item variable used to determine if the player has a specific item in their inventory
         Items item = null;
         // puzzle variable used to access the puzzle methods in the current room
         Puzzles puzzles = player.getCurrentRoom().getPuzzlesInRoom().get(0);
         // for loop used to search through the player's current inventory
-        for(int i = 0; i<player.getPlayerInventory().size(); i++){
+        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
 
-            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade ")){
+            if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade ")) {
                 item = player.getPlayerInventory().get(i);
                 // if statement that is used to see if the current room's puzzle ID is equal to the corresponding puzzle's ID number
                 // as well as if the player has the item equipped to determine if the room south of the current room will be locked or not
-                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 4 ){
+                if (item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 4) {
                     player.getCurrentRoom().setIsSouthRoomLocked(false);
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     // statement used to help with removing the puzzle that has been solved from the game
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
 
-                }
-                else {
+                } else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
-            }
-            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade ")){
+            } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade ")) {
                 item = player.getPlayerInventory().get(i);
-                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 1 ){
+                if (item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 1) {
                     player.getCurrentRoom().setIsSouthRoomLocked(false);
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
 
-                }
-                else {
+                } else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
-            }
-            else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade ")){
+            } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade ")) {
                 item = player.getPlayerInventory().get(i);
-                if(item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 2 ){
+                if (item.isItemStatus() && player.getCurrentRoom().getPuzzleID() == 2) {
                     player.getCurrentRoom().setIsSouthRoomLocked(false);
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
-                   ;
-                }
-                else {
+                } else {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
-            }
-            else{
-                System.out.println("There is no puzzle in this room");
+            } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Antikythera mechanism ")) {
+                item = player.getPlayerInventory().get(i);
+                if (player.getCurrentRoom().getPuzzleID() == 3) {
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
+                    player.getCurrentRoom().setPuzzleID(-1);
+                    removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
+                    // switches the item type to treasure so that the Antikythera mechanism can be archived
+                    item.setItemType("Treasure");
+                } else {
+                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
+                }
             }
         }
     }

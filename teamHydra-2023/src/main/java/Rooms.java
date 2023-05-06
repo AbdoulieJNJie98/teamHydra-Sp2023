@@ -168,6 +168,15 @@ public class Rooms implements Serializable {
                 if (gameMap.getArrayListOfItems().get(i).getItemRoomID() == roomID) {
                     roomInventory.add(gameMap.getArrayListOfItems().get(i));
                     itemsLoaded = true;
+//                    // if statement used to make sure the treasure maps aren't already in a room
+//                    if ((gameMap.getArrayListOfItems().contains(i) && gameMap.getArrayListOfItems().get(i).getItemName().equalsIgnoreCase("Treasure map 2 ")
+//                            && roomInventory.contains(gameMap.getArrayListOfItems().get(i))) ||
+//                            ((gameMap.getArrayListOfItems().get(i).getItemName().equalsIgnoreCase("Treasure map 2 ")
+//                                    && roomInventory.contains(gameMap.getArrayListOfItems().get(i))) ||
+//                                    ((gameMap.getArrayListOfItems().get(i).getItemName().equalsIgnoreCase("Treasure map 3 ")
+//                                            && roomInventory.contains(gameMap.getArrayListOfItems().get(i)))))) {
+//                        roomInventory.remove(gameMap.getArrayListOfItems().get(i));
+//                    }
                 }
             }
         }
@@ -394,6 +403,14 @@ public class Rooms implements Serializable {
             // the room's inventory
             if (currentRoom.getRoomInventory().get(i).getItemName().equalsIgnoreCase(itemName)) {
                 item = currentRoom.getRoomInventory().get(i);
+                currentRoom.getRoomInventory().remove(i);
+            }
+            else if(currentRoom.getRoomInventory().get(i).getItemName().equalsIgnoreCase(itemName) && (itemName.equalsIgnoreCase("Treasure Map 1 ")
+            || itemName.equalsIgnoreCase("Treasure Map 2 ") || itemName.equalsIgnoreCase("Treasure Map 3 ")||
+                    itemName.equalsIgnoreCase("Treasure Map  4")))
+            {
+                item = currentRoom.getRoomInventory().get(i);
+                currentRoom.getRoomInventory().get(i).setItemRoomID(-1);
                 currentRoom.getRoomInventory().remove(i);
             }
 
