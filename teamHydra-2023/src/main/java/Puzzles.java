@@ -105,8 +105,6 @@ public class Puzzles implements Serializable {
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
 
-                } else {
-                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade ")) {
                 item = player.getPlayerInventory().get(i);
@@ -115,9 +113,6 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
-
-                } else {
-                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade ")) {
                 item = player.getPlayerInventory().get(i);
@@ -126,8 +121,6 @@ public class Puzzles implements Serializable {
                     System.out.println(puzzles.getDescriptionIfPuzzleIsSolved());
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
-                } else {
-                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Antikythera mechanism ")) {
                 item = player.getPlayerInventory().get(i);
@@ -137,10 +130,11 @@ public class Puzzles implements Serializable {
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
                     // switches the item type to treasure so that the Antikythera mechanism can be archived
                     item.setItemType("Treasure");
-                } else {
-                    System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             }
+        }
+        if(player.getPlayerInventory().size() == 0){
+            System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
         }
     }
 
