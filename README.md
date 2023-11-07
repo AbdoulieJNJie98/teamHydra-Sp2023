@@ -8,3 +8,9 @@ relevant/ interactive data from various text files
 - [Prerquisties](#prerquisties)
 - [APIs](#apis)
 - [Text Files](#textfiles)
+
+## Prerquisties
+
+## APIs
+
+## Text Files
