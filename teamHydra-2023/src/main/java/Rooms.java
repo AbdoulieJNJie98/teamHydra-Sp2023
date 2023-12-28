@@ -401,7 +401,9 @@ public class Rooms implements Serializable {
         for (int i = 0; i < currentRoom.getRoomInventory().size(); i++) {
             // if statement used to check if the player's input matches the name of an item in
             // the room's inventory
-            if (currentRoom.getRoomInventory().get(i).getItemName().equalsIgnoreCase(itemName)) {
+            if (currentRoom.getRoomInventory().get(i).getItemName().equalsIgnoreCase(itemName) && (!itemName.equalsIgnoreCase("Treasure Map 1 ")
+                    || !itemName.equalsIgnoreCase("Treasure Map 2 ") || !itemName.equalsIgnoreCase("Treasure Map 3 ")||
+                    !itemName.equalsIgnoreCase("Treasure Map  4") || currentRoom.getRoomInventory().get(i).getItemType().equalsIgnoreCase("Treasure "))) {
                 item = currentRoom.getRoomInventory().get(i);
                 currentRoom.getRoomInventory().remove(i);
             }

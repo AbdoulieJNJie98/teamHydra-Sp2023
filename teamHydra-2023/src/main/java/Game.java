@@ -377,6 +377,7 @@ public class Game implements Serializable {
 
                 System.out.println("What will you do? Your options are Attack, Use, Flee, Check, Status, Inventory ");
                 String playerInput = input.nextLine();
+                String[] playerInputParts = playerInput.split(" ");
                 if (playerInput.equalsIgnoreCase("attack")) {
                     int damage = player.getAttackStat() - currentMonster.getDefenseStat();
                     if (damage > 0) {
@@ -387,25 +388,28 @@ public class Game implements Serializable {
                         System.out.println("Your attack did no damage to the " + currentMonster.getName());
                     }
                 } else if (playerInput.equalsIgnoreCase("Use Torpedo")) {
+                    playerInput = getItemName(playerInputParts);
                     game.useItemInCombat(playerInput, currentMonster, player);
 
                 } else if (playerInput.equalsIgnoreCase("Use Super Torpedo")) {
+                    playerInput = getItemName(playerInputParts);
                     game.useItemInCombat(playerInput, currentMonster, player);
                 } else if (playerInput.equalsIgnoreCase("flee")) {
                     System.out.println("You have successfully fled!");
-                    player.getCurrentRoom().setRoomID(player.getPreviousRoom().getRoomID());
+                    player.setCurrentRoom(player.getPreviousRoom());
                     combatState = false;
                     exploreState = true;
                     startGame(player, map, exhibit);
 
                 } else if (playerInput.equalsIgnoreCase("Use repair kit")) {
+                    playerInput = getItemName(playerInputParts);
                     game.useItemInCombat(playerInput, null, player) ;
                 } else if (playerInput.equalsIgnoreCase("check")) {
                     player.getCurrentRoom().getMonstersInRoom().get(0).getStatusForMonster(player.getCurrentRoom().getMonstersInRoom().get(0));
                 } else if (playerInput.equalsIgnoreCase("status")) {
                     player.getStatusForPlayer(player);
                 } else if (playerInput.equalsIgnoreCase("inventory")) {
-                    player.getPlayerInventory();}
+                    player.getCurrentInventory();}
                 else {
                     System.out.println("Invalid Command");
                 }
@@ -413,7 +417,8 @@ public class Game implements Serializable {
                 // Monster attacks after player's turn
                 if (currentMonster.getHealthPoints() > 0) {
                     int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
-                    if (monsterDamage > 0 && (!playerInput.equalsIgnoreCase("check")) && (!playerInput.equalsIgnoreCase("status"))) {
+                    if (monsterDamage > 0 && (!playerInput.equalsIgnoreCase("check")) && (!playerInput.equalsIgnoreCase("status")) &&
+                            (!playerInput.equalsIgnoreCase("inventory")) && (!playerInput.equalsIgnoreCase("flee"))) {
                         player.setHealthPoints(player.getHealthPoints() - monsterDamage);
                         System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
                     } else {
@@ -459,6 +464,12 @@ public class Game implements Serializable {
                 player.getPlayerInventory().remove(item);
                 currentMonster.setHealthPoints(currentMonster.getHealthPoints()-30);
                 System.out.println("You fire a torpedo at the enemy");
+                    int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                    if (damage > 0) {
+                        currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                        System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                        System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                    }
             }
 
             if (item == null){
@@ -470,6 +481,13 @@ public class Game implements Serializable {
                 if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
+                    int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                    if (damage > 0) {
+                        currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                        System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                        System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                    }
+
                 }
             }
             if (item != null) {
@@ -530,9 +548,9 @@ public class Game implements Serializable {
 //        }
 //        playerInput = input.nextLine();
         // for loop used to determine if the player has the item they're attempting to use in their inventory
-        if (itemName.equalsIgnoreCase("Repair Kit")) {
+        if (itemName.equalsIgnoreCase("Repair Kit ")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().contains(itemName) &&
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }

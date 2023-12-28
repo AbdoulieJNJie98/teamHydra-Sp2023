@@ -48,6 +48,12 @@ public class Player implements Serializable {
 
 
     // getter used to access room methods
+    public void setCurrentRoom(Rooms currentRoom) {
+        this.currentRoom = currentRoom;
+    }
+    public void setPreviousRoom(Rooms previousRoom) {
+        this.previousRoom = previousRoom;
+    }
     public Rooms getCurrentRoom() {
         return currentRoom;
     }
