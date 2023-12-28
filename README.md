@@ -13,6 +13,7 @@ This game reads in multiple text files that contain the information needed to ge
 # rooms.txt
  - This text file contains the information that makes up each room that make up the map.
  - This is an example of how the information is stored, and defined:
+
    ```
     roomID~roomVistedStatus~roomName~northRoomID~southRoomID~westRoomID~eastRoomID~roomInventory~puzzlesInRoom~monstersInRoom~southRoomLockedStatus
    
@@ -21,6 +22,7 @@ This game reads in multiple text files that contain the information needed to ge
 # Items.txt
  - This text file contains the information that makes up each item type.
  - This is an example of how the information is stored, and defined:
+   
    ```
     roomID~roomVistedStatus~roomName~northRoomID~southRoomID~westRoomID~eastRoomID~roomInventory~puzzlesInRoom~monstersInRoom~southRoomLockedStatus
    
@@ -29,6 +31,7 @@ This game reads in multiple text files that contain the information needed to ge
 # monster.txt
  - This text file contains the information that makes up each monster type.
  - This is an example of how the information is stored, and defined:
+
    ```
     roomID~roomVistedStatus~roomName~northRoomID~southRoomID~westRoomID~eastRoomID~roomInventory~puzzlesInRoom~monstersInRoom~southRoomLockedStatus
    
@@ -37,6 +40,7 @@ This game reads in multiple text files that contain the information needed to ge
 # Puzzle.txt
  - This text file contains the information that makes up each puzzle type.
  - This is an example of how the information is stored, and defined:
+
    ```
     roomID~roomVistedStatus~roomName~northRoomID~southRoomID~westRoomID~eastRoomID~roomInventory~puzzlesInRoom~monstersInRoom~southRoomLockedStatus
    
