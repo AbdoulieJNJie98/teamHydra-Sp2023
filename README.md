@@ -14,7 +14,7 @@ This game reads in multiple text files that contain the information needed to ge
  - This text file contains the information that makes up each room that make up the map.
  - This is an example of how the information is stored, and defined:
    ```
-   roomID[~]roomVistedStatus~roomName'~'northRoomID~southRoomID'~'westRoomID~eastRoomID'~'roomInventory~puzzlesInRoom'~'monstersInRoom'~'statusOfSouthRoomBeingLocked
+   roomID~roomVistedStatus~roomName'~'northRoomID~southRoomID'~'westRoomID~eastRoomID'~'roomInventory~puzzlesInRoom'~'monstersInRoom'~'statusOfSouthRoomBeingLocked
    ```
 # Items.txt
 # monster.txt
