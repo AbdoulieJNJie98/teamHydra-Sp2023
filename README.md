@@ -7,8 +7,8 @@ This project is a text-based video game that contains one player, a map of 20 ro
 
 ## User-Manuale
 This game reads in multiple text files that contain the information needed to generate the map, items, monsters, and puzzles used throughout the game.
-This is a list of all the commands needed to play the game, and what theyd do:
-- |help| : The help command prints a list of all the commands avaible in the game, and what each command does
+This is a list of all the commands needed to play the game, and what they do:
+- |help| : The help command prints a list of all the commands available in the game, and what each command does
  
 - |north or n| |south or s| |west or w| |east or e|: Theses commands  are what are needed to move to different rooms in the game
  
