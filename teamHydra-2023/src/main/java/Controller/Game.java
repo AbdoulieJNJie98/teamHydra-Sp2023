@@ -277,12 +277,14 @@ Game implements Serializable {
         startGame(player, gameMap, exhibit.getItemsInExhibit(itemsInExhbit));
 
     }
+    private static final String SAVE_FOLDER = "saves/"; // Change this to your desired folder
 
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit) {
         System.out.println("Please enter the name of your save file");
         String saveGameFile = input.nextLine();
         try {
-            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(saveGameFile + ".dat"));
+            ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_FOLDER + saveGameFile + ".dat"));
+            out.writeObject(gameMap);
             out.writeObject(gameMap);
             out.writeObject(player);
             out.writeObject(itemsInExhibit);
@@ -297,8 +299,7 @@ Game implements Serializable {
         ArrayList<Object> result = new ArrayList<>();
         while (true) {
             try {
-                ObjectInputStream load = new ObjectInputStream(new FileInputStream(saveFileName + ".dat"));
-                while (true) {
+                ObjectInputStream load = new ObjectInputStream(new FileInputStream(SAVE_FOLDER + saveFileName + ".dat"));                while (true) {
                     Object obj = load.readObject();
                     result.add(obj);
                 }
