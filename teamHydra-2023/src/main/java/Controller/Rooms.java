@@ -1,3 +1,10 @@
+package Controller;
+
+import Model.Items;
+import Model.Map;
+import Model.Monster;
+import Model.Puzzles;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 

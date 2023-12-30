@@ -1,6 +1,9 @@
+package View;
+
+import Model.Items;
+
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 /*
     The exhibit class is used to hold the array list of items the player has archived, as well as display the exhibit menu

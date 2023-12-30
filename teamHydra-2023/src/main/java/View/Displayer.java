@@ -1,14 +1,15 @@
-/*
+package View;/*
  The Displayer class will be used to display out puts to the console that steam from the driver class game. So, any output the user would see
  due to an action caused by interacting with the game class directly, will be displayed from this class. However, this class will not be used
  to display every output to the console, since some outputs will reference information that is local to specific classes.
  */
+import Model.Player;
+
 import java.io.Serializable;
 
 // Authors: @Abdoulie, Jason, Amara
 
 public class Displayer implements Serializable {
-    //private Player player = new Player();
     String menuInput = "";
     Player player;
 
