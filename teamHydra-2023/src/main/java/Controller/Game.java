@@ -93,7 +93,7 @@ Game implements Serializable {
                 exploreState = true;
                 game.startGame(player, map, exhibit.getItemsInExhibit());
 
-            } else if (menuOptionsPart[0].equalsIgnoreCase("View.Exhibit")) {
+            } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")) {
                 mainMenuAfterInputState = false;
                 exhibitState = true;
                 game.startExhibit(exhibit.getItemsInExhibit());
@@ -418,15 +418,12 @@ Game implements Serializable {
                     System.out.println("Invalid Command");
                 }
 
-                // Model.Monster attacks after player's turn
+                // Monster attacks after player's turn
                 if (currentMonster.getHealthPoints() > 0) {
                     int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
-                    if (monsterDamage > 0 && (!playerInput.equalsIgnoreCase("check")) && (!playerInput.equalsIgnoreCase("status")) &&
-                            (!playerInput.equalsIgnoreCase("inventory")) && (!playerInput.equalsIgnoreCase("flee"))) {
+                    if (monsterDamage > 0 && (playerInput.equalsIgnoreCase("attack")) || (playerInput.equalsIgnoreCase("user"))){
                         player.setHealthPoints(player.getHealthPoints() - monsterDamage);
                         System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
-                    } else {
-                        System.out.println(currentMonster.getName() + "'s attack did no damage to you!");
                     }
                 }
 
@@ -602,7 +599,7 @@ Game implements Serializable {
                                 System.out.println(item.getItemDescription() + '\n');
                             }
                         }
-                    } else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("View.Exhibit")) {
+                    } else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("Exhibit")) {
                         System.out.println("Returning to main menu...");
                         exhibitState = false;
                         mainMenuAfterInputState = true;

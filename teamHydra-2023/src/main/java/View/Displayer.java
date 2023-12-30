@@ -56,34 +56,43 @@ public class Displayer implements Serializable {
 
     public void displayCommands() {
         System.out.println("List of commands:\n" +
-                "|north or n| |south or s| |west or w| |east or e| \n" +
-                "|The commands above are what are needed to move to different zones in the game|\n" +
-                "|-----------------------------------------------------|\n" +
-                "|pickup| |drop| |equip| |use| |inventory| |explore area| |sonar| |quit| |archive|\n" +
-                "|start puzzle| |get puzzle hint| |fight| |status| |inspect monster| |solve puzzle| |exit game| |map| \n"+
-                "|-------------------------------------------------------------------------------------|\n" +
-                "|The pickup command allows you to add items to your inventory by entering the command\n" +
-                "followed by the name of the item you wish to add in your inventory. The item must be present in the\n" +
-                "room you are currently in to be added successfully to your inventory|\n" +
-                "|The drop command allows you to remove items from your inventory by entering the command\n" +
-                "followed by the item you wish to remove from your inventory.|\n" +
-                "|The use command allows you to use an item as long as it is in your inventory; once used, the item will be removed\n" +
-                "from your inventory|\n"+
-                "|The inventory command will display all the items currently in your inventory\n|" +
-                "|The explore area command will display the current room's description, any items, monsters and puzzles in the room|\n" +
-                "|The sonar command will display the room names and monsters of the rooms that are connected to the current room|\n" +
-                "|The inspect command will display the designated item's description, as long as it is in your inventory|\n" +
-                "|The archive command will send the designated item to the exhibit, removing it from your inventory|\n" +
-                "|The start puzzle command will allow you to interact with the designated puzzle in the current room|\n" +
-                "|The get puzzle hint will display the hint associated with the current puzzle you are interacting with|\n" +
-                "|The fight command followed by the name of the monster you wish to fight \n" +
-                " will initiate a combat loop between you and the monster|\n" +
-                "|The status command will display your name, current HP, current attack power, and current defense level|\n"+
-                "|The inspect monster command will display the monster's name, current HP, current attack power, and current defense level|\n"+
-                "|The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with\n"+
-                "|The exit game command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.|\n" +
-                "|The map command will display the zone numbers and zone names found throughout the game|\n" +
-                "|--------------------------------------------------------------------------------------------------------------------|\n" );
+                 "help| : The help command prints a list of all the commands available in the game, and what each command does\n" +
+                "\n" +
+                "|north or n| |south or s| |west or w| |east or e|: Theses commands are what are needed to move to different rooms in the game\n" +
+                "\n" +
+                "|pickup| : The pickup command allows you to add items to your inventory by entering the command followed by the name of the item you wish to add in your inventory. The item must be present in the room you are currently in to be added successfully to your inventory\n" +
+                "\n" +
+                "|drop| : The drop command allows you to remove items from your inventory by entering the command followed by the item you wish to remove from your inventory.\n" +
+                "\n" +
+                "|equip| : The equip command allows you to equip an item as long as it is in your inventory; once equipped, the item will remain in your inventory.\n" +
+                "\n" +
+                "|use| : The use command allows you to use an item as long as it is in your inventory; once used, the item will be removed from your inventory.\n" +
+                "\n" +
+                "|inventory| : The inventory command will display all the items currently in your inventory.\n" +
+                "\n" +
+                "|explore area| : The explore area command will display the current room's description, any items, monsters and puzzles in the room.\n" +
+                "\n" +
+                "|sonar| : The sonar command will display the room names and monsters of the rooms that are connected to the current room.\n" +
+                "\n" +
+                "|inspect| The inpspect command, followed by the name of an item in your inventory, prints the item's description.\n" +
+                "\n" +
+                "|archive| : The archive command will send the designated item to the exhibit, removing it from your inventory.\n" +
+                "\n" +
+                "|start puzzle| : The start puzzle command will allow you to interact with the designated puzzle in the current room.\n" +
+                "\n" +
+                "|get puzzle hint| :The get puzzle hint will display the hint associated with the current puzzle you are interacting with.\n" +
+                "\n" +
+                "|fight| : The fight command followed by the name of the monster you wish to fight will initiate a combat loop between you and the monster.\n" +
+                "\n" +
+                "|status| : The status command will display your name, current HP, current attack power, and current defense level.\n" +
+                "\n" +
+                "|inspect monster| : The inspect monster command will display the monster's name, current HP, current attack power, and current defense level.\n" +
+                "\n" +
+                "|solve puzzle| : The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with.\n" +
+                "\n" +
+                "|exit game| :The exit game command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.\n" +
+                "\n" +
+                "|map| : The map command will display the zone numbers and zone names found throughout the game.\n");
     }
 
     public void exitGameFirstPrompt(){
@@ -107,7 +116,7 @@ public class Displayer implements Serializable {
 
     public void invalidInputDuringGame(){
         System.out.println("The command you entered is invalid, please try again\n" +
-                "{Remember, you can type help to get a list of the commands!}");
+                "{Remember, you can type help to get a list of  all the commands!}");
     }
 
     public void invalidInputForMenu(){
