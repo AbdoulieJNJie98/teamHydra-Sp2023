@@ -15,3 +15,6 @@
 local.properties
 *.lock
 *.dat
+buildOutputCleanup.lock
+executionHistory.lock
+
