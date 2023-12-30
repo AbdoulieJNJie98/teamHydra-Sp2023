@@ -119,8 +119,7 @@ Game implements Serializable {
 
     }
 
-    private boolean startLoadedGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit, String saveFileName) {
-        Boolean loadedGameStarted = true;
+    private void startLoadedGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit, String saveFileName) {
         // Load the game state if there's a saved game
         ArrayList<Object> loadedObjects = loadSaveFile(saveFileName);
         if (!loadedObjects.isEmpty()) {
@@ -130,7 +129,6 @@ Game implements Serializable {
             exploreState = true;
             startGame(player, map, itemInExhibit);
         }
-        return loadedGameStarted;
     }
 
     private void startGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit) {
@@ -285,7 +283,6 @@ Game implements Serializable {
         try {
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_FOLDER + saveGameFile + ".dat"));
             out.writeObject(gameMap);
-            out.writeObject(gameMap);
             out.writeObject(player);
             out.writeObject(itemsInExhibit);
             out.close();
@@ -295,11 +292,12 @@ Game implements Serializable {
         }
     }
 
-    public ArrayList<Object>  loadSaveFile(String saveFileName) {
+    public ArrayList<Object> loadSaveFile(String saveFileName) {
         ArrayList<Object> result = new ArrayList<>();
         while (true) {
             try {
-                ObjectInputStream load = new ObjectInputStream(new FileInputStream(SAVE_FOLDER + saveFileName + ".dat"));                while (true) {
+                ObjectInputStream load = new ObjectInputStream(new FileInputStream(SAVE_FOLDER + saveFileName + ".dat"));
+                while (true) {
                     Object obj = load.readObject();
                     result.add(obj);
                 }
