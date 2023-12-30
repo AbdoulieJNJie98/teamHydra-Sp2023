@@ -20,7 +20,7 @@ Game implements Serializable {
     private static Game game = new Game();
 
     private Exhibit exhibit = new Exhibit();
-
+    private ArrayList<Items> itemsInExhbit = new ArrayList<>();
 
     private Player player = new Player();
 
@@ -30,16 +30,18 @@ Game implements Serializable {
     private boolean puzzleState;
     private boolean exhibitState;
     private boolean mainMenuBeforeInputState;
-    private boolean quitGameState;
+    private boolean exitGameState;
     private boolean gameOverState;
     private boolean mainMenuAfterInputState;
+
+    // Boolean used to determine if the loadSaveFile method has been ran already
+    private boolean loadSaveFileHasBeenRan = false;
 
 
     // default constructor
     public Game() {
 
     }
-
 
 
     public void firstMainMenu() {
@@ -51,26 +53,29 @@ Game implements Serializable {
         // if statement used    to catch invalid inputs
         // while loop that contains decision statements used to determine if the user will create a new game, or load a game
         while ((mainMenuBeforeInputState)) {
-            try{
-            if (menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                mainMenuBeforeInputState = false;
-                mainMenuAfterInputState = true;
-                game.createNewGame();
-            } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Save")) {
-                mainMenuBeforeInputState = false;
-                mainMenuAfterInputState = true;
-                game.loadSaveFile();
-            } else if (menuOptionsPart[0].equalsIgnoreCase("Quit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                display.exitGamePromptForNoPart2();
-                System.exit(0);
-            } else {
-                display.invalidInputForMenu();
-                menuOptions = input.nextLine();
-                menuOptionsPart = menuOptions.split(" ");
+            try {
+                if (menuOptionsPart[0].equalsIgnoreCase("New") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                    mainMenuBeforeInputState = false;
+                    mainMenuAfterInputState = true;
+                    game.createNewGame();
+                } else if (menuOptionsPart[0].equalsIgnoreCase("Load") && menuOptionsPart[1].equalsIgnoreCase("Save")) {
+                    System.out.println("Please enter save file name");
+                    String saveFileName = input.nextLine();
+                    game.loadSaveFile(saveFileName);
+                    mainMenuBeforeInputState = false;
+                    mainMenuAfterInputState = true;
+                    secondMainMenu(saveFileName);
+                } else if (menuOptionsPart[0].equalsIgnoreCase("Exit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                    display.exitGamePromptForNoPart2();
+                    System.exit(0);
+                } else {
+                    display.invalidInputForMenu();
+                    menuOptions = input.nextLine();
+                    menuOptionsPart = menuOptions.split(" ");
 
-            }
+                }
 
-        }catch (ArrayIndexOutOfBoundsException AOB) {
+            } catch (ArrayIndexOutOfBoundsException AOB) {
                 display.invalidInputForMenu();
                 menuOptions = input.nextLine();
                 menuOptionsPart = menuOptions.split(" ");
@@ -80,38 +85,52 @@ Game implements Serializable {
 
     }
 
-    public void secondMainMenu() {
+    public void secondMainMenu(String saveFileName) {
         // boolean used to dictate if the user enters a valid input
+//        mainMenuAfterInputState = true;
         display.mainMenuAfterInput();
         String menuOptions = input.nextLine();
         String[] menuOptionsPart = menuOptions.split(" ");
         // while loop that contains decision statements used to determine if the user will create a new game, or load a game
         while ((mainMenuAfterInputState)) {
-            try{
-            if (menuOptionsPart[0].equalsIgnoreCase("Start") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                mainMenuAfterInputState = false;
-                exploreState = true;
-                game.startGame(player, map, exhibit.getItemsInExhibit());
+            try {
+                if (menuOptionsPart[0].equalsIgnoreCase("Start") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                    mainMenuAfterInputState = false;
+                    game.startLoadedGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit), saveFileName);
 
-            } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")) {
-                mainMenuAfterInputState = false;
-                exhibitState = true;
-                game.startExhibit(exhibit.getItemsInExhibit());
-            } else if (menuOptionsPart[0].equalsIgnoreCase("Quit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
-                display.exitGamePromptForNoPart2();
-                System.exit(0);
-            } else {
-                display.invalidInputForMenu();
-                menuOptions = input.nextLine();
-                menuOptionsPart = menuOptions.split(" ");
-            }
-            }catch (ArrayIndexOutOfBoundsException AOB) {
+                } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")) {
+                    mainMenuAfterInputState = false;
+                    exhibitState = true;
+                    game.startExhibit(exhibit.getItemsInExhibit(itemsInExhbit), saveFileName);
+                } else if (menuOptionsPart[0].equalsIgnoreCase("Exit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
+                    display.exitGamePromptForNoPart2();
+                    System.exit(0);
+                } else {
+                    display.invalidInputForMenu();
+                    menuOptions = input.nextLine();
+                    menuOptionsPart = menuOptions.split(" ");
+                }
+            } catch (ArrayIndexOutOfBoundsException AOB) {
                 display.invalidInputForMenu();
                 menuOptions = input.nextLine();
                 menuOptionsPart = menuOptions.split(" ");
             }
         }
 
+    }
+
+    private boolean startLoadedGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit, String saveFileName) {
+        Boolean loadedGameStarted = true;
+        // Load the game state if there's a saved game
+        ArrayList<Object> loadedObjects = loadSaveFile(saveFileName);
+        if (!loadedObjects.isEmpty()) {
+            gameMap = (Map) loadedObjects.get(0);
+            player = (Player) loadedObjects.get(1);
+            itemInExhibit = (ArrayList<Items>) loadedObjects.get(2);
+            exploreState = true;
+            startGame(player, map, itemInExhibit);
+        }
+        return loadedGameStarted;
     }
 
     private void startGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit) {
@@ -132,10 +151,10 @@ Game implements Serializable {
                         || playerInputParts[0].equalsIgnoreCase("east") || playerInputParts[0].equalsIgnoreCase("e")
                         || playerInputParts[0].equalsIgnoreCase("west") || playerInputParts[0].equalsIgnoreCase("w")) {
                     player.move(playerInput);
-                } else if (playerInputParts[0].equalsIgnoreCase("Exit") && playerInputParts[1].equalsIgnoreCase("Game")) {
+                } else if ((playerInputParts[0].equalsIgnoreCase("Exit")) && playerInputParts[1].equalsIgnoreCase("Game")) {
                     exploreState = false;
-                    quitGameState = true;
-                    quitGame(playerInput, map, player, exhibit.getItemsInExhibit());
+                    exitGameState = true;
+                    exitGame(playerInput, map, player, exhibit.getItemsInExhibit(itemInExhibit));
                 } else if (playerInputParts[0].equalsIgnoreCase("pickup") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
                     player.pickUpItem(playerInput, player.getCurrentRoom(), player);
@@ -151,7 +170,7 @@ Game implements Serializable {
                     player.getCurrentInventory();
                 } else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
-                    player.archive(playerInput, exhibit.getItemsInExhibit(), player);
+                    player.archive(playerInput, exhibit.getItemsInExhibit(itemInExhibit), player);
                 } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                     player.sonar();
                 } else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
@@ -169,11 +188,11 @@ Game implements Serializable {
                     playerInput = getItemName(playerInputParts);
                     exploreState = false;
                     combatState = true;
-                    combat(playerInput, player, map, exhibit.getItemsInExhibit());
+                    combat(playerInput, player, map, exhibit.getItemsInExhibit(itemInExhibit));
                 } else if ((playerInputParts[0].equalsIgnoreCase("status"))) {
                     player.getStatusForPlayer(player);
                 } else if ((playerInputParts[0].equalsIgnoreCase("Save")) && playerInputParts[1].equalsIgnoreCase("Game")) {
-                    game.saveGame(gameMap, player, exhibit.getItemsInExhibit());
+                    game.saveGame(gameMap, player, exhibit.getItemsInExhibit(itemInExhibit));
                 } else if ((playerInputParts[0].equalsIgnoreCase("map"))) {
                     display.displayMap();
                     System.out.println("Your currently location: " + player.getCurrentRoom().getRoomName());
@@ -209,15 +228,15 @@ Game implements Serializable {
         return puzzleName;
     }
 
-    public void quitGame(String playerInput, Map gameMap, Player player, ArrayList<Items> exhibit) {
-        while (quitGameState) {
+    public void exitGame(String playerInput, Map gameMap, Player player, ArrayList<Items> exhibit) {
+        while (exitGameState) {
             display.exitGameFirstPrompt();
             playerInput = input.nextLine();
             if (playerInput.equalsIgnoreCase("yes")) {
-                //display.exitGamePromptForYes();
+                //exitGamePromptForYes();
                 saveGame(gameMap, player, exhibit);
                 System.out.println("Thanks for playing!");
-                quitGameState = false;
+                exitGameState = false;
                 System.exit(0);
             } else if (playerInput.equalsIgnoreCase("no")) {
                 display.exitGamePromptForNoPart1();
@@ -227,16 +246,15 @@ Game implements Serializable {
                     // display.exitGamePromptForYes();
                     saveGame(gameMap, player, exhibit);
                     System.out.println("Thanks for playing!");
-                    quitGameState = false;
+                    exitGameState = false;
                     System.exit(0);
                 } else if (playerInput.equalsIgnoreCase("yes")) {
                     display.exitGamePromptForNoPart2();
-                    quitGameState = false;
+                    exitGameState = false;
                     System.exit(0);
                 }
             } else {
                 display.invalidInputForMenu();
-
 
             }
         }
@@ -255,7 +273,8 @@ Game implements Serializable {
         setPlayerName(player);
         display.welcomeTextPart2(player);
         exploreState = true;
-        startGame(player, gameMap, exhibit.getItemsInExhibit());
+        exhibit.getItemsInExhibit(itemsInExhbit);
+        startGame(player, gameMap, exhibit.getItemsInExhibit(itemsInExhbit));
 
     }
 
@@ -270,15 +289,13 @@ Game implements Serializable {
             out.close();
             System.out.println("Game saved to " + saveGameFile);
         } catch (IOException e) {
-            System.out.println("An error occured when trying to save " + e.getMessage());
+            System.out.println("An error occurred when trying to save " + e.getMessage());
         }
     }
 
-    public ArrayList<Object> loadSaveFile() {
+    public ArrayList<Object>  loadSaveFile(String saveFileName) {
         ArrayList<Object> result = new ArrayList<>();
         while (true) {
-            System.out.println("Please enter save file name");
-            String saveFileName = input.nextLine();
             try {
                 ObjectInputStream load = new ObjectInputStream(new FileInputStream(saveFileName + ".dat"));
                 while (true) {
@@ -289,8 +306,10 @@ Game implements Serializable {
                 System.out.println("An error occurred: " + e.getMessage());
                 firstMainMenu();
             } catch (EOFException e) {
-                System.out.println(saveFileName + " load complete");
-                secondMainMenu();
+                if(!loadSaveFileHasBeenRan) {
+                    System.out.println(saveFileName + " load complete");
+                }
+                loadSaveFileHasBeenRan = true;
                 return result;
             } catch (IOException e) {
                 System.out.println("An error occurred when trying to load save " + e.getMessage());
@@ -301,14 +320,13 @@ Game implements Serializable {
 
 
 
-
-
     // method used to handles what happens when the player loses all their HP
-    public void gameOver(){
+    public void gameOver() {
         display.gameOverMessage();
         System.exit(0);
 
     }
+
     // method used to activate puzzle state and will allow the player to access the current room's puzzle aspect
     public void startPuzzle(Player player, String puzzleName) {
         // Model.Puzzles variable used to make sure the puzzle name the player entered is valid
@@ -324,7 +342,7 @@ Game implements Serializable {
                 System.out.println("The puzzle you attempted to start was not found in this room");
                 puzzleState = false;
                 exploreState = true;
-                startGame(player, map, exhibit.getItemsInExhibit());
+                startGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit));
             }
         }
         // the following statement will display the options available when a player successfully starts a puzzle\
@@ -351,7 +369,7 @@ Game implements Serializable {
                     System.out.println("Exiting puzzle...");
                     puzzleState = false;
                     exploreState = true;
-                    startGame(player, map, exhibit.getItemsInExhibit());
+                    startGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit));
                 } else {
                     display.invalidInputForMenu();
                     playerInput = input.nextLine();
@@ -366,14 +384,14 @@ Game implements Serializable {
     }
 
     // method used to set the player name when a new game is created
-    public void  setPlayerName(Player player ){
+    public void setPlayerName(Player player) {
         System.out.println("(Please enter your name captain)");
         String playerName = input.nextLine();
         player.setName(playerName);
     }
 
-    public void combat(String monsterName, Player player, Map map, ArrayList<Items> exhibit ){
-        if(player.getCurrentRoom().getMonstersInRoom().get(0).getName().equalsIgnoreCase(monsterName)) {
+    public void combat(String monsterName, Player player, Map map, ArrayList<Items> exhibit) {
+        if (player.getCurrentRoom().getMonstersInRoom().get(0).getName().equalsIgnoreCase(monsterName)) {
 
             while (combatState) {
                 Monster currentMonster = player.getCurrentRoom().getMonstersInRoom().get(0);
@@ -407,21 +425,21 @@ Game implements Serializable {
 
                 } else if (playerInput.equalsIgnoreCase("Use repair kit")) {
                     playerInput = getItemName(playerInputParts);
-                    game.useItemInCombat(playerInput, null, player) ;
+                    game.useItemInCombat(playerInput, null, player);
                 } else if (playerInput.equalsIgnoreCase("check")) {
                     player.getCurrentRoom().getMonstersInRoom().get(0).getStatusForMonster(player.getCurrentRoom().getMonstersInRoom().get(0));
                 } else if (playerInput.equalsIgnoreCase("status")) {
                     player.getStatusForPlayer(player);
                 } else if (playerInput.equalsIgnoreCase("inventory")) {
-                    player.getCurrentInventory();}
-                else {
+                    player.getCurrentInventory();
+                } else {
                     System.out.println("Invalid Command");
                 }
 
                 // Monster attacks after player's turn
                 if (currentMonster.getHealthPoints() > 0) {
                     int monsterDamage = currentMonster.getAttackStat() - player.getDefenseStat();
-                    if (monsterDamage > 0 && (playerInput.equalsIgnoreCase("attack")) || (playerInput.equalsIgnoreCase("user"))){
+                    if (monsterDamage > 0 && (playerInput.equalsIgnoreCase("attack")) || (playerInput.equalsIgnoreCase("user"))) {
                         player.setHealthPoints(player.getHealthPoints() - monsterDamage);
                         System.out.println(currentMonster.getName() + " dealt " + monsterDamage + " damage to you");
                     }
@@ -442,19 +460,19 @@ Game implements Serializable {
 
                 }
             }
-        }
-        else {
+        } else {
             System.out.println("The monster you attempted to fight is not in this room");
             combatState = false;
             exploreState = true;
-            startGame(player,map, exhibit);
+            startGame(player, map, exhibit);
         }
     }
+
     public void useItemInCombat(String itemName, Monster currentMonster, Player player) {
         // item variable used to hold the item the user is attempting to use
         Items item = null;
         // for loop used to determine if the player has the item they're attempting to use in their inventory
-        if(itemName.equalsIgnoreCase("Torpedo ")) {
+        if (itemName.equalsIgnoreCase("Torpedo ")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
                 if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
@@ -463,21 +481,21 @@ Game implements Serializable {
             }
             if (item != null) {
                 player.getPlayerInventory().remove(item);
-                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-30);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints() - 30);
                 System.out.println("You fire a torpedo at the enemy");
-                    int damage = player.getAttackStat() - currentMonster.getDefenseStat();
-                    if (damage > 0) {
-                        currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
-                        System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
-                        System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
-                    }
+                int damage = player.getAttackStat() - currentMonster.getDefenseStat();
+                if (damage > 0) {
+                    currentMonster.setHealthPoints(currentMonster.getHealthPoints() - damage);
+                    System.out.println("You dealt " + damage + " damage to " + currentMonster.getName());
+                    System.out.println("The " + currentMonster.getName() + " now has " + currentMonster.getHealthPoints() + " health points remaining");
+                }
             }
 
-            if (item == null){
+            if (item == null) {
                 System.out.println("You have no torpedoes!");
             }
         }
-        if(itemName.equalsIgnoreCase("Super Torpedo ")) {
+        if (itemName.equalsIgnoreCase("Super Torpedo ")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
                 if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
@@ -493,22 +511,22 @@ Game implements Serializable {
             }
             if (item != null) {
                 player.getPlayerInventory().remove(item);
-                currentMonster.setHealthPoints(currentMonster.getHealthPoints()-60);
+                currentMonster.setHealthPoints(currentMonster.getHealthPoints() - 60);
                 System.out.println("You fire a super torpedo at the enemy");
             }
 
-            if (item == null){
+            if (item == null) {
                 System.out.println("You have no super torpedoes!");
             }
         }
-        if(itemName.equalsIgnoreCase("Repair Kit ")) {
+        if (itemName.equalsIgnoreCase("Repair Kit ")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
                 if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     item = player.getPlayerInventory().get(i);
                 }
             }
-            if (item == null){
+            if (item == null) {
                 System.out.println("You have no repair kits!");
             }
             if (item != null) {
@@ -516,8 +534,7 @@ Game implements Serializable {
                     player.getPlayerInventory().remove(item);
                     player.setHealthPoints(player.getHealthPoints() + (player.maximumHP - player.getHealthPoints()));
                     System.out.println("You used a repair kit");
-                }
-                else{
+                } else {
                     System.out.println("You are already max HP!");
                     item = null;
                 }
@@ -527,7 +544,7 @@ Game implements Serializable {
                         !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                     System.out.println("This item cannot be used");
                 }
-                if (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)){
+                if (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)) {
                     System.out.println("Invalid Item");
                 }
             }
@@ -535,9 +552,10 @@ Game implements Serializable {
 
         }
     }
+
     public void useItemOutsideOfCombat(String itemName, Player player) {
         // item variable used to hold the item the user is attempting to use
-           Items item = null;
+        Items item = null;
 //        Model.Items usableItem = null;
 //        System.out.println("What item would you like to use?");
 //        // for loop that will display all the usable items the player current has
@@ -576,46 +594,45 @@ Game implements Serializable {
                     !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
                 System.out.println("This item cannot be used");
             }
-            if (!player.getPlayerInventory().get(i).getItemName().contains(itemName)){
+            if (!player.getPlayerInventory().get(i).getItemName().contains(itemName)) {
                 System.out.println("Invalid Item");
             }
         }
     }
+
     // (Barbara)
-        public void startExhibit(ArrayList<Items> itemsInExhibit) {
-            exhibit.displayExhibitHelp();
-            exhibit.displayExhibit(itemsInExhibit);
-            Items item = null;
-            String exhibitMenuInput = input.nextLine();
-            String[] fullInput = exhibitMenuInput.split(" ");
-            // while loop that keeps players in the exhibit unless
-            while (exhibitState)
-                try {
-                    if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
-                        exhibitMenuInput = getItemName(fullInput);
-                        for (int i = 0; i < itemsInExhibit.size(); i++) {
-                            if (itemsInExhibit.get(i).getItemName().contains(exhibitMenuInput)) {
-                                item = itemsInExhibit.get(i);
-                                System.out.println(item.getItemDescription() + '\n');
-                            }
+    public void startExhibit(ArrayList<Items> itemsInExhibit, String saveFileName) {
+        exhibit.displayExhibitHelp();
+        exhibit.displayExhibit(itemsInExhibit);
+        Items item = null;
+        String exhibitMenuInput = input.nextLine();
+        String[] fullInput = exhibitMenuInput.split(" ");
+        // while loop that keeps players in the exhibit unless
+        while (exhibitState)
+            try {
+                if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
+                    exhibitMenuInput = getItemName(fullInput);
+                    for (int i = 0; i < itemsInExhibit.size(); i++) {
+                        if (itemsInExhibit.get(i).getItemName().contains(exhibitMenuInput)) {
+                            item = itemsInExhibit.get(i);
+                            System.out.println(item.getItemDescription() + '\n');
                         }
-                    } else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("Exhibit")) {
-                        System.out.println("Returning to main menu...");
-                        exhibitState = false;
-                        mainMenuAfterInputState = true;
-                        secondMainMenu();
-                    } else {
-                        display.invalidInputForMenu();
-                        exhibitMenuInput = input.nextLine();
-                        fullInput = exhibitMenuInput.split(" ");
                     }
-                } catch (ArrayIndexOutOfBoundsException AOB) {
+                } else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("Exhibit")) {
+                    System.out.println("Returning to main menu...");
+                    exhibitState = false;
+                    mainMenuAfterInputState = true;
+                    secondMainMenu(saveFileName);
+                } else {
                     display.invalidInputForMenu();
                     exhibitMenuInput = input.nextLine();
                     fullInput = exhibitMenuInput.split(" ");
                 }
-        }
+            } catch (ArrayIndexOutOfBoundsException AOB) {
+                display.invalidInputForMenu();
+                exhibitMenuInput = input.nextLine();
+                fullInput = exhibitMenuInput.split(" ");
+            }
+    }
 
 }
-
-

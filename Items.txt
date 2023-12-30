@@ -11,9 +11,9 @@
 11~Wreck of the Nuestra Señora de Atocha ~Gold, jewels, wealth untold! Actually, this ancient Spanish galleon’s wealth totals to about $400 million dollars. The treasure includes 24 tons of silver bullion, ingots, and coins, 125 gold bars and discs and 1,200 pounds silverware. Other items with great historical importance were recovered, like 20 bronze cannons, navigational instruments and Native American artifacts.(Found in: Angler Fish Zone)~Treasure~18~false
 12~Heracleion ~While combing the sea floor the lidless gaze of a giant stone face comes into view. Not only that, but a whole city, resting beneath the waves. Though inspired by the Greeks, hence the name, this city rests off of Egypt’s coast and so has many historical artifacts such as jewels, ceramics and coins. The historical significance of this find is priceless. (Found in:Colossal Squid Zone)~Treasure~19~false
 13~Super Torpedo Upgrade ~This upgrade gives your submarine the ability launch super torpedoes strong enough to blow up Stalagmites and threats from the depths!~Equitable~9~false
-14~Treasure Model.Map 1 ~ Ye shall find the treasure of this map at The Spongy Zone~Usable~0~false
-15~Treasure Model.Map 2 ~ Ye shall find the treasure of this map at Gulper Eel Zone~Usable~0~false
-16~Treasure Model.Map 3 ~ Ye shall find the treasure of this map at The Brittle Star Colony~Usable~0~false
-17~Treasure Model.Map 4 ~ Ye shall find the treasure of this map at Angler Fish Zone~Usable~0~false
-18~Treasure Model.Map 5 ~ Ye shall find the treasure of this map at Colossal Squid Zone~Usable~0~false
+14~Treasure Map 1 ~ Ye shall find the treasure of this map at The Spongy Zone~Usable~0~false
+15~Treasure Map 2 ~ Ye shall find the treasure of this map at Gulper Eel Zone~Usable~0~false
+16~Treasure Map 3 ~ Ye shall find the treasure of this map at The Brittle Star Colony~Usable~0~false
+17~Treasure Map 4 ~ Ye shall find the treasure of this map at Angler Fish Zone~Usable~0~false
+18~Treasure Map 5 ~ Ye shall find the treasure of this map at Colossal Squid Zone~Usable~0~false
 19~Repair Kit ~These kits are filled with useful tools and hull patches to fix any damage your sub might sustain in battle. A red metal box with a handle, these things surprisingly appear on the sea floor while you’re exploring.~Usable~20~false

@@ -29,7 +29,7 @@ public class Player implements Serializable {
     private int defenseStat = 10;
     private ArrayList<Items> playerInventory = new ArrayList<>();
 
-
+    private static final long serialVersionUID = 1L;
 
 
     public Player() {
@@ -165,7 +165,7 @@ public class Player implements Serializable {
 
     //method used to add items to player's inventory
     public void pickUpItem(String itemName, Rooms currentRoom, Player player) {
-        // Model.Items variable used to put an item in the player's inventory
+        // Items variable used to put an item in the player's inventory
         Items item = currentRoom.removeItemFromRoomInventory(itemName, currentRoom);
         if (item != null && (!item.getItemType().equalsIgnoreCase("Treasure"))) {
             playerInventory.add(item);
@@ -181,7 +181,7 @@ public class Player implements Serializable {
 
         // method used to drop item from player's inventory, and leave them in the room the player is currently in
     public void dropItem(String itemName, Player player, Rooms currentRoom) {
-        // Model.Items variable used to put an item that is in the player's inventory, into the room's inventory
+        // Items variable used to put an item that is in the player's inventory, into the room's inventory
         Items item = null;
         // for loop used to find and assign the dropped item to the items variable, so that it may be added to the current room's inventory
         for (Items value : player.getPlayerInventory()) {
@@ -202,7 +202,7 @@ public class Player implements Serializable {
     // method used to equipped items
     //Abdoulie
     public void equippedItem(String itemName, Player player){
-        // Model.Items variable used to search for an item that is in the player's inventory, and has an equitable item type
+        // Items variable used to search for an item that is in the player's inventory, and has an equitable item type
         Items item = null;
         // for loop used to search through the player's inventory
         for (Items value : player.getPlayerInventory()) {
@@ -224,7 +224,7 @@ public class Player implements Serializable {
 
     //method used to inspect item and will return the item's description
     public void inspectItem(String itemName, Player player) {
-        // Model.Items variable used to search for an item that is in the player's inventory, and display its description
+        // Items variable used to search for an item that is in the player's inventory, and display its description
         Items item = null;
         // for loop used to find and assign the dropped item to the items variable, so that it may be added to the current room's inventory
         for (Items value : player.getPlayerInventory()) {
@@ -242,7 +242,7 @@ public class Player implements Serializable {
 
     // method used to archive items
     public void archive(String itemName, ArrayList<Items> itemForExhibit, Player player){
-        // Model.Items variable used to put an item that is in the player's inventory, into the exhibit
+        // Items variable used to put an item that is in the player's inventory, into the exhibit
         Items item = null;
         // for loop used to find and assign the item the player is trying to archive,to the items variable
         // so that it can be added to the exhibit's array list of items

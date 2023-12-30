@@ -16,6 +16,7 @@ public class Exhibit implements Serializable {
 
     // array list of exhibit items that will be displayed when the user is in the exhibit area
     private ArrayList<Items> itemsInExhibit;
+    private static final long serialVersionUID = 1L;
 
     // default constructor
     public Exhibit() {
@@ -23,7 +24,7 @@ public class Exhibit implements Serializable {
     }
     public void displayExhibit(ArrayList <Items> itemsInExhibit) {
         System.out.println("Exhibit");
-        System.out.println("----------------------");
+        System.out.println("----------------------------------------------------------------");
         System.out.println("Here are the treasures that you've found during your adventure.");
         for (int i = 0; i < itemsInExhibit.size(); i++) {
             System.out.println(itemsInExhibit.get(i).getItemName() + '\n');
@@ -35,13 +36,13 @@ public class Exhibit implements Serializable {
         System.out.println("To go back to the Main Menu, type 'Exit Exhibit'.");
     }
 
-    public void setItemsInExhibit(ArrayList <Items> itemsInExhibit) {
-        this.itemsInExhibit = itemsInExhibit;
-    }
+//    public void setItemsInExhibit(ArrayList <Items> itemsInExhibit) {
+//        this.itemsInExhibit = itemsInExhibit;
+//    }
 
 
     // method used to get array list of items in the exhibit
-    public ArrayList<Items> getItemsInExhibit() {
+    public ArrayList<Items> getItemsInExhibit(ArrayList<Items> itemsInExhibit) {
         return itemsInExhibit;
     }
 

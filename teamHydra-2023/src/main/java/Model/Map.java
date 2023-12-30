@@ -5,10 +5,7 @@ package Model;/*
 
 import Controller.Rooms;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.Serializable;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -34,6 +31,10 @@ public class Map  implements Serializable {
     public ArrayList<Puzzles> arrayListOfPuzzles = new ArrayList<>();
     public ArrayList<Rooms> arrayListOfRooms = new ArrayList<>();
     public  ArrayList<Monster>arrayListOfMonsters = new ArrayList<>();
+
+    private static final long serialVersionUID = 1L;
+
+
     public Map() {
     }
 

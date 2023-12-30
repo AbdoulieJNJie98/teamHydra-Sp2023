@@ -24,7 +24,7 @@ public class Displayer implements Serializable {
         System.out.println("(Please enter one of the following commands)");
         System.out.println("New Game");
         System.out.println("Load Save");
-        System.out.println("Quit Game");
+        System.out.println("Exit Game");
 
     }
 
@@ -35,7 +35,7 @@ public class Displayer implements Serializable {
         System.out.println("(Please enter one of the following commands)");
         System.out.println("Start Game");
         System.out.println("Exhibit");
-        System.out.println("Quit Game");
+        System.out.println("Exit Game");
     }
     // made by Jason and Amar
     public void welcomeTextPart1(){
@@ -96,8 +96,8 @@ public class Displayer implements Serializable {
     }
 
     public void exitGameFirstPrompt(){
-        System.out.println("Would you like to save your game before you quit? \n" +
-                "(Please type yes to save, or no to quit without saving)");
+        System.out.println("Would you like to save your game before you exit? \n" +
+                "(Please type yes to save, or no to exit without saving)");
     }
 
     public void exitGamePromptForYesPartTwo(String saveFileName){
