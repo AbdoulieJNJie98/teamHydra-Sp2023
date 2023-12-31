@@ -78,7 +78,7 @@ public class Displayer implements Serializable {
                 "\n" +
                 "|archive| : The archive command will send the designated item to the exhibit, removing it from your inventory.\n" +
                 "\n" +
-                "|start puzzle| : The start puzzle command will allow you to interact with the designated puzzle in the current room.\n" +
+                "|start puzzle| : The start puzzle command followed by the name of the puzzle, will allow you to interact with the designated puzzle in the current room.\n" +
                 "\n" +
                 "|get puzzle hint| :The get puzzle hint will display the hint associated with the current puzzle you are interacting with.\n" +
                 "\n" +

@@ -100,7 +100,6 @@ Game implements Serializable {
 
                 } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")) {
                     mainMenuAfterInputState = false;
-                    exhibitState = true;
                     game.startExhibit(exhibit.getItemsInExhibit(itemsInExhbit), saveFileName);
                 } else if (menuOptionsPart[0].equalsIgnoreCase("Exit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                     display.exitGamePromptForNoPart2();
@@ -168,12 +167,12 @@ Game implements Serializable {
                     player.getCurrentInventory();
                 } else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
-                    player.archive(playerInput, exhibit.getItemsInExhibit(itemInExhibit), player);
+                    player.archive(playerInput, exhibit.getItemsInExhibit(itemInExhibit), player, exhibit);
                 } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                     player.sonar();
                 } else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
-                    game.useItemOutsideOfCombat(playerInput, player);
+                    game.useItemOutsideOfCombat(player, playerInput);
                 } else if ((playerInputParts[0].equalsIgnoreCase("Start")) && playerInputParts[1].equalsIgnoreCase("Puzzle") && playerInputParts.length > 2) {
                     playerInput = getPuzzleName(playerInputParts);
                     exploreState = false;
@@ -275,6 +274,7 @@ Game implements Serializable {
         startGame(player, gameMap, exhibit.getItemsInExhibit(itemsInExhbit));
 
     }
+
     private static final String SAVE_FOLDER = "saves/"; // Change this to your desired folder
 
     public void saveGame(Map gameMap, Player player, ArrayList<Items> itemsInExhibit) {
@@ -305,7 +305,7 @@ Game implements Serializable {
                 System.out.println("An error occurred: " + e.getMessage());
                 firstMainMenu();
             } catch (EOFException e) {
-                if(!loadSaveFileHasBeenRan) {
+                if (!loadSaveFileHasBeenRan) {
                     System.out.println(saveFileName + " load complete");
                 }
                 loadSaveFileHasBeenRan = true;
@@ -316,7 +316,6 @@ Game implements Serializable {
             }
         }
     }
-
 
 
     // method used to handles what happens when the player loses all their HP
@@ -552,24 +551,30 @@ Game implements Serializable {
         }
     }
 
-    public void useItemOutsideOfCombat(String itemName, Player player) {
+    public void useItemOutsideOfCombat(Player player, String itemName) {
         // item variable used to hold the item the user is attempting to use
         Items item = null;
-//        Model.Items usableItem = null;
-//        System.out.println("What item would you like to use?");
-//        // for loop that will display all the usable items the player current has
-//        for(int i = 0; i < player.getPlayerInventory().size(); i ++){
-//            if(player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")){
-//                usableItem = player.getPlayerInventory().get(i);
-//                System.out.println(usableItem.getItemName());
-//            }
-//        }
-//        playerInput = input.nextLine();
+        //if ((playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1){
+            // if statement used to handle what will happen if the user attempts to use a Torpedo outside of combat
+            if ( itemName.equalsIgnoreCase("Torpedo ")) {
+                System.out.println("You think about trying to use a torpedo, but dont see anything to use it on");
+            }
+
+        else if(itemName.equalsIgnoreCase("Antikythera mechanism ")){
+                // for loop that will display all the usable items the player current has
+                for (int i = 0; i < player.getPlayerInventory().size(); i++) {
+                    if (player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")
+                            && player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Antikythera mechanism ")) {
+                        System.out.println("You turn the Antikythera mechanism over and the following is engraved into it:\n" +
+                                "Octopus is the key");
+                    }
+                }
+
+        }
         // for loop used to determine if the player has the item they're attempting to use in their inventory
-        if (itemName.equalsIgnoreCase("Repair Kit ")) {
+        else if (itemName.equalsIgnoreCase("Repair Kit ")) {
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
-                        player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
+                if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName)) {
                     item = player.getPlayerInventory().get(i);
                 }
             }
@@ -583,26 +588,25 @@ Game implements Serializable {
                     System.out.println("You used a repair kit");
                 } else {
                     System.out.println("You are already max HP!");
-                    item = null;
                 }
             }
+        }
+        if(item!= null) {
+            if (!item.getItemType().equalsIgnoreCase("Usable")) {
+                System.err.println("This item cannot be used");
+            }
+        }
+        }
 
-        }
-        for (int i = 0; i < player.getPlayerInventory().size(); i++) {
-            if (player.getPlayerInventory().get(i).getItemName().contains(itemName) &&
-                    !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
-                System.out.println("This item cannot be used");
-            }
-            if (!player.getPlayerInventory().get(i).getItemName().contains(itemName)) {
-                System.out.println("Invalid Item");
-            }
-        }
-    }
 
     // (Barbara)
     public void startExhibit(ArrayList<Items> itemsInExhibit, String saveFileName) {
+        exhibitState = true;
         exhibit.displayExhibitHelp();
-        exhibit.displayExhibit(itemsInExhibit);
+        exhibit.displayExhibit();
+        for (int i = 0; i < itemsInExhibit.size(); i++) {
+            System.out.println(itemsInExhibit.get(i).getItemName() + '\n');
+        }
         Items item = null;
         String exhibitMenuInput = input.nextLine();
         String[] fullInput = exhibitMenuInput.split(" ");

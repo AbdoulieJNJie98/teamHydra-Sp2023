@@ -90,6 +90,9 @@ public class Puzzles implements Serializable {
 
     // method used to remove the puzzle in the current puzzle room the player is in
     // and allows the player to continue moving south passed the puzzle room.
+
+    // special note, adjust resolvePuzzle so that it looks for the item name in the inventory,
+    // not looking through the entire thing.
     public void resolvePuzzle(Player player) {
         // item variable used to determine if the player has a specific item in their inventory
         Items item = null;

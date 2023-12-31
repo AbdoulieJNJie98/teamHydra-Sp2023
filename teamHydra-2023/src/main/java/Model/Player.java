@@ -15,7 +15,6 @@ public class Player implements Serializable {
     private Rooms currentRoom;
     private Rooms previousRoom;
     private Map map;
-    private Exhibit exhibit;
 
     private Player player;
 
@@ -241,7 +240,7 @@ public class Player implements Serializable {
     }
 
     // method used to archive items
-    public void archive(String itemName, ArrayList<Items> itemForExhibit, Player player){
+    public void archive(String itemName, ArrayList<Items> itemForExhibit, Player player, Exhibit exhibit){
         // Items variable used to put an item that is in the player's inventory, into the exhibit
         Items item = null;
         // for loop used to find and assign the item the player is trying to archive,to the items variable
@@ -253,6 +252,7 @@ public class Player implements Serializable {
         }
         if(item != null){
             itemForExhibit.add(item);
+            exhibit.getItemsInExhibit(itemForExhibit);
             player.getPlayerInventory().remove(item);
             System.out.println(item.getItemName() + "has been sent to the exhibit");
 
@@ -284,7 +284,6 @@ public class Player implements Serializable {
     }
 
 
-    // method used to chang
 
 
 }
