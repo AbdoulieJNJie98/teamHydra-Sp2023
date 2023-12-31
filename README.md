@@ -60,7 +60,7 @@ This is a list of all the commands needed to play the game, and what they do:
    
    1~False~Man-of-war zone~0~5~2~0~As you enter this part of the Ocean you notice the presence of Man-of-war Jellyfish, as far as you can see, their tentacles are spread like the hair of an old witch, long and tangled. This area is well lit but you also see bioluminescent phytoplankton, sparkling at intervals like stars.~0~0~0~false
    ```
-# Model.Items.txt
+# Items.txt
  - This text file contains the information that makes up each item type.
  - This is an example of how the information is stored, and defined:
    
