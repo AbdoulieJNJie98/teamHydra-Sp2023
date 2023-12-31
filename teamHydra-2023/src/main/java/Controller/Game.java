@@ -133,7 +133,8 @@ Game implements Serializable {
     private void startGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit) {
 
         System.out.println("\nWelcome to the depths of the sea!\n" +
-                "To start explore, please enter the direction you would like to go!");
+                "To start exploring, please enter the direction from your compass!\n" +
+                "(north, south, east, or west)\n");
         System.out.println("Your currently location: " + player.getCurrentRoom().getRoomName());
 
         while ((exploreState)) { // while loop that continues the game as long the boolean variable "playing" is true
@@ -161,7 +162,7 @@ Game implements Serializable {
                 } else if (playerInputParts[0].equalsIgnoreCase("inspect") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
                     player.inspectItem(playerInput, player);
-                } else if (playerInputParts[0].equalsIgnoreCase("explore") && playerInputParts[1].equalsIgnoreCase("area")) {
+                } else if (playerInputParts[0].equalsIgnoreCase("explore")) {
                     player.exploreArea();
                 } else if (playerInputParts[0].equalsIgnoreCase("inventory")) {
                     player.getCurrentInventory();

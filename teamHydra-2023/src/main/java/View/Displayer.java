@@ -40,10 +40,10 @@ public class Displayer implements Serializable {
     // made by Jason and Amar
     public void welcomeTextPart1(){
             System.out.println("You are an avid adventurer and accomplished treasure hunter and historian.\n " +
-                    "You know how to pilot a submarine and you even own one equipped with a claw for grabbing" +
+                    "You know how to pilot a submarine and you even own one equipped with a claw for grabbing\n" +
                     " treasure and deterring wildlife and, though it seems like overkill, torpedo tubes should you want that extra firepower.\n " +
                     "You now fund an expedition into the depths of the ocean to uncover many items of monetary and historical significance.\n" +
-                    " You are the one and only Captain…actually, who are you?\n");
+                    " You are the one and only Captain… Actually, who are you?\n");
         }
     // made by Jason and Amar
     public void welcomeTextPart2(Player player){
@@ -70,7 +70,7 @@ public class Displayer implements Serializable {
                 "\n" +
                 "|inventory| : The inventory command will display all the items currently in your inventory.\n" +
                 "\n" +
-                "|explore area| : The explore area command will display the current room's description, any items, monsters and puzzles in the room.\n" +
+                "|explore| : The explore command will display the current room's description, any items, monsters and puzzles in the room.\n" +
                 "\n" +
                 "|sonar| : The sonar command will display the room names and monsters of the rooms that are connected to the current room.\n" +
                 "\n" +
@@ -98,10 +98,6 @@ public class Displayer implements Serializable {
     public void exitGameFirstPrompt(){
         System.out.println("Would you like to save your game before you exit? \n" +
                 "(Please type yes to save, or no to exit without saving)");
-    }
-
-    public void exitGamePromptForYesPartTwo(String saveFileName){
-        System.out.println("File: " + saveFileName + "has been saved");
     }
 
 
@@ -139,31 +135,40 @@ public class Displayer implements Serializable {
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
         System.out.println("                                                    Treasures of the Deep Map                                                            ");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------------");
-        System.out.println("__________________     __________________   ____________________" );
-        System.out.println("| Man-of-war zone|     | The Turtle zone|   |Enormous Clam Zone|");
-        System.out.println("|________________|     |________________|   |_________________|\n");
-        System.out.println("___________________     __________________   ________________________" );
+        System.out.println("__________________     __________________   ____________________                                                       ^" );
+        System.out.println("| Man-of-war zone|-----| The Turtle zone|---|Enormous Clam Zone |                                     | <  West   -  North  - East >    |");
+        System.out.println("|                |     |                |   |                   |                                                      |");
+        System.out.println("|                |     |                |   |                   |                                                    South");
+        System.out.println("|_______|________|     |________|_______|   |________|__________|                                                    -----");
+        System.out.println("        |                       |                    |");
+        System.out.println("________|___________   _________|_________   ________|_______________");
         System.out.println("|The Six-gill Zone|     |  Octopus Zone  |   |The Cookie-Cutter Zone|");
-        System.out.println("|_________________|     |________________|   |_______________________|");
-        System.out.println("                                             _________________________" );
+        System.out.println("|_________________|     |________________|   |_________|_____________|");
+        System.out.println("                                                       |");
+        System.out.println("                                             __________|______________" );
         System.out.println("                                             |     Oar weed Zone     |");
-        System.out.println("                                             |_______________________|\n");
-        System.out.println("                        __________________   _________________________  ________________________" );
-        System.out.println("                        |Macra Terror Zone|  |     The Spongy Zone   |  |     Sperm Whale Zone   |");
-        System.out.println("                        |________________|   |_______________________|  |_______________________|\n");
-        System.out.println("                        __________________                               ________________________" );
+        System.out.println("                                             |_______________________|");
+        System.out.println("                        __________________  _________________________  ________________________" );
+        System.out.println("                       |Macra Terror Zone|--|     The Spongy Zone   |--|     Sperm Whale Zone   |");
+        System.out.println("                        |______|________|   |_______________________|  |___________|___________|");
+        System.out.println("                               |                                                   |");
+        System.out.println("                        _______|__________                               __________|_____________" );
         System.out.println("                        | Gulper Eel Zone|                               |   Hatchet Fish Zone   |");
-        System.out.println("                        |________________|                               |_______________________|\n");
-        System.out.println("                                                   __________________    ________________________   ________________________" );
-        System.out.println("                                                   |Glass Sponge Zone|   |The Brittle Star Colony|  |     Narwhal Zone       |");
-        System.out.println("                                                   |_________________|   |_______________________|  |_______________________|\n");
-        System.out.println("                                                _________________________" );
+        System.out.println("                        |________________|                               |_________|_____________|");
+        System.out.println("                                                                                    |");
+        System.out.println("                                                   __________________    __________|_____________    ________________________" );
+        System.out.println("                                                   |Glass Sponge Zone|---|The Brittle Star Colony|---|     Narwhal Zone       |");
+        System.out.println("                                                   |________|________|   |_______________________|   |_______________________|");
+        System.out.println("                                                            |");
+        System.out.println("                                                ____________|____________" );
         System.out.println("                                                |    Sea Spider Zone     |");
-        System.out.println("                                                |_______________________|\n");
-        System.out.println("                       ____________________   ________________________   ________________________" );
-        System.out.println("                       |Rat-Tail Fish Zone|   |     Angler Fish Zone  |  |   Colossal Squid Zone |");
-        System.out.println("                       |__________________|   |_______________________|  |_______________________|\n");
-        System.out.println("                                               _________________________" );
+        System.out.println("                                                |___________|___________|");
+        System.out.println("                                                            |");
+        System.out.println("                       ____________________   ______________|_________   ________________________" );
+        System.out.println("                       |Rat-Tail Fish Zone|---|     Angler Fish Zone  |--|   Colossal Squid Zone |");
+        System.out.println("                       |__________________|   |____________|__________|  |_______________________|");
+        System.out.println("                                                           |");
+        System.out.println("                                               ____________|____________" );
         System.out.println("                                               |  Macra Terror Zone II |");
         System.out.println("                                               |_______________________|\n");
         System.out.println("-----------------------------------------------------------------------------------------------------------------------------------");

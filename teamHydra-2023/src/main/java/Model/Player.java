@@ -208,6 +208,7 @@ public class Player implements Serializable {
             if (value.getItemName().equalsIgnoreCase(itemName) &&
                     value.getItemType().equalsIgnoreCase("Equitable")) {
                 item = value;
+                item.setItemStatus(true);
                 item.equipItem(itemName, player);
 
             }

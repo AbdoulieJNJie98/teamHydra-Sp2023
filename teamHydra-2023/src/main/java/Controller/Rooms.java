@@ -315,7 +315,7 @@ public class Rooms implements Serializable {
                         System.out.println(northRoom.getRoomInventory().get(j).getItemName());
                     }
                     // display the message to mark the start of monsters found within the north room
-                    System.out.print("\nMonsters found in this area:");
+                    System.out.print("\nMonsters found in this area:\n");
 
                     // for loop that will be used search the north room's monster array list to display the names of monsters found
                     // within the room
@@ -325,7 +325,7 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("North of here: There is nothing of interest that way");
+            System.out.println("North of here: There is nothing of interest that way\n");
         }
         if (currentRoom.southRoomID != 0) {
 
@@ -341,7 +341,7 @@ public class Rooms implements Serializable {
                         System.out.println(southRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.print("\nMonsters found in this area: ");
+                    System.out.print("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < southRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(southRoom.getMonstersInRoom().get(k).getName());
@@ -350,7 +350,7 @@ public class Rooms implements Serializable {
 
             }
         } else {
-            System.out.println("\nSouth of here: There is nothing of interest that way");
+            System.out.println("\nSouth of here: There is nothing of interest that way\n");
         }
         if (currentRoom.eastRoomID != 0) {
 
@@ -365,7 +365,7 @@ public class Rooms implements Serializable {
                         System.out.println(eastRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.print("\nMonsters found in this area: ");
+                    System.out.print("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < eastRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(eastRoom.getMonstersInRoom().get(k).getName());
@@ -373,7 +373,7 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("\nEast of here: There is nothing of interest that way");
+            System.out.println("\nEast of here: There is nothing of interest that way\n");
         }
         if (currentRoom.westRoomID != 0) {
 
@@ -388,7 +388,7 @@ public class Rooms implements Serializable {
                         System.out.println(westRoom.getRoomInventory().get(j).getItemName());
                     }
 
-                    System.out.print("\nMonsters found in this area: ");
+                    System.out.print("\nMonsters found in this area: \n");
 
                     for(int k = 0; k < westRoom.getMonstersInRoom().size(); k++ ){
                         System.out.println(westRoom.getMonstersInRoom().get(k).getName());
@@ -396,7 +396,7 @@ public class Rooms implements Serializable {
                 }
             }
         } else {
-            System.out.println("\nWest of here: There is nothing of interest that way");
+            System.out.println("\nWest of here: There is nothing of interest that way\n");
         }
     }
 
