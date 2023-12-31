@@ -2,10 +2,10 @@
 This project is a text-based video game that contains one player, a map of 20 rooms, six monsters, four puzzles, 19 item types, and a combat system
 
 ## Table of Summary
-- [User Manuale](#user-manuale)
+- [User Manual](#user-manual)
 - [Files](#files)
 
-## User-Manuale
+## User-Manual
 This game reads in multiple text files that contain the information needed to generate the map, items, monsters, and puzzles used throughout the game.
 This is a list of all the commands needed to play the game, and what they do:
 - |help| : The help command prints a list of all the commands available in the game, and what each command does
