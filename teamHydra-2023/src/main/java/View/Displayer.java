@@ -74,21 +74,15 @@ public class Displayer implements Serializable {
                 "\n" +
                 "|sonar| : The sonar command will display the room names and monsters of the rooms that are connected to the current room.\n" +
                 "\n" +
-                "|inspect| The inpspect command, followed by the name of an item in your inventory, prints the item's description.\n" +
+                "|inspect| The inspect command, followed by the name of an item in your inventory, prints the item's description.\n" +
                 "\n" +
                 "|archive| : The archive command will send the designated item to the exhibit, removing it from your inventory.\n" +
                 "\n" +
                 "|start puzzle| : The start puzzle command followed by the name of the puzzle, will allow you to interact with the designated puzzle in the current room.\n" +
                 "\n" +
-                "|get puzzle hint| :The get puzzle hint will display the hint associated with the current puzzle you are interacting with.\n" +
-                "\n" +
                 "|fight| : The fight command followed by the name of the monster you wish to fight will initiate a combat loop between you and the monster.\n" +
                 "\n" +
                 "|status| : The status command will display your name, current HP, current attack power, and current defense level.\n" +
-                "\n" +
-                "|inspect monster| : The inspect monster command will display the monster's name, current HP, current attack power, and current defense level.\n" +
-                "\n" +
-                "|solve puzzle| : The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with.\n" +
                 "\n" +
                 "|exit game| :The exit game command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.\n" +
                 "\n" +
