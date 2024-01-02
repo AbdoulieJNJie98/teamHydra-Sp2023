@@ -622,9 +622,9 @@ Game implements Serializable {
             try {
                 if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
                     exhibitMenuInput = getItemName(fullInput);
-                    for (Items items : itemsInExhibit) {
-                        if (items.getItemName().contains(exhibitMenuInput)) {
-                            item = items;
+                    for (int i = 0; i < itemsInExhibit.size(); i++) {
+                        if (exhibit.getItemsInExhibit(itemsInExhibit).get(i).getItemName().equalsIgnoreCase(exhibitMenuInput)) {
+                            item = exhibit.getItemsInExhibit(itemsInExhibit).get(i);
                             System.out.println(item.getItemDescription() + '\n');
                             exhibitMenuInput = input.nextLine();
                             fullInput = exhibitMenuInput.split(" ");

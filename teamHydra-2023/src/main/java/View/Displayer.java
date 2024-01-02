@@ -141,8 +141,9 @@ public class Displayer implements Serializable {
         System.out.println("                                                       |");
         System.out.println("                                             __________|______________" );
         System.out.println("                                             |     Oar weed Zone     |");
-        System.out.println("                                             |_______________________|");
-        System.out.println("                        __________________  _________________________  ________________________" );
+        System.out.println("                                             |___________|___________|");
+        System.out.println("                                                         |");
+        System.out.println("                        __________________  _____________|___________  ________________________" );
         System.out.println("                       |Macra Terror Zone|--|     The Spongy Zone   |--|     Sperm Whale Zone   |");
         System.out.println("                        |______|________|   |_______________________|  |___________|___________|");
         System.out.println("                               |                                                   |");

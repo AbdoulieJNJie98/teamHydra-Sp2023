@@ -241,7 +241,7 @@ public class Player implements Serializable {
     }
 
     // method used to archive items
-    public void archive(String itemName, ArrayList<Items> itemForExhibit, Player player, Exhibit exhibit){
+    public ArrayList<Items> archive(String itemName, ArrayList<Items> itemForExhibit, Player player, Exhibit exhibit){
         // Items variable used to put an item that is in the player's inventory, into the exhibit
         Items item = null;
         // for loop used to find and assign the item the player is trying to archive,to the items variable
@@ -261,6 +261,7 @@ public class Player implements Serializable {
         else {
             System.out.println("This item cannot be archived");
         }
+        return itemForExhibit;
     }
 
 
