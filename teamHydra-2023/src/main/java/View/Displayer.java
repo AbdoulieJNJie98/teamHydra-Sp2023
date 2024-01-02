@@ -155,7 +155,7 @@ public class Displayer implements Serializable {
         System.out.println("                        _______|__________                               __________|_____________" );
         System.out.println("                        | Gulper Eel Zone|                               |   Hatchet Fish Zone   |");
         System.out.println("                        |________________|                               |_________|_____________|");
-        System.out.println("                                                                                    |");
+        System.out.println("                                                                                   |");
         System.out.println("                                                   __________________    __________|_____________    ________________________" );
         System.out.println("                                                   |Glass Sponge Zone|---|The Brittle Star Colony|---|     Narwhal Zone       |");
         System.out.println("                                                   |________|________|   |_______________________|   |_______________________|");

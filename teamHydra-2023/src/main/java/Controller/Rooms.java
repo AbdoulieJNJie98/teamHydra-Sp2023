@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 //@Abdoulie J NJie
 
+// The error of items not leaving a room's inventory once the user uses sonar needs to be fixed,
+// as well as adjusting the treasure maps to only spawn in one room and stay in that room.
+
 public class Rooms implements Serializable {
 
     private int roomID = 0;

@@ -112,7 +112,7 @@ public class Puzzles implements Serializable {
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
                 }
-                else{
+                else if(i > player.getPlayerInventory().size() && (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Drill Upgrade "))){
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade ")) {
@@ -123,7 +123,7 @@ public class Puzzles implements Serializable {
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
                 }
-                else{
+                else if(i > player.getPlayerInventory().size() && (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Claw Upgrade "))){
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade ")) {
@@ -134,7 +134,7 @@ public class Puzzles implements Serializable {
                     player.getCurrentRoom().setPuzzleID(-1);
                     removePuzzleFromRoom(player.getCurrentRoom(), puzzles);
                 }
-                else{
+                else if(i > player.getPlayerInventory().size() && (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Super Torpedo Upgrade "))){
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             } else if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Antikythera mechanism ")) {
@@ -146,7 +146,7 @@ public class Puzzles implements Serializable {
                     // switches the item type to treasure so that the Antikythera mechanism can be archived
                     item.setItemType("Treasure");
                 }
-                else{
+                else if(i > player.getPlayerInventory().size() && (!player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase("Antikythera mechanism "))){
                     System.out.println(puzzles.getDescriptionIfPuzzleIsNotSolved());
                 }
             }

@@ -96,11 +96,11 @@ Game implements Serializable {
             try {
                 if (menuOptionsPart[0].equalsIgnoreCase("Start") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                     mainMenuAfterInputState = false;
-                    game.startLoadedGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit), saveFileName);
+                    game.startLoadedGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit), saveFileName, menuOptionsPart[0]);
 
                 } else if (menuOptionsPart[0].equalsIgnoreCase("Exhibit")) {
                     mainMenuAfterInputState = false;
-                    game.startExhibit(exhibit.getItemsInExhibit(itemsInExhbit), saveFileName);
+                    game.startLoadedGame(player, map, exhibit.getItemsInExhibit(itemsInExhbit), saveFileName, menuOptionsPart[0]);
                 } else if (menuOptionsPart[0].equalsIgnoreCase("Exit") && menuOptionsPart[1].equalsIgnoreCase("Game")) {
                     display.exitGamePromptForNoPart2();
                     System.exit(0);
@@ -118,15 +118,21 @@ Game implements Serializable {
 
     }
 
-    private void startLoadedGame(Player player, Map gameMap, ArrayList<Items> itemInExhibit, String saveFileName) {
+    private void startLoadedGame(Player player, Map gameMap, ArrayList<Items> itemsInExh, String saveFileName, String menuOptionName) {
         // Load the game state if there's a saved game
         ArrayList<Object> loadedObjects = loadSaveFile(saveFileName);
-        if (!loadedObjects.isEmpty()) {
+        if (!loadedObjects.isEmpty() && (!menuOptionName.equalsIgnoreCase("Exhibit"))) {
             gameMap = (Map) loadedObjects.get(0);
             player = (Player) loadedObjects.get(1);
-            itemInExhibit = (ArrayList<Items>) loadedObjects.get(2);
+            itemsInExh = (ArrayList<Items>) loadedObjects.get(2);
             exploreState = true;
-            startGame(player, map, itemInExhibit);
+            startGame(player, map, itemsInExh);
+        }
+        else if (!loadedObjects.isEmpty() && menuOptionName.equalsIgnoreCase("Exhibit")){
+            gameMap = (Map) loadedObjects.get(0);
+            player = (Player) loadedObjects.get(1);
+            itemsInExh = (ArrayList<Items>) loadedObjects.get(2);
+            game.startExhibit(exhibit.getItemsInExhibit(itemsInExh), saveFileName);
         }
     }
 
@@ -162,13 +168,13 @@ Game implements Serializable {
                 } else if (playerInputParts[0].equalsIgnoreCase("inspect") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
                     player.inspectItem(playerInput, player);
-                } else if (playerInputParts[0].equalsIgnoreCase("explore")) {
+                } else if (playerInputParts[0].equalsIgnoreCase("explore") && playerInputParts.length < 2 ) {
                     player.exploreArea();
                 } else if (playerInputParts[0].equalsIgnoreCase("inventory")) {
                     player.getCurrentInventory();
                 } else if (playerInputParts[0].equalsIgnoreCase("archive") && playerInputParts.length > 1) {
                     playerInput = getItemName(playerInputParts);
-                    player.archive(playerInput, exhibit.getItemsInExhibit(itemInExhibit), player, exhibit);
+                    player.archive(playerInput, itemInExhibit, player, exhibit);
                 } else if (playerInputParts[0].equalsIgnoreCase("sonar")) {
                     player.sonar();
                 } else if (playerInputParts[0].equalsIgnoreCase("use") && playerInputParts.length > 1) {
@@ -538,6 +544,7 @@ Game implements Serializable {
                     item = null;
                 }
             }
+            // fix the way the invalid item is triggered, it is reading each string as its own thing instead one full item name
             for (int i = 0; i < player.getPlayerInventory().size(); i++) {
                 if (player.getPlayerInventory().get(i).getItemName().equalsIgnoreCase(itemName) &&
                         !player.getPlayerInventory().get(i).getItemType().equalsIgnoreCase("Usable")) {
@@ -600,26 +607,27 @@ Game implements Serializable {
         }
 
 
-    // (Barbara)
+    // error going on in the exhibit where only one item is being saved to the array list
     public void startExhibit(ArrayList<Items> itemsInExhibit, String saveFileName) {
         exhibitState = true;
         exhibit.displayExhibitHelp();
         exhibit.displayExhibit();
-        for (int i = 0; i < itemsInExhibit.size(); i++) {
-            System.out.println(itemsInExhibit.get(i).getItemName() + '\n');
+        for (Items items : itemsInExhibit) {
+            System.out.println(items.getItemName() + '\n');
         }
         Items item = null;
         String exhibitMenuInput = input.nextLine();
         String[] fullInput = exhibitMenuInput.split(" ");
-        // while loop that keeps players in the exhibit unless
-        while (exhibitState)
+        while (exhibitState) {
             try {
                 if (fullInput[0].equalsIgnoreCase("Inspect") && fullInput.length > 1) {
                     exhibitMenuInput = getItemName(fullInput);
-                    for (int i = 0; i < itemsInExhibit.size(); i++) {
-                        if (itemsInExhibit.get(i).getItemName().contains(exhibitMenuInput)) {
-                            item = itemsInExhibit.get(i);
+                    for (Items items : itemsInExhibit) {
+                        if (items.getItemName().contains(exhibitMenuInput)) {
+                            item = items;
                             System.out.println(item.getItemDescription() + '\n');
+                            exhibitMenuInput = input.nextLine();
+                            fullInput = exhibitMenuInput.split(" ");
                         }
                     }
                 } else if (fullInput[0].equalsIgnoreCase("Exit") && fullInput[1].equalsIgnoreCase("Exhibit")) {
@@ -627,7 +635,8 @@ Game implements Serializable {
                     exhibitState = false;
                     mainMenuAfterInputState = true;
                     secondMainMenu(saveFileName);
-                } else {
+                }
+                else{
                     display.invalidInputForMenu();
                     exhibitMenuInput = input.nextLine();
                     fullInput = exhibitMenuInput.split(" ");
@@ -637,6 +646,7 @@ Game implements Serializable {
                 exhibitMenuInput = input.nextLine();
                 fullInput = exhibitMenuInput.split(" ");
             }
+        }
     }
 
 }
