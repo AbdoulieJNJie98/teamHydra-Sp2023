@@ -1,5 +1,6 @@
 # Treasures of the deep
 This project is a text-based video game that contains one player, a map of 20 rooms, six monsters, four puzzles, 19 item types, and a combat system. 
+
 It was designed with the waterfall methodology originally, and serverd as mock project with one group being the clients and the other being the developers.
 
 ## Table of Summary
