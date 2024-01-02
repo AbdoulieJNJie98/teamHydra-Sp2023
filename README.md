@@ -10,22 +10,22 @@ It was designed with the waterfall methodology originally, and serverd as mock p
 This game reads in multiple text files that contain the information needed to generate the map, items, monsters, and puzzles used throughout the game.
 This is a list of all the commands in the game, and what they do:
 
-### Commands used in the start up menu
+### Commands used in the start up menu:
 - |New Game| : This command is used to initialize a new game, which will consist of generating the map, monsters, puzzles, items, and player for the game.
 - |Load Save| : This command is used to load save files stored in the user's local saves file, the user must enter the name of a save file correctly in order for it to load properly.
 - |Exit Game| : This command allows the user to close the game from the main menu
 
-### Commands used after a save file has been loaded
+### Commands used after a save file has been loaded:
 - |Start Game| : This command allows the user to start their saved run of the game, which will start them in the room they saved in.
 - |Exhibit| : This command will send the user to the exhibit state, which is a menu of all the items the user may of archived during their playthrough.
 - |Exit Game| : This command allows the user to close the game from the main menu
 
-### Commands used in the exhibit state
+### Commands used in the exhibit state:
 - |Inspect| : The inspect command, followed by the name of item in the exhibit, will display the item description of item entered by the user.
 - |Exit Exhibit| : This commands allows the user to exit the exhibit state, and returns them to the menu generated after a save file has been loaded 
 
 
-### Commands used in the explore state
+### Commands used in the explore state:
 - |help| : The help command prints a list of all the commands available in the game, and what each command does.
 - |north or n| |south or s| |west or w| |east or e|: Theses commands  are what are needed to move to different rooms in the game
 - |pickup| : The pickup command allows you to add items to your inventory by entering the command followed by the name of the item you wish to add in your inventory. The item must be present in the room you are currently in
@@ -45,12 +45,12 @@ This is a list of all the commands in the game, and what they do:
 - |exit game| :The exit game command will allow you to shut down the game. You will then be prompt to either save your game, or just exit the game.
 - |map| : The map command will display the zone numbers and zone names found throughout the game.
 
-### Commands used in the puzzle state
+### Commands used in the puzzle state:
 - |solve puzzle| : The solve puzzle command will allow you to initiate the process of resolving the current puzzle you are interacting with.
 - |get puzzle hint| : The get puzzle hint will display the hint associated with the current puzzle you are interacting with.
 - |exit puzzle|: The exit puzzle command allows the user to exit the puzzle state, returning them to the explore state.
 
-### Commands used in the combat state
+### Commands used in the combat state:
 - |attack| : The attack commnd allows the user to attack the monster they would be in combat with.
 - |use| : The use command, followed by an item name, will allow the user to use usable items, as long as it is in their inventory
 - |check| : The check command will display the monster's name, current HP, current attack power, and current defense level.
@@ -90,7 +90,7 @@ This is a list of all the commands in the game, and what they do:
    EX: 1~5~12~8~Gigantic Clam ~ The clam has a thick, heavy shell with fluted, or curved edges. The soft tissue, or mantle, inside its shell, displays a pattern and mixture of colors such as yellow, green, iridescent blue, and purple. This large freak of nature is 20 feet wide and sits on the ocean floor, waiting for something to haplessly wander too close to its gaping shell. Due to the issue of mobility, it shouldn’t pose too great a threat to a sub, but discretion is the better part of valor.
 
    ```
-# Puzzle.txt
+### Puzzle.txt
  - This text file contains the information that makes up each puzzle type.
  - This is an example of how the information is stored, and defined:
 
