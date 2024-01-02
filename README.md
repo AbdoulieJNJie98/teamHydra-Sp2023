@@ -60,7 +60,7 @@ This is a list of all the commands in the game, and what they do:
              
 ## Files
 
-# rooms.txt
+### rooms.txt
  - This text file contains the information that makes up each room that make up the map.
  - This is an example of how the information is stored, and defined:
 
@@ -69,7 +69,7 @@ This is a list of all the commands in the game, and what they do:
    
    EX: 1~False~Man-of-war zone~0~5~2~0~As you enter this part of the Ocean you notice the presence of Man-of-war Jellyfish, as far as you can see, their tentacles are spread like the hair of an old witch, long and tangled. This area is well lit but you also see bioluminescent phytoplankton, sparkling at intervals like stars.~0~0~0~false
    ```
-# Items.txt
+### Items.txt
  - This text file contains the information that makes up each item type.
  - This is an example of how the information is stored, and defined:
    
@@ -79,7 +79,7 @@ This is a list of all the commands in the game, and what they do:
    EX: 1~Hull Upgrade 2 ~This final upgrade to sub allows it to travel to the furthest depths of the ocean. + 10 defense.~Equitable~11~false
 
    ```
-# monster.txt
+### monster.txt
  - This text file contains the information that makes up each monster type.
  - This is an example of how the information is stored, and defined:
 
