@@ -129,7 +129,7 @@ Game implements Serializable {
             player = (Player) loadedObjects.get(1);
             itemsInExh = (ArrayList<Items>) loadedObjects.get(2);
             exploreState = true;
-            startGame(player, map, itemsInExh);
+            startGame(player, gameMap, itemsInExh);
         }
         else if (!loadedObjects.isEmpty() && menuOptionName.equalsIgnoreCase("Exhibit")){
             gameMap = (Map) loadedObjects.get(0);
