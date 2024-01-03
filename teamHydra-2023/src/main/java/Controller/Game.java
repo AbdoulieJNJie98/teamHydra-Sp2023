@@ -5,6 +5,9 @@ import View.Displayer;
 import View.Exhibit;
 
 import java.io.*;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Scanner;
 
@@ -288,6 +291,7 @@ Game implements Serializable {
         System.out.println("Please enter the name of your save file");
         String saveGameFile = input.nextLine();
         try {
+            createSaveFolderIfNotExists();
             ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(SAVE_FOLDER + saveGameFile + ".dat"));
             out.writeObject(gameMap);
             out.writeObject(player);
@@ -296,6 +300,19 @@ Game implements Serializable {
             System.out.println("Game saved to " + saveGameFile);
         } catch (IOException e) {
             System.out.println("An error occurred when trying to save " + e.getMessage());
+        }
+    }
+
+    private void createSaveFolderIfNotExists() {
+        Path savesFolderPath = Paths.get(SAVE_FOLDER);
+
+        if (!Files.exists(savesFolderPath)) {
+            try {
+                Files.createDirectory(savesFolderPath);
+                System.out.println("Created 'saves' folder.");
+            } catch (IOException e) {
+                System.out.println("Error creating 'saves' folder: " + e.getMessage());
+            }
         }
     }
 
